@@ -135,11 +135,30 @@
       color: #22c55e;
       font-weight: 700;
     }
+        .menu-button {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: #374151;
+      color: #e5e7eb;
+      opacity: 0.85;
+    }
+
+    .menu-button:hover {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="card">
+       <!-- Botón de menú siempre visible -->
+  <button class="menu-button" onclick="goToSetup()">Menú</button>
       <!-- Pantalla: Inicio -->
       <div id="screen-start">
         <h1>El Impostorcillo</h1>
