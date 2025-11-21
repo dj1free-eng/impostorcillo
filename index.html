@@ -78,6 +78,11 @@
       transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
     }
 
+    button.secondary {
+      background: #374151;
+      box-shadow: none;
+    }
+
     button:active {
       transform: translateY(1px);
       box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
@@ -103,9 +108,10 @@
     }
 
     .role-text {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       text-align: center;
       margin-top: 10px;
+      min-height: 3em;
     }
 
     .badge {
@@ -163,9 +169,9 @@
         </select>
 
         <button onclick="startGame()">Empezar</button>
-        <button style="background: #374151; box-shadow:none;" onclick="backToStart()">Volver</button>
+        <button class="secondary" onclick="backToStart()">Volver</button>
 
-        <p class="small">Modo actual: 1 solo Impostorcillo, sin votos en la app (todo por voz).</p>
+        <p class="small">Modo actual: 1 solo Impostorcillo, votos y acusaciones se hacen de viva voz.</p>
       </div>
 
       <!-- Pantalla: Rol de jugador -->
@@ -174,15 +180,22 @@
           <span class="badge" id="playerBadge"></span>
         </div>
         <h2 id="roleTitle">Tu rol</h2>
-        <p class="role-text" id="roleDescription"></p>
+
+        <!-- Mensaje neutro antes de mostrar el rol -->
+        <p class="role-text" id="roleDescription">
+          Cuando estés <strong>solo</strong> y nadie mire la pantalla,<br/>
+          pulsa el botón de abajo para ver tu rol.
+        </p>
+
         <div class="big-word" id="wordDisplay"></div>
 
         <p class="small">
-          Nadie más debe ver tu pantalla.<br/>
-          Cuando termines, pulsa el botón y pasa el móvil al siguiente jugador.
+          Primero pulsa <strong>“Mostrar rol”</strong> cuando estés solo.<br/>
+          Después, pulsa <strong>“Listo, pasa el móvil”</strong> y entrégaselo al siguiente jugador.
         </p>
 
-        <button onclick="nextPlayer()">Listo, pasa el móvil</button>
+        <button id="btnShowRole" onclick="showPlayerRole()">Mostrar rol</button>
+        <button id="btnNextPlayer" class="secondary hidden" onclick="nextPlayer()">Listo, pasa el móvil</button>
       </div>
 
       <!-- Pantalla: Revelación final -->
@@ -197,13 +210,13 @@
           ¿Habéis acertado? ¿O el Impostorcillo os ha liado a todos? 😈
         </p>
         <button onclick="goToSetup()">Jugar otra vez</button>
-        <button style="background:#374151; box-shadow:none;" onclick="backToStart()">Salir al inicio</button>
+        <button class="secondary" onclick="backToStart()">Salir al inicio</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Palabras de ejemplo (puedes ampliarlas todo lo que quieras)
+    // Palabras de ejemplo
     const WORDS = {
       comida: [
         "Pizza", "Hamburguesa", "Sushi", "Paella", "Taco",
@@ -227,7 +240,8 @@
       numPlayers: 0,
       currentPlayer: 1,
       secretWord: "",
-      impostorIndex: 1
+      impostorIndex: 1,
+      roleShown: false  // controla si el jugador ya ha visto su rol
     };
 
     function showScreen(id) {
@@ -274,38 +288,75 @@
       gameState.currentPlayer = 1;
       gameState.secretWord = getRandomWord(cat);
       gameState.impostorIndex = Math.floor(Math.random() * n) + 1;
+      gameState.roleShown = false;
 
-      loadCurrentPlayerScreen();
+      preparePlayerNeutralScreen();
       showScreen("screen-role");
     }
 
-    function loadCurrentPlayerScreen() {
-      const { currentPlayer, numPlayers, impostorIndex, secretWord } = gameState;
+    // Pantalla neutra para el jugador actual (sin mostrar todavía su rol)
+    function preparePlayerNeutralScreen() {
+      const { currentPlayer, numPlayers } = gameState;
 
       const badge = document.getElementById("playerBadge");
       const roleTitle = document.getElementById("roleTitle");
       const roleDescription = document.getElementById("roleDescription");
       const wordDisplay = document.getElementById("wordDisplay");
+      const btnShowRole = document.getElementById("btnShowRole");
+      const btnNextPlayer = document.getElementById("btnNextPlayer");
+
+      gameState.roleShown = false;
 
       badge.textContent = `Jugador ${currentPlayer} de ${numPlayers}`;
+      roleTitle.textContent = "Tu rol";
+      roleDescription.innerHTML =
+        'Cuando estés <strong>solo</strong> y nadie mire la pantalla,<br/>pulsa el botón de abajo para ver tu rol.';
+
+      wordDisplay.textContent = "";
+      btnShowRole.classList.remove("hidden");
+      btnNextPlayer.classList.add("hidden");
+    }
+
+    // Se llama cuando el jugador pulsa "Mostrar rol"
+    function showPlayerRole() {
+      const { currentPlayer, impostorIndex, secretWord } = gameState;
+
+      const roleTitle = document.getElementById("roleTitle");
+      const roleDescription = document.getElementById("roleDescription");
+      const wordDisplay = document.getElementById("wordDisplay");
+      const btnShowRole = document.getElementById("btnShowRole");
+      const btnNextPlayer = document.getElementById("btnNextPlayer");
 
       if (currentPlayer === impostorIndex) {
         roleTitle.textContent = "Eres el Impostorcillo 😈";
-        roleDescription.textContent = "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
+        roleDescription.textContent =
+          "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
         wordDisplay.textContent = "???";
       } else {
         roleTitle.textContent = "Eres ciudadano 👤";
-        roleDescription.textContent = "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
+        roleDescription.textContent =
+          "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
         wordDisplay.textContent = secretWord;
       }
+
+      gameState.roleShown = true;
+
+      // Ya no hace falta mostrar este botón
+      btnShowRole.classList.add("hidden");
+      // Ahora sí dejamos que avance
+      btnNextPlayer.classList.remove("hidden");
     }
 
     function nextPlayer() {
+      // Por seguridad: si no ha visto su rol, no debería poder avanzar
+      if (!gameState.roleShown) {
+        return;
+      }
+
       if (gameState.currentPlayer < gameState.numPlayers) {
         gameState.currentPlayer += 1;
-        loadCurrentPlayerScreen();
+        preparePlayerNeutralScreen(); // siguiente jugador empieza en pantalla neutra
       } else {
-        // Todos han visto su rol -> ir a pantalla final (después de la votación verbal)
         revealRoles();
       }
     }
