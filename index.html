@@ -269,6 +269,7 @@
       impostorIndex: 1,
       roleShown: false  // controla si el jugador ya ha visto su rol
     };
+    let lastWord = null; // última palabra usada en la partida anterior
 
     // ==============================
     // UTILIDADES
@@ -298,25 +299,36 @@
     // Devuelve una palabra aleatoria de la base de datos,
     // filtrando por categoría. Más adelante podremos añadir dificultad y pack.
     function getRandomWord(categoryKey) {
-      // Si aún no se ha cargado la base, devolvemos algo genérico
-      if (!WORDS_DB || WORDS_DB.length === 0) {
-        const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
-        return getRandomFromArray(fallback);
-      }
+  // Si aún no se ha cargado la base, devolvemos algo genérico
+  if (!WORDS_DB || WORDS_DB.length === 0) {
+    const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
+    const chosenFallback = getRandomFromArray(fallback);
+    lastWord = chosenFallback; // por coherencia, también la guardamos
+    return chosenFallback;
+  }
 
-      let candidates = WORDS_DB.filter(item =>
-        item.type === "word" &&
-        (categoryKey === "random" || item.category === categoryKey)
-      );
+  let candidates = WORDS_DB.filter(item =>
+    item.type === "word" &&
+    (categoryKey === "random" || item.category === categoryKey)
+  );
 
-      if (candidates.length === 0) {
-        candidates = WORDS_DB.filter(item => item.type === "word");
-      }
+  if (candidates.length === 0) {
+    candidates = WORDS_DB.filter(item => item.type === "word");
+  }
 
-      const chosen = getRandomFromArray(candidates);
-      return chosen.text;
-    }
+  let chosenText;
 
+  // Elegimos palabra al azar, pero evitando repetir la última
+  do {
+    const chosen = getRandomFromArray(candidates);
+    chosenText = chosen.text;
+  } while (chosenText === lastWord && candidates.length > 1);
+
+  // Guardamos la palabra elegida para la próxima partida
+  lastWord = chosenText;
+
+  return chosenText;
+}
     // ==============================
     // LÓGICA PRINCIPAL
     // ==============================
