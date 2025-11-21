@@ -198,6 +198,25 @@
         <button id="btnNextPlayer" class="secondary hidden" onclick="nextPlayer()">Listo, pasa el móvil</button>
       </div>
 
+      <!-- Pantalla: Debate / votación -->
+      <div id="screen-vote" class="hidden">
+        <h2>Debatid y votad</h2>
+        <p class="center">
+          Todos habéis visto ya vuestro rol.<br/><br/>
+          Ahora:
+        </p>
+        <ul style="font-size:0.95rem; line-height:1.5;">
+          <li>Dad una pista cada uno, sin decir la palabra.</li>
+          <li>Comentad y acusad a quien creáis que es el Impostorcillo.</li>
+          <li>Haced una votación final.</li>
+        </ul>
+        <p class="small">
+          Cuando tengáis decidido quién es el Impostorcillo,<br/>
+          pulsad el botón de abajo para ver el resultado real.
+        </p>
+        <button onclick="revealRoles()">Revelar resultado</button>
+      </div>
+
       <!-- Pantalla: Revelación final -->
       <div id="screen-reveal" class="hidden">
         <h2>Revelación</h2>
@@ -248,6 +267,7 @@
       document.getElementById("screen-start").classList.add("hidden");
       document.getElementById("screen-setup").classList.add("hidden");
       document.getElementById("screen-role").classList.add("hidden");
+      document.getElementById("screen-vote").classList.add("hidden");
       document.getElementById("screen-reveal").classList.add("hidden");
       document.getElementById(id).classList.remove("hidden");
     }
@@ -341,9 +361,7 @@
 
       gameState.roleShown = true;
 
-      // Ya no hace falta mostrar este botón
       btnShowRole.classList.add("hidden");
-      // Ahora sí dejamos que avance
       btnNextPlayer.classList.remove("hidden");
     }
 
@@ -356,8 +374,10 @@
       if (gameState.currentPlayer < gameState.numPlayers) {
         gameState.currentPlayer += 1;
         preparePlayerNeutralScreen(); // siguiente jugador empieza en pantalla neutra
+        showScreen("screen-role");
       } else {
-        revealRoles();
+        // Último jugador: pasar a pantalla de debate/votación
+        showScreen("screen-vote");
       }
     }
 
