@@ -1,0 +1,42 @@
+[
+  { "id": "es-comida-0001", "text": "Pizza",         "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["rápida","italiano"], "pack": "basico", "type": "word" },
+  { "id": "es-comida-0002", "text": "Hamburguesa",  "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["rápida"], "pack": "basico", "type": "word" },
+  { "id": "es-comida-0003", "text": "Sushi",        "category": "comida",   "difficulty": 2, "language": "es", "familyFriendly": true, "tags": ["japonés"], "pack": "basico", "type": "word" },
+  { "id": "es-comida-0004", "text": "Paella",       "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["arroz"], "pack": "basico", "type": "word" },
+  { "id": "es-comida-0005", "text": "Taco",         "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["mexicano"], "pack": "basico", "type": "word" },
+  { "id": "es-comida-0006", "text": "Helado",       "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["postre","frío"], "pack": "kids", "type": "word" },
+  { "id": "es-comida-0007", "text": "Croqueta",     "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["bar"], "pack": "basico", "type": "word" },
+  { "id": "es-comida-0008", "text": "Chocolate",    "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["dulce"], "pack": "kids", "type": "word" },
+  { "id": "es-comida-0009", "text": "Ensalada",     "category": "comida",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["verduras"], "pack": "basico", "type": "word" },
+  { "id": "es-comida-0010", "text": "Tortilla de patatas", "category": "comida", "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["español"], "pack": "basico", "type": "word" },
+
+  { "id": "es-sitios-0001", "text": "Playa",        "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["mar"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0002", "text": "Montaña",      "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["naturaleza"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0003", "text": "Museo",        "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["arte"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0004", "text": "Cine",         "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["ocio"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0005", "text": "Supermercado", "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["comprar"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0006", "text": "Aeropuerto",   "category": "sitios",   "difficulty": 2, "language": "es", "familyFriendly": true, "tags": ["viajes"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0007", "text": "Hospital",     "category": "sitios",   "difficulty": 2, "language": "es", "familyFriendly": true, "tags": ["salud"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0008", "text": "Colegio",      "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["niños"], "pack": "kids", "type": "word" },
+  { "id": "es-sitios-0009", "text": "Estadio",      "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["deporte"], "pack": "basico", "type": "word" },
+  { "id": "es-sitios-0010", "text": "Parque",       "category": "sitios",   "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["aire libre"], "pack": "kids", "type": "word" },
+
+  { "id": "es-pelis-0001", "text": "Titanic",       "category": "peliculas","difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["romántica"], "pack": "cine", "type": "word" },
+  { "id": "es-pelis-0002", "text": "Matrix",        "category": "peliculas","difficulty": 2, "language": "es", "familyFriendly": true, "tags": ["ciencia ficción"], "pack": "cine", "type": "word" },
+  { "id": "es-pelis-0003", "text": "Avatar",        "category": "peliculas","difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["ciencia ficción"], "pack": "cine", "type": "word" },
+  { "id": "es-pelis-0004", "text": "El Rey León",   "category": "peliculas","difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["animación"], "pack": "kids", "type": "word" },
+  { "id": "es-pelis-0005", "text": "Jurassic Park", "category": "peliculas","difficulty": 2, "language": "es", "familyFriendly": true, "tags": ["dinosaurios"], "pack": "cine", "type": "word" },
+  { "id": "es-pelis-0006", "text": "Harry Potter",  "category": "peliculas","difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["magia"], "pack": "kids", "type": "word" },
+
+  { "id": "es-obj-0001", "text": "Móvil",           "category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["tecnología"], "pack": "basico", "type": "word" },
+  { "id": "es-obj-0002", "text": "Llaves",          "category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["casa"], "pack": "basico", "type": "word" },
+  { "id": "es-obj-0003", "text": "Silla",           "category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["mueble"], "pack": "basico", "type": "word" },
+  { "id": "es-obj-0004", "text": "Ordenador",       "category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["tecnología"], "pack": "basico", "type": "word" },
+  { "id": "es-obj-0005", "text": "Gafas",           "category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["vista"], "pack": "basico", "type": "word" },
+  { "id": "es-obj-0006", "text": "Libro",           "category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["leer"], "pack": "basico", "type": "word" },
+  { "id": "es-obj-0007", "text": "Auriculares",     "category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["música"], "pack": "basico", "type": "word" },
+  { "id": "es-obj-0008", "text": "Mando de consola","category": "objetos",  "difficulty": 1, "language": "es", "familyFriendly": true, "tags": ["videojuegos"], "pack": "friki", "type": "word" },
+
+  { "id": "es-pareja-0001", "type": "pair", "category": "animales", "difficulty": 2, "language": "es", "familyFriendly": true,
+    "citizensWord": "Perro", "impostorWord": "Gato", "tags": ["mascotas"], "pack": "parejas" }
+]
