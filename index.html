@@ -238,7 +238,8 @@
   // ==============================
 
   let WORDS_DB = [];
-  let unusedWords = []; // baraja de palabras que aún no han salido
+  // barajas por categoría: "comida", "sitios", "peliculas", "objetos", "all" (para aleatorio)
+  let decksByCategory = {};
 
   // Mezcla un array (Fisher-Yates)
   function shuffle(array) {
@@ -248,12 +249,22 @@
     }
   }
 
-  // Inicializa la baraja con todas las palabras disponibles
-  function initDeck() {
+  // Reinicia la baraja de UNA categoría concreta (o "all")
+  function resetCategoryDeck(categoryKey) {
     if (!WORDS_DB || WORDS_DB.length === 0) return;
-    unusedWords = WORDS_DB.filter(item => item.type === "word");
-    shuffle(unusedWords);
-    console.log("Baraja reiniciada con", unusedWords.length, "palabras.");
+
+    let words;
+    if (categoryKey === 'all') {
+      // baraja global con todas las palabras de tipo "word"
+      words = WORDS_DB.filter(w => w.type === 'word');
+    } else {
+      // solo palabras de esa categoría
+      words = WORDS_DB.filter(w => w.type === 'word' && w.category === categoryKey);
+    }
+
+    decksByCategory[categoryKey] = [...words];
+    shuffle(decksByCategory[categoryKey]);
+    console.log(`Baraja de categoría "${categoryKey}" reiniciada con`, decksByCategory[categoryKey].length, 'palabras.');
   }
 
   async function loadWordsDb() {
@@ -264,7 +275,8 @@
       if (Array.isArray(data)) {
         WORDS_DB = data;
         console.log('Base de datos de palabras cargada:', WORDS_DB.length, 'entradas');
-        initDeck(); // creamos la baraja al cargar
+        // Preparamos al menos la baraja global para "aleatorio"
+        resetCategoryDeck('all');
       } else {
         console.error('El JSON de palabras no es un array');
       }
@@ -313,7 +325,8 @@
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  // Devuelve una palabra de la baraja (sin repetir en la sesión)
+  // Devuelve una palabra de la baraja de la categoría elegida,
+  // sin repetir en esta sesión de juego.
   function getRandomWord(categoryKey) {
     // Si aún no se ha cargado la base, devolvemos algo genérico
     if (!WORDS_DB || WORDS_DB.length === 0) {
@@ -321,35 +334,39 @@
       return getRandomFromArray(fallback);
     }
 
-    // Si la baraja está vacía, reiniciamos
-    if (!unusedWords || unusedWords.length === 0) {
-      alert("Se han usado todas las palabras disponibles. Se reinicia la baraja para seguir jugando.");
-      initDeck();
+    // categoryKey de la UI: "comida", "sitios", "peliculas", "objetos", "random"
+    // clave interna para la baraja:
+    const deckKey = (categoryKey === 'random') ? 'all' : categoryKey;
+
+    // Si no existe baraja para esa categoría, la creamos
+    if (!decksByCategory[deckKey]) {
+      resetCategoryDeck(deckKey);
     }
 
-    let pool = unusedWords;
+    let deck = decksByCategory[deckKey] || [];
 
-    // Si se ha elegido categoría concreta, intentamos respetarla
-    if (categoryKey && categoryKey !== "random") {
-      const filtered = pool.filter(item => item.category === categoryKey);
-      if (filtered.length > 0) {
-        pool = filtered;
+    // Si la baraja de esa categoría está vacía -> avisamos y la reiniciamos
+    if (deck.length === 0) {
+      if (deckKey === 'all') {
+        alert("Se han usado todas las palabras disponibles. Se reinicia la baraja completa.");
+      } else {
+        alert(`Se han usado todas las palabras de la categoría "${deckKey}". Se reinicia solo ese pack.`);
       }
-      // Si no hay ninguna palabra de esa categoría en la baraja,
-      // usamos el pool completo para no romper la partida.
+      resetCategoryDeck(deckKey);
+      deck = decksByCategory[deckKey] || [];
     }
 
-    if (pool.length === 0) {
-      // Caso extremo: algo raro ha pasado, reiniciamos baraja
-      initDeck();
-      pool = unusedWords;
+    // Si AÚN así no hay palabras (por ejemplo, ninguna en el JSON para esa categoría),
+    // hacemos un fallback genérico.
+    if (deck.length === 0) {
+      const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
+      return getRandomFromArray(fallback);
     }
 
-    // Elegimos una palabra del pool
-    const chosen = getRandomFromArray(pool);
-
-    // Quitamos esa palabra de la baraja global para que no se repita en esta sesión
-    unusedWords = unusedWords.filter(item => item.id !== chosen.id);
+    // Sacamos una carta al azar de la baraja (y la eliminamos para no repetir)
+    const idx = Math.floor(Math.random() * deck.length);
+    const chosen = deck.splice(idx, 1)[0];  // chosen es el objeto {id, text, ...}
+    decksByCategory[deckKey] = deck;        // guardamos la baraja actualizada
 
     return chosen.text;
   }
