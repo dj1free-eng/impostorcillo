@@ -4,161 +4,176 @@
   <meta charset="UTF-8" />
   <title>El Impostorcillo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
 
-    body {
-      margin: 0;
-      background: #050816;
-      color: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
+  body {
+    margin: 0;
+    background: #050816;
+    color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
 
-    .app {
-      width: 100%;
-      max-width: 480px;
-      padding: 16px;
-    }
+  .app {
+    width: 100%;
+    max-width: 480px;
+    padding: 16px;
+  }
 
-    .card {
-      background: #111827;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      position: relative;
-    }
+  .card {
+    background: #111827;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    position: relative; /* para poder colocar el botón Menú flotando */
+  }
 
-    h1, h2, h3 {
-      margin-top: 0;
-      text-align: center;
-    }
+  h1, h2, h3 {
+    margin-top: 0;
+    text-align: center;
+  }
 
-    h1 {
-      font-size: 1.9rem;
-      margin-bottom: 0.5rem;
-    }
+  h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.5rem;
+  }
 
-    p {
-      line-height: 1.4;
-    }
+  p {
+    line-height: 1.4;
+  }
 
-    label {
-      display: block;
-      margin: 10px 0 4px;
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
+  label {
+    display: block;
+    margin: 10px 0 4px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
 
-    input, select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-      margin-bottom: 8px;
-    }
+  input, select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
 
-    .menu-button {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  width: 32px !important;
-  height: 32px;
-  border-radius: 50%;
-  background: #374151;
-  color: white;
-  font-size: 12px;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
+  /* Botones normales del juego (Empezar, Volver, etc.) */
+  button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 999px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 14px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.5);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+  }
 
-    button.secondary {
-      background: #374151;
-      box-shadow: none;
-    }
+  button.secondary {
+    background: #374151;
+    box-shadow: none;
+  }
 
-    button:active {
-      transform: translateY(1px);
-      box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
-      opacity: 0.9;
-    }
+  button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
+    opacity: 0.9;
+  }
 
-    .small {
-      font-size: 0.85rem;
-      text-align: center;
-      opacity: 0.8;
-      margin-top: 12px;
-    }
+  .small {
+    font-size: 0.85rem;
+    text-align: center;
+    opacity: 0.8;
+    margin-top: 12px;
+  }
 
-    .hidden {
-      display: none;
-    }
+  .hidden {
+    display: none;
+  }
 
-    .big-word {
-      font-size: 1.8rem;
-      text-align: center;
-      margin: 20px 0;
-      word-wrap: break-word;
-    }
+  .big-word {
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 20px 0;
+    word-wrap: break-word;
+  }
 
-    .role-text {
-      font-size: 1.1rem;
-      text-align: center;
-      margin-top: 10px;
-      min-height: 3em;
-    }
+  .role-text {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 3em;
+  }
 
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      background: #1f2937;
-      color: #9ca3af;
-      margin-bottom: 10px;
-    }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: #1f2937;
+    color: #9ca3af;
+    margin-bottom: 10px;
+  }
 
-    .center {
-      text-align: center;
-    }
+  .center {
+    text-align: center;
+  }
 
-    .highlight {
-      color: #22c55e;
-      font-weight: 700;
-    }
-        .menu-button {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: #374151;
-      color: #e5e7eb;
-      opacity: 0.85;
-    }
+  .highlight {
+    color: #22c55e;
+    font-weight: 700;
+  }
 
-    .menu-button:hover {
-      opacity: 1;
-    }
-  </style>
+  /* Botón pequeño de Menú (sin romper los demás botones) */
+  .menu-button {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: #374151;
+    color: #e5e7eb;
+    font-size: 0.7rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px !important;  /* evita el width:100% global */
+  }
+
+  .menu-button span {
+    pointer-events: none;
+  }
+
+  .menu-button:hover {
+    opacity: 1;
+  }
+</style>
 </head>
 <body>
   <div class="app">
-    <div class="card">
-       <!-- Botón de menú siempre visible -->
-  <button class="menu-button" onclick="goToSetup()">Menú</button>
+<div class="card">
+  <!-- Botón de menú siempre visible -->
+  <button class="menu-button" onclick="goToSetup()">
+    <span>≡</span>
+  </button>
       <!-- Pantalla: Inicio -->
       <div id="screen-start">
         <h1>El Impostorcillo</h1>
