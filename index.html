@@ -134,7 +134,6 @@
       color: #22c55e;
       font-weight: 700;
     }
-
   </style>
 </head>
 <body>
@@ -181,7 +180,6 @@
         </div>
         <h2 id="roleTitle">Tu rol</h2>
 
-        <!-- Mensaje neutro antes de mostrar el rol -->
         <p class="role-text" id="roleDescription">
           Cuando estés <strong>solo</strong> y nadie mire la pantalla,<br/>
           pulsa el botón de abajo para ver tu rol.
@@ -235,25 +233,34 @@
   </div>
 
   <script>
-    // Palabras de ejemplo
-    const WORDS = {
-      comida: [
-        "Pizza", "Hamburguesa", "Sushi", "Paella", "Taco",
-        "Helado", "Croqueta", "Ensalada", "Chocolate", "Tortilla"
-      ],
-      sitios: [
-        "Playa", "Montaña", "Museo", "Cine", "Supermercado",
-        "Aeropuerto", "Hospital", "Colegio", "Estadio", "Parque"
-      ],
-      peliculas: [
-        "Titanic", "Matrix", "Avatar", "Star Wars", "El Rey León",
-        "Jurassic Park", "Forrest Gump", "Harry Potter", "Spiderman", "Toy Story"
-      ],
-      objetos: [
-        "Móvil", "Llave", "Silla", "Ordenador", "Gafas",
-        "Libro", "Bolígrafo", "Auriculares", "Mando de consola", "Reloj"
-      ]
-    };
+    // ==============================
+    // BASE DE DATOS (JSON externo)
+    // ==============================
+
+    let WORDS_DB = [];
+
+    async function loadWordsDb() {
+      try {
+        const res = await fetch('data/words-es.json');
+        if (!res.ok) throw new Error('No se pudo cargar data/words-es.json');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          WORDS_DB = data;
+          console.log('Base de datos de palabras cargada:', WORDS_DB.length, 'entradas');
+        } else {
+          console.error('El JSON de palabras no es un array');
+        }
+      } catch (err) {
+        console.error('Error cargando base de datos de palabras:', err);
+      }
+    }
+
+    // Cargamos la base nada más abrir la página
+    loadWordsDb();
+
+    // ==============================
+    // ESTADO DEL JUEGO
+    // ==============================
 
     let gameState = {
       numPlayers: 0,
@@ -262,6 +269,10 @@
       impostorIndex: 1,
       roleShown: false  // controla si el jugador ya ha visto su rol
     };
+
+    // ==============================
+    // UTILIDADES
+    // ==============================
 
     function showScreen(id) {
       document.getElementById("screen-start").classList.add("hidden");
@@ -280,19 +291,35 @@
       showScreen("screen-setup");
     }
 
-    function randomFromArray(arr) {
+    function getRandomFromArray(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
     }
 
+    // Devuelve una palabra aleatoria de la base de datos,
+    // filtrando por categoría. Más adelante podremos añadir dificultad y pack.
     function getRandomWord(categoryKey) {
-      if (categoryKey === "random") {
-        const keys = Object.keys(WORDS);
-        const randomCategory = randomFromArray(keys);
-        return randomFromArray(WORDS[randomCategory]);
-      } else {
-        return randomFromArray(WORDS[categoryKey] || WORDS["comida"]);
+      // Si aún no se ha cargado la base, devolvemos algo genérico
+      if (!WORDS_DB || WORDS_DB.length === 0) {
+        const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
+        return getRandomFromArray(fallback);
       }
+
+      let candidates = WORDS_DB.filter(item =>
+        item.type === "word" &&
+        (categoryKey === "random" || item.category === categoryKey)
+      );
+
+      if (candidates.length === 0) {
+        candidates = WORDS_DB.filter(item => item.type === "word");
+      }
+
+      const chosen = getRandomFromArray(candidates);
+      return chosen.text;
     }
+
+    // ==============================
+    // LÓGICA PRINCIPAL
+    // ==============================
 
     function startGame() {
       const numPlayersInput = document.getElementById("numPlayers");
@@ -366,17 +393,13 @@
     }
 
     function nextPlayer() {
-      // Por seguridad: si no ha visto su rol, no debería poder avanzar
-      if (!gameState.roleShown) {
-        return;
-      }
+      if (!gameState.roleShown) return;
 
       if (gameState.currentPlayer < gameState.numPlayers) {
         gameState.currentPlayer += 1;
-        preparePlayerNeutralScreen(); // siguiente jugador empieza en pantalla neutra
+        preparePlayerNeutralScreen();
         showScreen("screen-role");
       } else {
-        // Último jugador: pasar a pantalla de debate/votación
         showScreen("screen-vote");
       }
     }
