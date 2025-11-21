@@ -232,195 +232,220 @@
     </div>
   </div>
 
-  <script>
-    // ==============================
-    // BASE DE DATOS (JSON externo)
-    // ==============================
+<script>
+  // ==============================
+  // BASE DE DATOS (JSON externo)
+  // ==============================
 
-    let WORDS_DB = [];
+  let WORDS_DB = [];
+  let unusedWords = []; // baraja de palabras que aún no han salido
 
-    async function loadWordsDb() {
-      try {
-        const res = await fetch('data/words-es.json');
-        if (!res.ok) throw new Error('No se pudo cargar data/words-es.json');
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          WORDS_DB = data;
-          console.log('Base de datos de palabras cargada:', WORDS_DB.length, 'entradas');
-        } else {
-          console.error('El JSON de palabras no es un array');
-        }
-      } catch (err) {
-        console.error('Error cargando base de datos de palabras:', err);
+  // Mezcla un array (Fisher-Yates)
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  // Inicializa la baraja con todas las palabras disponibles
+  function initDeck() {
+    if (!WORDS_DB || WORDS_DB.length === 0) return;
+    unusedWords = WORDS_DB.filter(item => item.type === "word");
+    shuffle(unusedWords);
+    console.log("Baraja reiniciada con", unusedWords.length, "palabras.");
+  }
+
+  async function loadWordsDb() {
+    try {
+      const res = await fetch('data/words-es.json');
+      if (!res.ok) throw new Error('No se pudo cargar data/words-es.json');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        WORDS_DB = data;
+        console.log('Base de datos de palabras cargada:', WORDS_DB.length, 'entradas');
+        initDeck(); // creamos la baraja al cargar
+      } else {
+        console.error('El JSON de palabras no es un array');
       }
+    } catch (err) {
+      console.error('Error cargando base de datos de palabras:', err);
     }
-
-    // Cargamos la base nada más abrir la página
-    loadWordsDb();
-
-    // ==============================
-    // ESTADO DEL JUEGO
-    // ==============================
-
-    let gameState = {
-      numPlayers: 0,
-      currentPlayer: 1,
-      secretWord: "",
-      impostorIndex: 1,
-      roleShown: false  // controla si el jugador ya ha visto su rol
-    };
-    let lastWord = null; // última palabra usada en la partida anterior
-
-    // ==============================
-    // UTILIDADES
-    // ==============================
-
-    function showScreen(id) {
-      document.getElementById("screen-start").classList.add("hidden");
-      document.getElementById("screen-setup").classList.add("hidden");
-      document.getElementById("screen-role").classList.add("hidden");
-      document.getElementById("screen-vote").classList.add("hidden");
-      document.getElementById("screen-reveal").classList.add("hidden");
-      document.getElementById(id).classList.remove("hidden");
-    }
-
-    function backToStart() {
-      showScreen("screen-start");
-    }
-
-    function goToSetup() {
-      showScreen("screen-setup");
-    }
-
-    function getRandomFromArray(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    // Devuelve una palabra aleatoria de la base de datos,
-    // filtrando por categoría. Más adelante podremos añadir dificultad y pack.
-    function getRandomWord(categoryKey) {
-  // Si aún no se ha cargado la base, devolvemos algo genérico
-  if (!WORDS_DB || WORDS_DB.length === 0) {
-    const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
-    const chosenFallback = getRandomFromArray(fallback);
-    lastWord = chosenFallback; // por coherencia, también la guardamos
-    return chosenFallback;
   }
 
-  let candidates = WORDS_DB.filter(item =>
-    item.type === "word" &&
-    (categoryKey === "random" || item.category === categoryKey)
-  );
+  // Cargamos la base nada más abrir la página
+  loadWordsDb();
 
-  if (candidates.length === 0) {
-    candidates = WORDS_DB.filter(item => item.type === "word");
+  // ==============================
+  // ESTADO DEL JUEGO
+  // ==============================
+
+  let gameState = {
+    numPlayers: 0,
+    currentPlayer: 1,
+    secretWord: "",
+    impostorIndex: 1,
+    roleShown: false  // controla si el jugador ya ha visto su rol
+  };
+
+  // ==============================
+  // UTILIDADES
+  // ==============================
+
+  function showScreen(id) {
+    document.getElementById("screen-start").classList.add("hidden");
+    document.getElementById("screen-setup").classList.add("hidden");
+    document.getElementById("screen-role").classList.add("hidden");
+    document.getElementById("screen-vote").classList.add("hidden");
+    document.getElementById("screen-reveal").classList.add("hidden");
+    document.getElementById(id).classList.remove("hidden");
   }
 
-  let chosenText;
+  function backToStart() {
+    showScreen("screen-start");
+  }
 
-  // Elegimos palabra al azar, pero evitando repetir la última
-  do {
-    const chosen = getRandomFromArray(candidates);
-    chosenText = chosen.text;
-  } while (chosenText === lastWord && candidates.length > 1);
+  function goToSetup() {
+    showScreen("screen-setup");
+  }
 
-  // Guardamos la palabra elegida para la próxima partida
-  lastWord = chosenText;
+  function getRandomFromArray(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
 
-  return chosenText;
-}
-    // ==============================
-    // LÓGICA PRINCIPAL
-    // ==============================
+  // Devuelve una palabra de la baraja (sin repetir en la sesión)
+  function getRandomWord(categoryKey) {
+    // Si aún no se ha cargado la base, devolvemos algo genérico
+    if (!WORDS_DB || WORDS_DB.length === 0) {
+      const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
+      return getRandomFromArray(fallback);
+    }
 
-    function startGame() {
-      const numPlayersInput = document.getElementById("numPlayers");
-      const categorySelect = document.getElementById("category");
+    // Si la baraja está vacía, reiniciamos
+    if (!unusedWords || unusedWords.length === 0) {
+      alert("Se han usado todas las palabras disponibles. Se reinicia la baraja para seguir jugando.");
+      initDeck();
+    }
 
-      let n = parseInt(numPlayersInput.value, 10);
-      if (isNaN(n) || n < 3) n = 3;
-      if (n > 12) n = 12;
+    let pool = unusedWords;
 
-      const cat = categorySelect.value;
+    // Si se ha elegido categoría concreta, intentamos respetarla
+    if (categoryKey && categoryKey !== "random") {
+      const filtered = pool.filter(item => item.category === categoryKey);
+      if (filtered.length > 0) {
+        pool = filtered;
+      }
+      // Si no hay ninguna palabra de esa categoría en la baraja,
+      // usamos el pool completo para no romper la partida.
+    }
 
-      gameState.numPlayers = n;
-      gameState.currentPlayer = 1;
-      gameState.secretWord = getRandomWord(cat);
-      gameState.impostorIndex = Math.floor(Math.random() * n) + 1;
-      gameState.roleShown = false;
+    if (pool.length === 0) {
+      // Caso extremo: algo raro ha pasado, reiniciamos baraja
+      initDeck();
+      pool = unusedWords;
+    }
 
+    // Elegimos una palabra del pool
+    const chosen = getRandomFromArray(pool);
+
+    // Quitamos esa palabra de la baraja global para que no se repita en esta sesión
+    unusedWords = unusedWords.filter(item => item.id !== chosen.id);
+
+    return chosen.text;
+  }
+
+  // ==============================
+  // LÓGICA PRINCIPAL
+  // ==============================
+
+  function startGame() {
+    const numPlayersInput = document.getElementById("numPlayers");
+    const categorySelect = document.getElementById("category");
+
+    let n = parseInt(numPlayersInput.value, 10);
+    if (isNaN(n) || n < 3) n = 3;
+    if (n > 12) n = 12;
+
+    const cat = categorySelect.value;
+
+    gameState.numPlayers = n;
+    gameState.currentPlayer = 1;
+    gameState.secretWord = getRandomWord(cat);
+    gameState.impostorIndex = Math.floor(Math.random() * n) + 1;
+    gameState.roleShown = false;
+
+    preparePlayerNeutralScreen();
+    showScreen("screen-role");
+  }
+
+  // Pantalla neutra para el jugador actual (sin mostrar todavía su rol)
+  function preparePlayerNeutralScreen() {
+    const { currentPlayer, numPlayers } = gameState;
+
+    const badge = document.getElementById("playerBadge");
+    const roleTitle = document.getElementById("roleTitle");
+    const roleDescription = document.getElementById("roleDescription");
+    const wordDisplay = document.getElementById("wordDisplay");
+    const btnShowRole = document.getElementById("btnShowRole");
+    const btnNextPlayer = document.getElementById("btnNextPlayer");
+
+    gameState.roleShown = false;
+
+    badge.textContent = `Jugador ${currentPlayer} de ${numPlayers}`;
+    roleTitle.textContent = "Tu rol";
+    roleDescription.innerHTML =
+      'Cuando estés <strong>solo</strong> y nadie mire la pantalla,<br/>pulsa el botón de abajo para ver tu rol.';
+
+    wordDisplay.textContent = "";
+    btnShowRole.classList.remove("hidden");
+    btnNextPlayer.classList.add("hidden");
+  }
+
+  // Se llama cuando el jugador pulsa "Mostrar rol"
+  function showPlayerRole() {
+    const { currentPlayer, impostorIndex, secretWord } = gameState;
+
+    const roleTitle = document.getElementById("roleTitle");
+    const roleDescription = document.getElementById("roleDescription");
+    const wordDisplay = document.getElementById("wordDisplay");
+    const btnShowRole = document.getElementById("btnShowRole");
+    const btnNextPlayer = document.getElementById("btnNextPlayer");
+
+    if (currentPlayer === impostorIndex) {
+      roleTitle.textContent = "Eres el Impostorcillo 😈";
+      roleDescription.textContent =
+        "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
+      wordDisplay.textContent = "???";
+    } else {
+      roleTitle.textContent = "Eres ciudadano 👤";
+      roleDescription.textContent =
+        "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
+      wordDisplay.textContent = secretWord;
+    }
+
+    gameState.roleShown = true;
+
+    btnShowRole.classList.add("hidden");
+    btnNextPlayer.classList.remove("hidden");
+  }
+
+  function nextPlayer() {
+    if (!gameState.roleShown) return;
+
+    if (gameState.currentPlayer < gameState.numPlayers) {
+      gameState.currentPlayer += 1;
       preparePlayerNeutralScreen();
       showScreen("screen-role");
+    } else {
+      showScreen("screen-vote");
     }
+  }
 
-    // Pantalla neutra para el jugador actual (sin mostrar todavía su rol)
-    function preparePlayerNeutralScreen() {
-      const { currentPlayer, numPlayers } = gameState;
-
-      const badge = document.getElementById("playerBadge");
-      const roleTitle = document.getElementById("roleTitle");
-      const roleDescription = document.getElementById("roleDescription");
-      const wordDisplay = document.getElementById("wordDisplay");
-      const btnShowRole = document.getElementById("btnShowRole");
-      const btnNextPlayer = document.getElementById("btnNextPlayer");
-
-      gameState.roleShown = false;
-
-      badge.textContent = `Jugador ${currentPlayer} de ${numPlayers}`;
-      roleTitle.textContent = "Tu rol";
-      roleDescription.innerHTML =
-        'Cuando estés <strong>solo</strong> y nadie mire la pantalla,<br/>pulsa el botón de abajo para ver tu rol.';
-
-      wordDisplay.textContent = "";
-      btnShowRole.classList.remove("hidden");
-      btnNextPlayer.classList.add("hidden");
-    }
-
-    // Se llama cuando el jugador pulsa "Mostrar rol"
-    function showPlayerRole() {
-      const { currentPlayer, impostorIndex, secretWord } = gameState;
-
-      const roleTitle = document.getElementById("roleTitle");
-      const roleDescription = document.getElementById("roleDescription");
-      const wordDisplay = document.getElementById("wordDisplay");
-      const btnShowRole = document.getElementById("btnShowRole");
-      const btnNextPlayer = document.getElementById("btnNextPlayer");
-
-      if (currentPlayer === impostorIndex) {
-        roleTitle.textContent = "Eres el Impostorcillo 😈";
-        roleDescription.textContent =
-          "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
-        wordDisplay.textContent = "???";
-      } else {
-        roleTitle.textContent = "Eres ciudadano 👤";
-        roleDescription.textContent =
-          "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
-        wordDisplay.textContent = secretWord;
-      }
-
-      gameState.roleShown = true;
-
-      btnShowRole.classList.add("hidden");
-      btnNextPlayer.classList.remove("hidden");
-    }
-
-    function nextPlayer() {
-      if (!gameState.roleShown) return;
-
-      if (gameState.currentPlayer < gameState.numPlayers) {
-        gameState.currentPlayer += 1;
-        preparePlayerNeutralScreen();
-        showScreen("screen-role");
-      } else {
-        showScreen("screen-vote");
-      }
-    }
-
-    function revealRoles() {
-      document.getElementById("finalWord").textContent = gameState.secretWord;
-      document.getElementById("impostorPlayer").textContent = `Jugador ${gameState.impostorIndex}`;
-      showScreen("screen-reveal");
-    }
-  </script>
+  function revealRoles() {
+    document.getElementById("finalWord").textContent = gameState.secretWord;
+    document.getElementById("impostorPlayer").textContent = `Jugador ${gameState.impostorIndex}`;
+    showScreen("screen-reveal");
+  }
+</script>
 </body>
 </html>
