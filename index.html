@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>El Impostorcillo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #050816;
+      color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+    }
+
+    .card {
+      background: #111827;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      line-height: 1.4;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 4px;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 999px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 14px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.5);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
+      opacity: 0.9;
+    }
+
+    .small {
+      font-size: 0.85rem;
+      text-align: center;
+      opacity: 0.8;
+      margin-top: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .big-word {
+      font-size: 1.8rem;
+      text-align: center;
+      margin: 20px 0;
+      word-wrap: break-word;
+    }
+
+    .role-text {
+      font-size: 1.2rem;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: #1f2937;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .highlight {
+      color: #22c55e;
+      font-weight: 700;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="card">
+      <!-- Pantalla: Inicio -->
+      <div id="screen-start">
+        <h1>El Impostorcillo</h1>
+        <p class="center">
+          Juego de pistas para jugar en grupo.<br/>
+          Pasa el móvil de mano en mano, improvisad pistas<br/>
+          y descubrid quién estaba fingiendo.
+        </p>
+        <button onclick="goToSetup()">Nueva partida</button>
+        <p class="small">Consejo: pon el móvil en silencio para que nadie vea notificaciones chivatas 😏</p>
+      </div>
+
+      <!-- Pantalla: Configuración -->
+      <div id="screen-setup" class="hidden">
+        <h2>Configuración</h2>
+
+        <label for="numPlayers">Número de jugadores</label>
+        <input type="number" id="numPlayers" min="3" max="12" value="5" />
+
+        <label for="category">Categoría</label>
+        <select id="category">
+          <option value="random">Aleatorio</option>
+          <option value="comida">Comida</option>
+          <option value="sitios">Lugares</option>
+          <option value="peliculas">Películas</option>
+          <option value="objetos">Objetos</option>
+        </select>
+
+        <button onclick="startGame()">Empezar</button>
+        <button style="background: #374151; box-shadow:none;" onclick="backToStart()">Volver</button>
+
+        <p class="small">Modo actual: 1 solo Impostorcillo, sin votos en la app (todo por voz).</p>
+      </div>
+
+      <!-- Pantalla: Rol de jugador -->
+      <div id="screen-role" class="hidden">
+        <div class="center">
+          <span class="badge" id="playerBadge"></span>
+        </div>
+        <h2 id="roleTitle">Tu rol</h2>
+        <p class="role-text" id="roleDescription"></p>
+        <div class="big-word" id="wordDisplay"></div>
+
+        <p class="small">
+          Nadie más debe ver tu pantalla.<br/>
+          Cuando termines, pulsa el botón y pasa el móvil al siguiente jugador.
+        </p>
+
+        <button onclick="nextPlayer()">Listo, pasa el móvil</button>
+      </div>
+
+      <!-- Pantalla: Revelación final -->
+      <div id="screen-reveal" class="hidden">
+        <h2>Revelación</h2>
+        <p class="center">La palabra secreta era:</p>
+        <div class="big-word" id="finalWord"></div>
+        <p class="center">
+          El Impostorcillo era el <span class="highlight" id="impostorPlayer"></span>.
+        </p>
+        <p class="small">
+          ¿Habéis acertado? ¿O el Impostorcillo os ha liado a todos? 😈
+        </p>
+        <button onclick="goToSetup()">Jugar otra vez</button>
+        <button style="background:#374151; box-shadow:none;" onclick="backToStart()">Salir al inicio</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Palabras de ejemplo (puedes ampliarlas todo lo que quieras)
+    const WORDS = {
+      comida: [
+        "Pizza", "Hamburguesa", "Sushi", "Paella", "Taco",
+        "Helado", "Croqueta", "Ensalada", "Chocolate", "Tortilla"
+      ],
+      sitios: [
+        "Playa", "Montaña", "Museo", "Cine", "Supermercado",
+        "Aeropuerto", "Hospital", "Colegio", "Estadio", "Parque"
+      ],
+      peliculas: [
+        "Titanic", "Matrix", "Avatar", "Star Wars", "El Rey León",
+        "Jurassic Park", "Forrest Gump", "Harry Potter", "Spiderman", "Toy Story"
+      ],
+      objetos: [
+        "Móvil", "Llave", "Silla", "Ordenador", "Gafas",
+        "Libro", "Bolígrafo", "Auriculares", "Mando de consola", "Reloj"
+      ]
+    };
+
+    let gameState = {
+      numPlayers: 0,
+      currentPlayer: 1,
+      secretWord: "",
+      impostorIndex: 1
+    };
+
+    function showScreen(id) {
+      document.getElementById("screen-start").classList.add("hidden");
+      document.getElementById("screen-setup").classList.add("hidden");
+      document.getElementById("screen-role").classList.add("hidden");
+      document.getElementById("screen-reveal").classList.add("hidden");
+      document.getElementById(id).classList.remove("hidden");
+    }
+
+    function backToStart() {
+      showScreen("screen-start");
+    }
+
+    function goToSetup() {
+      showScreen("screen-setup");
+    }
+
+    function randomFromArray(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function getRandomWord(categoryKey) {
+      if (categoryKey === "random") {
+        const keys = Object.keys(WORDS);
+        const randomCategory = randomFromArray(keys);
+        return randomFromArray(WORDS[randomCategory]);
+      } else {
+        return randomFromArray(WORDS[categoryKey] || WORDS["comida"]);
+      }
+    }
+
+    function startGame() {
+      const numPlayersInput = document.getElementById("numPlayers");
+      const categorySelect = document.getElementById("category");
+
+      let n = parseInt(numPlayersInput.value, 10);
+      if (isNaN(n) || n < 3) n = 3;
+      if (n > 12) n = 12;
+
+      const cat = categorySelect.value;
+
+      gameState.numPlayers = n;
+      gameState.currentPlayer = 1;
+      gameState.secretWord = getRandomWord(cat);
+      gameState.impostorIndex = Math.floor(Math.random() * n) + 1;
+
+      loadCurrentPlayerScreen();
+      showScreen("screen-role");
+    }
+
+    function loadCurrentPlayerScreen() {
+      const { currentPlayer, numPlayers, impostorIndex, secretWord } = gameState;
+
+      const badge = document.getElementById("playerBadge");
+      const roleTitle = document.getElementById("roleTitle");
+      const roleDescription = document.getElementById("roleDescription");
+      const wordDisplay = document.getElementById("wordDisplay");
+
+      badge.textContent = `Jugador ${currentPlayer} de ${numPlayers}`;
+
+      if (currentPlayer === impostorIndex) {
+        roleTitle.textContent = "Eres el Impostorcillo 😈";
+        roleDescription.textContent = "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
+        wordDisplay.textContent = "???";
+      } else {
+        roleTitle.textContent = "Eres ciudadano 👤";
+        roleDescription.textContent = "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
+        wordDisplay.textContent = secretWord;
+      }
+    }
+
+    function nextPlayer() {
+      if (gameState.currentPlayer < gameState.numPlayers) {
+        gameState.currentPlayer += 1;
+        loadCurrentPlayerScreen();
+      } else {
+        // Todos han visto su rol -> ir a pantalla final (después de la votación verbal)
+        revealRoles();
+      }
+    }
+
+    function revealRoles() {
+      document.getElementById("finalWord").textContent = gameState.secretWord;
+      document.getElementById("impostorPlayer").textContent = `Jugador ${gameState.impostorIndex}`;
+      showScreen("screen-reveal");
+    }
+  </script>
+</body>
+</html>
