@@ -36,6 +36,10 @@
       border: 1px solid rgba(148, 163, 184, 0.3);
     }
 
+    .screen.hidden {
+      display: none;
+    }
+
     h1, h2, h3 {
       margin-top: 0;
       text-align: center;
@@ -92,38 +96,12 @@
       box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
       opacity: 0.9;
     }
-    /* Botón "Jugador siguiente" (estado por defecto: apagado) */
-    #nextPlayerBtn {
-      background: #3f3f46;          /* gris apagado */
-      color: #d4d4d8;
-      opacity: 0.5;
-      border-radius: 12px;
-      padding: 14px 24px;
-      font-size: 1.05rem;
-      border: none;
-      width: 90%;
-      max-width: 320px;
-      margin: 20px auto 0;
-      display: block;
-      box-shadow: none;
-    }
 
-    /* Estado ACTIVADO: cuando el jugador ya ha visto su rol */
-    #nextPlayerBtn.active {
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-      color: #ffffff;
-      opacity: 1;
-      box-shadow: 0 0 12px rgba(34,197,94,0.6);
-    }
     .small {
       font-size: 0.85rem;
       text-align: center;
       opacity: 0.8;
       margin-top: 12px;
-    }
-
-    .hidden {
-      display: none;
     }
 
     .badge {
@@ -173,10 +151,6 @@
       pointer-events: none;
     }
 
-    .menu-button:hover {
-      opacity: 1;
-    }
-
     /* Pantalla inicio: hero */
     .hero-illustration {
       display: flex;
@@ -207,104 +181,127 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
-    /* Carta deslizable para rol */
-.role-badge-row .badge {
-  background: rgba(15,23,42,0.95);
-  color: #e5e7eb;
-  border-radius: 999px;
-  padding: 6px 14px;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  font-size: 0.75rem;
-}
+    /* Badge jugador */
+    .role-badge-row .badge {
+      background: rgba(15,23,42,0.95);
+      color: #e5e7eb;
+      border-radius: 999px;
+      padding: 6px 14px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
 
-.card-slider {
-  width: 100%;
-  height: 340px;
-  background: radial-gradient(circle at top, #1f2937 0, #020617 60%, #000 100%);
-  border-radius: 24px;
-  overflow: hidden;
-  position: relative;
-  touch-action: none;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.7);
-  margin-bottom: 18px;
-  border: 1px solid rgba(148,163,184,0.4);
-}
+    /* Carta deslizable */
+    .card-slider {
+      width: 100%;
+      height: 340px;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 60%, #000 100%);
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      touch-action: none;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+      margin-bottom: 18px;
+      border: 1px solid rgba(148,163,184,0.4);
+    }
 
-  .card-back,
-.card-front {
-  position: absolute;
-  inset: 10px;                 /* 👈 margen dentro del marco oscuro */
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-}
+    .card-back,
+    .card-front {
+      position: absolute;
+      inset: 10px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
 
-/* Parte trasera (rol) */
-.card-back {
-  background: #f9fafb;
-  padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+    /* Parte trasera (rol) */
+    .card-back {
+      background: #f9fafb;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
-/* Parte frontal (imagen + texto deslizar) */
-.card-front {
-  background: linear-gradient(to bottom, #facc15 0%, #fff 55%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  touch-action: none;
-}
+    /* Parte frontal (imagen + texto deslizar) */
+    .card-front {
+      background: linear-gradient(to bottom, #facc15 0%, #fff 55%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      touch-action: none;
+    }
 
-.card-front-img {
-  width: 100%;
-  height: 68%;
-  object-fit: contain;
-  border-radius: 18px 18px 0 0;
-}
+    .card-front-img {
+      width: 100%;
+      height: 68%;
+      object-fit: contain;
+      border-radius: 18px 18px 0 0;
+    }
 
-.slide-text {
-  text-align: center;
-  font-size: 1rem;
-  margin: 8px 0 14px;
-  color: #1f2933;
-  font-weight: 500;
-}
+    .slide-text {
+      text-align: center;
+      font-size: 1rem;
+      margin: 8px 0 14px;
+      color: #1f2933;
+      font-weight: 500;
+    }
 
-#roleTitle {
-  font-size: 1.6rem;
-  margin-bottom: 8px;
-  color: #111827;
-}
+    #roleTitle {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      color: #111827;
+    }
 
-#roleWord {
-  font-size: 1.9rem;
-  font-weight: 800;
-  color: #111827;
-  margin-bottom: 10px;
-}
+    #roleWord {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 10px;
+    }
 
-.role-tip {
-  font-size: 0.95rem;
-  color: #4b5563;
-  max-width: 260px;
-}
+    .role-tip {
+      font-size: 0.95rem;
+      color: #4b5563;
+      max-width: 260px;
+    }
+
+    /* Botón Jugador siguiente apagado/activo */
+    #nextPlayerBtn {
+      background: #3f3f46;
+      color: #d4d4d8;
+      opacity: 0.5;
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-size: 1.05rem;
+      border: none;
+      width: 90%;
+      max-width: 320px;
+      margin: 20px auto 0;
+      display: block;
+      box-shadow: none;
+    }
+
+    #nextPlayerBtn.active {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(34,197,94,0.6);
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="card">
-      <!-- Botón menú global -->
       <button class="menu-button" onclick="goToSetup()">
         <span>≡</span>
       </button>
 
-      <!-- Pantalla: Inicio -->
-      <div id="screen-start">
+      <!-- PANTALLA INICIO -->
+      <div id="screen-start" class="screen">
         <div class="hero-illustration">
           <img src="img/impostor-hero.png" alt="Impostorcillo">
         </div>
@@ -316,15 +313,15 @@
         <button onclick="goToSetup()">Nueva partida</button>
       </div>
 
-      <!-- Pantalla: Configuración -->
-      <div id="screen-setup" class="hidden">
+      <!-- PANTALLA CONFIGURACIÓN -->
+      <div id="screen-setup" class="screen hidden">
         <div class="title-row">
           <img src="img/impostor-icon.png" class="title-icon" alt="">
           <h2>Configuración</h2>
         </div>
 
-        <label for="numPlayers">Número de jugadores</label>
-        <select id="numPlayers">
+        <label for="selectPlayers">Número de jugadores</label>
+        <select id="selectPlayers">
           <option value="3" selected>3 jugadores</option>
           <option value="4">4 jugadores</option>
           <option value="5">5 jugadores</option>
@@ -333,16 +330,13 @@
           <option value="8">8 jugadores</option>
           <option value="9">9 jugadores</option>
           <option value="10">10 jugadores</option>
-          <option value="11">11 jugadores</option>
-          <option value="12">12 jugadores</option>
         </select>
 
-        <label for="category">Categoría</label>
-        <select id="category">
-          <option value="random">Aleatorio</option>
+        <label for="selectCategory">Categoría</label>
+        <select id="selectCategory">
+          <option value="aleatorio">Aleatorio</option>
           <option value="comida">Comida</option>
-          <option value="sitios">Lugares</option>
-          <option value="peliculas">Películas</option>
+          <option value="animales">Animales</option>
           <option value="objetos">Objetos</option>
         </select>
 
@@ -354,293 +348,233 @@
         </p>
       </div>
 
-      <!-- Pantalla: Rol del jugador (con carta deslizable) -->
-      <div id="screen-role" class="hidden">
+      <!-- PANTALLA ROL JUGADOR -->
+      <div id="screen-role" class="screen hidden">
         <div class="role-badge-row">
           <span class="badge" id="playerBadge"></span>
         </div>
 
         <div class="card-slider">
-  <!-- Parte trasera: el rol -->
-  <div class="card-back">
-    <h3 id="roleTitle"></h3>
-    <div id="roleWord"></div>
-    <p class="role-tip" id="roleTip"></p>
-  </div>
+          <div class="card-back">
+            <h3 id="roleTitle"></h3>
+            <div id="roleWord"></div>
+            <p class="role-tip" id="roleTip"></p>
+          </div>
 
-  <!-- Parte frontal: la que se arrastra -->
-  <div class="card-front" id="cardFront">
-    <img src="img/group-players.png" class="card-front-img" alt="Jugadores">
-    <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
-  </div>
-</div>
+          <div class="card-front" id="cardFront">
+            <img src="img/group-players.png" class="card-front-img" alt="Jugadores">
+            <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+          </div>
+        </div>
 
         <p class="small">
-  Mantén el dedo mientras lees tu rol.<br>
-  Al soltar, la carta baja y lo tapa de nuevo.
-</p>
+          Mantén el dedo mientras lees tu rol.<br>
+          Al soltar, la carta baja y lo tapa de nuevo.
+        </p>
 
-<button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
-  Jugador siguiente
-</button>
-      </div>
-
-      <!-- Pantalla: Debate / votación -->
-      <div id="screen-vote" class="hidden">
-        <h2>Debatid y votad</h2>
-        <p class="center">
-          Todos habéis visto ya vuestro rol.<br/><br/>
-          Ahora:
-        </p>
-        <ul style="font-size:0.95rem; line-height:1.5;">
-          <li>Dad una pista cada uno, sin decir la palabra.</li>
-          <li>Comentad y acusad a quien creáis que es el Impostorcillo.</li>
-          <li>Haced una votación final.</li>
-        </ul>
-        <p class="small">
-          Cuando tengáis decidido quién es el Impostorcillo,<br/>
-          pulsad el botón de abajo para ver el resultado real.
-        </p>
-        <button onclick="revealRoles()">Revelar resultado</button>
-      </div>
-
-      <!-- Pantalla: Revelación final -->
-      <div id="screen-reveal" class="hidden">
-        <h2>Revelación</h2>
-        <p class="center">La palabra secreta era:</p>
-        <div style="font-size:1.9rem; text-align:center; margin: 12px 0;" id="finalWord"></div>
-        <p class="center">
-          El Impostorcillo era el <span class="highlight" id="impostorPlayer"></span>.
-        </p>
-        <p class="small">
-          ¿Habéis acertado? ¿O el Impostorcillo os ha liado a todos? 😈
-        </p>
-        <button onclick="goToSetup()">Jugar otra vez</button>
-        <button class="secondary" onclick="backToStart()">Salir al inicio</button>
+        <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
+          Jugador siguiente
+        </button>
       </div>
     </div>
   </div>
 
-<script>
-/* ============================================================
-   BASE DE DATOS DE PALABRAS (PACKS)
-============================================================ */
+  <script>
+    /* ============================
+       PACKS DE PALABRAS
+    ============================ */
 
-const categories = {
-  comida: [
-    "Pizza","Pasta","Hamburguesa","Tortilla","Croquetas",
-    "Helado","Galletas","Ensalada","Paella","Queso"
-  ],
-  animales: [
-    "Perro","Gato","Elefante","Tigre","Mono",
-    "Pez","Tortuga","Caballo","León","Delfín"
-  ],
-  objetos: [
-    "Mesa","Silla","Cuchillo","Teléfono","Llaves",
-    "Reloj","Gafas","Lámpara","Cámara","Mochila"
-  ]
-};
+    const categories = {
+      comida: [
+        "Pizza","Pasta","Hamburguesa","Tortilla","Croquetas",
+        "Helado","Galletas","Ensalada","Paella","Queso"
+      ],
+      animales: [
+        "Perro","Gato","Elefante","Tigre","Mono",
+        "Pez","Tortuga","Caballo","León","Delfín"
+      ],
+      objetos: [
+        "Mesa","Silla","Cuchillo","Teléfono","Llaves",
+        "Reloj","Gafas","Lámpara","Cámara","Mochila"
+      ]
+    };
 
-let usedWords = {
-  comida: [],
-  animales: [],
-  objetos: []
-};
+    let usedWords = {
+      comida: [],
+      animales: [],
+      objetos: []
+    };
 
-/* ============================================================
-   ESTADO GLOBAL DEL JUEGO
-============================================================ */
+    const gameState = {
+      numPlayers: 3,
+      currentPlayer: 1,
+      selectedCategory: "aleatorio",
+      word: "",
+      impostorIndex: 1,
+      roleShown: false
+    };
 
-const gameState = {
-  screen: "start",
-  numPlayers: 3,
-  currentPlayer: 1,
-  selectedCategory: "aleatorio",
-  word: "",
-  impostorIndex: 1,
-  roleShown: false
-};
+    /* ============================
+       PANTALLAS
+    ============================ */
 
-/* ============================================================
-   CAMBIO DE PANTALLAS
-============================================================ */
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+    }
 
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-  gameState.screen = id;
-}
+    function backToStart() {
+      showScreen("screen-start");
+    }
 
-/* ============================================================
-   BOTÓN “INICIAR PARTIDA”
-============================================================ */
+    function goToSetup() {
+      showScreen("screen-setup");
+    }
 
-function goToSetup() {
-  showScreen("screen-setup");
-}
+    /* ============================
+       LÓGICA PRINCIPAL
+    ============================ */
 
-function startGame() {
-  const numSel = document.getElementById("selectPlayers");
-  const catSel = document.getElementById("selectCategory");
+    function pickWord(category) {
+      let pack = categories[category];
 
-  gameState.numPlayers = parseInt(numSel.value);
-  gameState.selectedCategory = catSel.value;
+      let remaining = pack.filter(w => !usedWords[category].includes(w));
 
-  prepareNewRound();
-  showScreen("screen-role");
+      if (remaining.length === 0) {
+        alert("Se han agotado las palabras de esta categoría.\nSe reinicia el pack.");
+        usedWords[category] = [];
+        remaining = pack;
+      }
 
-  prepareCurrentPlayerScreen();
-}
+      const word = remaining[Math.floor(Math.random() * remaining.length)];
+      usedWords[category].push(word);
+      return word;
+    }
 
-/* ============================================================
-   SELECCIÓN DE PALABRAS + IMPOSTOR
-============================================================ */
+    function prepareNewRound() {
+      const cats = Object.keys(categories);
+      const chosen =
+        gameState.selectedCategory === "aleatorio"
+          ? cats[Math.floor(Math.random() * cats.length)]
+          : gameState.selectedCategory;
 
-function pickWord(category) {
-  let pack = categories[category];
+      gameState.word = pickWord(chosen);
+      gameState.impostorIndex =
+        Math.floor(Math.random() * gameState.numPlayers) + 1;
+      gameState.currentPlayer = 1;
+    }
 
-  // Evitar repetidas
-  let remaining = pack.filter(w => !usedWords[category].includes(w));
+    function startGame() {
+      const numSel = document.getElementById("selectPlayers");
+      const catSel = document.getElementById("selectCategory");
 
-  if (remaining.length === 0) {
-    alert("Se han agotado las palabras de esta categoría.\nSe reinicia el pack.");
-    usedWords[category] = [];
-    remaining = pack;
-  }
+      gameState.numPlayers = parseInt(numSel.value, 10);
+      gameState.selectedCategory = catSel.value;
 
-  const word = remaining[Math.floor(Math.random() * remaining.length)];
-  usedWords[category].push(word);
+      prepareNewRound();
+      prepareCurrentPlayerScreen();
+      showScreen("screen-role");
+    }
 
-  return word;
-}
+    function prepareCurrentPlayerScreen() {
+      const badge = document.getElementById("playerBadge");
+      const roleTitle = document.getElementById("roleTitle");
+      const roleWord = document.getElementById("roleWord");
+      const roleTip = document.getElementById("roleTip");
+      const nextBtn = document.getElementById("nextPlayerBtn");
+      const isImpostor = gameState.currentPlayer === gameState.impostorIndex;
 
-function prepareNewRound() {
-  // Elegir categoría
-  const cats = Object.keys(categories);
-  const chosen =
-    gameState.selectedCategory === "aleatorio"
-      ? cats[Math.floor(Math.random() * cats.length)]
-      : gameState.selectedCategory;
+      badge.textContent = `JUGADOR ${gameState.currentPlayer} DE ${gameState.numPlayers}`;
 
-  gameState.word = pickWord(chosen);
+      if (isImpostor) {
+        roleTitle.textContent = "Impostorcillo";
+        roleWord.textContent = "???";
+        roleTip.textContent =
+          "No conoces la palabra secreta. Escucha las pistas de los demás y finge que tú también la sabes.";
+      } else {
+        roleTitle.textContent = "Ciudadano";
+        roleWord.textContent = `"${gameState.word}"`;
+        roleTip.textContent =
+          "Conoces la palabra secreta. Da pistas sin decirla directamente, pero intenta que no te confundan.";
+      }
 
-  // Elegir impostor
-  gameState.impostorIndex =
-    Math.floor(Math.random() * gameState.numPlayers) + 1;
+      nextBtn.classList.add("hidden");
+      nextBtn.classList.remove("active");
+      gameState.roleShown = false;
+      cardFrontEl.style.transform = "translateY(0)";
+    }
 
-  gameState.currentPlayer = 1;
-}
+    function nextPlayer() {
+      nextBtnEl.classList.remove("active");
+      nextBtnEl.classList.add("hidden");
 
-/* ============================================================
-   MOSTRAR ROL DEL JUGADOR ACTUAL
-============================================================ */
+      gameState.currentPlayer++;
 
-function prepareCurrentPlayerScreen() {
-  const badge = document.getElementById("playerBadge");
-  const roleTitle = document.getElementById("roleTitle");
-  const roleWord = document.getElementById("roleWord");
-  const roleTip = document.getElementById("roleTip");
-  const nextBtn = document.getElementById("nextPlayerBtn");
+      if (gameState.currentPlayer > gameState.numPlayers) {
+        backToStart();
+        return;
+      }
 
-  badge.textContent = `JUGADOR ${gameState.currentPlayer} DE ${gameState.numPlayers}`;
+      prepareCurrentPlayerScreen();
+      showScreen("screen-role");
+    }
 
-  const isImpostor = gameState.currentPlayer === gameState.impostorIndex;
+    /* ============================
+       DESLIZAR CARTA
+    ============================ */
 
-  if (isImpostor) {
-    roleTitle.textContent = "Impostorcillo";
-    roleWord.textContent = "???";
-    roleTip.textContent =
-      "No conoces la palabra secreta. Escucha las pistas de los demás y finge que tú también la sabes.";
-  } else {
-    roleTitle.textContent = "Ciudadano";
-    roleWord.textContent = `"${gameState.word}"`;
-    roleTip.textContent =
-      "Conoces la palabra secreta. Da pistas sin decirla directamente.";
-  }
+    const cardFrontEl = document.getElementById("cardFront");
+    const nextBtnEl   = document.getElementById("nextPlayerBtn");
 
-  // Reset del botón
-  nextBtn.classList.add("hidden");
-  nextBtn.classList.remove("active");
-  gameState.roleShown = false;
+    let dragStartY = 0;
+    let dragging = false;
+    let cardHeight = 0;
 
-  // Reset de la carta
-  document.getElementById("cardFront").style.transform = "translateY(0)";
-}
+    function onTouchStart(e) {
+      const slider = cardFrontEl.parentElement;
+      cardHeight = slider.offsetHeight || 300;
 
-/* ============================================================
-   PASAR AL SIGUIENTE JUGADOR
-============================================================ */
+      dragStartY = e.touches[0].clientY;
+      dragging = true;
+      cardFrontEl.style.transition = "none";
+    }
 
-function nextPlayer() {
-  const nextBtn = document.getElementById("nextPlayerBtn");
-  nextBtn.classList.remove("active");
-  nextBtn.classList.add("hidden");
+    function onTouchMove(e) {
+      if (!dragging) return;
 
-  gameState.currentPlayer++;
+      const currentY = e.touches[0].clientY;
+      let delta = currentY - dragStartY; // negativo = hacia arriba
 
-  if (gameState.currentPlayer > gameState.numPlayers) {
+      if (delta > 0) delta = 0;
+      if (delta < -cardHeight) delta = -cardHeight;
+
+      cardFrontEl.style.transform = `translateY(${delta}px)`;
+
+      if (delta < -cardHeight / 3 && !gameState.roleShown) {
+        gameState.roleShown = true;
+        nextBtnEl.classList.remove("hidden");
+        nextBtnEl.classList.add("active");
+      }
+    }
+
+    function onTouchEnd() {
+      if (!dragging) return;
+      dragging = false;
+
+      cardFrontEl.style.transition = "transform 0.25s ease";
+      cardFrontEl.style.transform = "translateY(0)";
+
+      setTimeout(() => {
+        cardFrontEl.style.transition = "";
+      }, 250);
+    }
+
+    cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
+    cardFrontEl.addEventListener("touchmove", onTouchMove, { passive: true });
+    cardFrontEl.addEventListener("touchend", onTouchEnd);
+
+    // Pantalla por defecto
     showScreen("screen-start");
-    return;
-  }
-
-  prepareCurrentPlayerScreen();
-}
-
-/* ============================================================
-   DESLIZAMIENTO PRIVADO DE LA CARTA (ROL)
-============================================================ */
-
-const cardFrontEl = document.getElementById("cardFront");
-const nextBtnEl   = document.getElementById("nextPlayerBtn");
-
-let dragStartY = 0;
-let dragging = false;
-let cardHeight = 0;
-
-function onTouchStart(e) {
-  const slider = cardFrontEl.parentElement;
-  cardHeight = slider.offsetHeight;
-
-  dragStartY = e.touches[0].clientY;
-  dragging = true;
-
-  cardFrontEl.style.transition = "none";
-}
-
-function onTouchMove(e) {
-  if (!dragging) return;
-
-  const currentY = e.touches[0].clientY;
-  let delta = currentY - dragStartY;
-
-  if (delta > 0) delta = 0;
-  if (delta < -cardHeight) delta = -cardHeight;
-
-  cardFrontEl.style.transform = `translateY(${delta}px)`;
-
-  // Activamos botón si ha visto el rol
-  if (delta < -cardHeight / 3 && !gameState.roleShown) {
-    gameState.roleShown = true;
-    nextBtnEl.classList.remove("hidden");
-    nextBtnEl.classList.add("active"); // <<< botón se enciende
-  }
-}
-
-function onTouchEnd() {
-  dragging = false;
-
-  cardFrontEl.style.transition = "transform 0.25s ease";
-  cardFrontEl.style.transform = "translateY(0)";
-
-  setTimeout(() => {
-    cardFrontEl.style.transition = "";
-  }, 250);
-}
-
-cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
-cardFrontEl.addEventListener("touchmove", onTouchMove, { passive: true });
-cardFrontEl.addEventListener("touchend", onTouchEnd);
-
-</script>
+  </script>
 </body>
 </html>
