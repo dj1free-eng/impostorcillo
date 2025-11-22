@@ -576,53 +576,64 @@
       showScreen("screen-reveal");
     }
 
-    // ==============================
-    // DESLIZAR CARTA (PRIVACIDAD DEL ROL)
-    // ==============================
+// ==============================
+// DESLIZAR CARTA (PRIVACIDAD DEL ROL)
+// ==============================
 
-    const cardFrontEl = document.getElementById("cardFront");
-    const nextBtnEl = document.getElementById("nextPlayerBtn");
+const cardFrontEl = document.getElementById("cardFront");
+const nextBtnEl = document.getElementById("nextPlayerBtn");
 
-    let dragStartY = 0;
-    let dragging = false;
-    let hasSeenRole = false;
+let dragStartY = 0;
+let dragging = false;
+let cardHeight = 0;
 
-    function onTouchStart(e) {
-      dragStartY = e.touches[0].clientY;
-      dragging = true;
-      hasSeenRole = false;
-      cardFrontEl.style.transition = "none";
-    }
+function onTouchStart(e) {
+  const slider = cardFrontEl.parentElement; // .card-slider
+  cardHeight = slider.offsetHeight || 300;
 
-    function onTouchMove(e) {
-      if (!dragging) return;
-      const currentY = e.touches[0].clientY;
-      let delta = currentY - dragStartY; // negativo hacia arriba
-      if (delta > 0) delta = 0;          // no bajar, solo subir
-      if (delta < -160) delta = -160;    // límite máximo
+  dragStartY = e.touches[0].clientY;
+  dragging = true;
 
-      cardFrontEl.style.transform = `translateY(${delta}px)`;
+  cardFrontEl.style.transition = "none";
+}
 
-      // Si ha subido suficientemente, consideramos que ya ha visto el rol
-      if (delta < -80 && !gameState.roleShown) {
-        gameState.roleShown = true;
-        nextBtnEl.classList.remove("hidden");
-      }
-    }
+function onTouchMove(e) {
+  if (!dragging) return;
 
-    function onTouchEnd() {
-      if (!dragging) return;
-      dragging = false;
-      cardFrontEl.style.transition = "transform 0.25s ease";
-      cardFrontEl.style.transform = "translateY(0)";
-      setTimeout(() => {
-        cardFrontEl.style.transition = "";
-      }, 250);
-    }
+  const currentY = e.touches[0].clientY;
+  let delta = currentY - dragStartY;   // negativo = hacia arriba
 
-    cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
-    cardFrontEl.addEventListener("touchmove", onTouchMove, { passive: true });
-    cardFrontEl.addEventListener("touchend", onTouchEnd);
+  // No permitimos bajar, solo subir
+  if (delta > 0) delta = 0;
+
+  // Límite: que pueda salir casi del todo
+  const minDelta = -cardHeight; // se va completamente fuera
+  if (delta < minDelta) delta = minDelta;
+
+  cardFrontEl.style.transform = `translateY(${delta}px)`;
+
+  // Si ha subido más de un tercio de la carta, contamos que ha visto el rol
+  if (delta < -cardHeight / 3 && !gameState.roleShown) {
+    gameState.roleShown = true;
+    nextBtnEl.classList.remove("hidden");
+  }
+}
+
+function onTouchEnd() {
+  if (!dragging) return;
+  dragging = false;
+
+  cardFrontEl.style.transition = "transform 0.25s ease";
+  cardFrontEl.style.transform = "translateY(0)";
+
+  setTimeout(() => {
+    cardFrontEl.style.transition = "";
+  }, 250);
+}
+
+cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
+cardFrontEl.addEventListener("touchmove", onTouchMove, { passive: true });
+cardFrontEl.addEventListener("touchend", onTouchEnd);
   </script>
 </body>
 </html>
