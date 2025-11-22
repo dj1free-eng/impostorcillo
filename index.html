@@ -92,7 +92,29 @@
       box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
       opacity: 0.9;
     }
+    /* Botón "Jugador siguiente" (estado por defecto: apagado) */
+    #nextPlayerBtn {
+      background: #3f3f46;          /* gris apagado */
+      color: #d4d4d8;
+      opacity: 0.5;
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-size: 1.05rem;
+      border: none;
+      width: 90%;
+      max-width: 320px;
+      margin: 20px auto 0;
+      display: block;
+      box-shadow: none;
+    }
 
+    /* Estado ACTIVADO: cuando el jugador ya ha visto su rol */
+    #nextPlayerBtn.active {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(34,197,94,0.6);
+    }
     .small {
       font-size: 0.85rem;
       text-align: center;
@@ -399,209 +421,185 @@
     </div>
   </div>
 
-  <script>
-    // ==============================
-    // BASE DE DATOS (JSON externo)
-    // ==============================
+<script>
+/* ============================================================
+   BASE DE DATOS DE PALABRAS (PACKS)
+============================================================ */
 
-    let WORDS_DB = [];
-    let decksByCategory = {}; // baraja por categoría o 'all'
+const categories = {
+  comida: [
+    "Pizza","Pasta","Hamburguesa","Tortilla","Croquetas",
+    "Helado","Galletas","Ensalada","Paella","Queso"
+  ],
+  animales: [
+    "Perro","Gato","Elefante","Tigre","Mono",
+    "Pez","Tortuga","Caballo","León","Delfín"
+  ],
+  objetos: [
+    "Mesa","Silla","Cuchillo","Teléfono","Llaves",
+    "Reloj","Gafas","Lámpara","Cámara","Mochila"
+  ]
+};
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
+let usedWords = {
+  comida: [],
+  animales: [],
+  objetos: []
+};
 
-    function resetCategoryDeck(categoryKey) {
-      if (!WORDS_DB || WORDS_DB.length === 0) return;
+/* ============================================================
+   ESTADO GLOBAL DEL JUEGO
+============================================================ */
 
-      let words;
-      if (categoryKey === 'all') {
-        words = WORDS_DB.filter(w => w.type === 'word');
-      } else {
-        words = WORDS_DB.filter(w => w.type === 'word' && w.category === categoryKey);
-      }
+const gameState = {
+  screen: "start",
+  numPlayers: 3,
+  currentPlayer: 1,
+  selectedCategory: "aleatorio",
+  word: "",
+  impostorIndex: 1,
+  roleShown: false
+};
 
-      decksByCategory[categoryKey] = [...words];
-      shuffle(decksByCategory[categoryKey]);
-      console.log(`Baraja de "${categoryKey}" reiniciada con`, decksByCategory[categoryKey].length, 'palabras.');
-    }
+/* ============================================================
+   CAMBIO DE PANTALLAS
+============================================================ */
 
-    async function loadWordsDb() {
-      try {
-        const res = await fetch('data/words-es.json');
-        if (!res.ok) throw new Error('No se pudo cargar data/words-es.json');
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          WORDS_DB = data;
-          console.log('Base de datos cargada:', WORDS_DB.length, 'entradas');
-          resetCategoryDeck('all');
-        } else {
-          console.error('El JSON de palabras no es un array');
-        }
-      } catch (err) {
-        console.error('Error cargando base de datos:', err);
-      }
-    }
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  gameState.screen = id;
+}
 
-    loadWordsDb();
+/* ============================================================
+   BOTÓN “INICIAR PARTIDA”
+============================================================ */
 
-    // ==============================
-    // ESTADO DEL JUEGO
-    // ==============================
+function goToSetup() {
+  showScreen("screen-setup");
+}
 
-    let gameState = {
-      numPlayers: 0,
-      currentPlayer: 1,
-      secretWord: "",
-      impostorIndex: 1,
-      roleShown: false,
-      currentCategory: "random"
-    };
+function startGame() {
+  const numSel = document.getElementById("selectPlayers");
+  const catSel = document.getElementById("selectCategory");
 
-    // ==============================
-    // UTILIDADES
-    // ==============================
+  gameState.numPlayers = parseInt(numSel.value);
+  gameState.selectedCategory = catSel.value;
 
-    function showScreen(id) {
-      ["screen-start","screen-setup","screen-role","screen-vote","screen-reveal"]
-        .forEach(s => document.getElementById(s).classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
-    }
+  prepareNewRound();
+  showScreen("screen-role");
 
-    function backToStart() {
-      showScreen("screen-start");
-    }
+  prepareCurrentPlayerScreen();
+}
 
-    function goToSetup() {
-      showScreen("screen-setup");
-    }
+/* ============================================================
+   SELECCIÓN DE PALABRAS + IMPOSTOR
+============================================================ */
 
-    function getRandomFromArray(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
+function pickWord(category) {
+  let pack = categories[category];
 
-    function getRandomWord(categoryKey) {
-      if (!WORDS_DB || WORDS_DB.length === 0) {
-        const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
-        return getRandomFromArray(fallback);
-      }
+  // Evitar repetidas
+  let remaining = pack.filter(w => !usedWords[category].includes(w));
 
-      const deckKey = (categoryKey === 'random') ? 'all' : categoryKey;
+  if (remaining.length === 0) {
+    alert("Se han agotado las palabras de esta categoría.\nSe reinicia el pack.");
+    usedWords[category] = [];
+    remaining = pack;
+  }
 
-      if (!decksByCategory[deckKey]) {
-        resetCategoryDeck(deckKey);
-      }
+  const word = remaining[Math.floor(Math.random() * remaining.length)];
+  usedWords[category].push(word);
 
-      let deck = decksByCategory[deckKey] || [];
+  return word;
+}
 
-      if (deck.length === 0) {
-        if (deckKey === 'all') {
-          alert("Se han usado todas las palabras disponibles. Se reinicia la baraja completa.");
-        } else {
-          alert(`Se han usado todas las palabras de la categoría "${deckKey}". Se reinicia solo ese pack.`);
-        }
-        resetCategoryDeck(deckKey);
-        deck = decksByCategory[deckKey] || [];
-      }
+function prepareNewRound() {
+  // Elegir categoría
+  const cats = Object.keys(categories);
+  const chosen =
+    gameState.selectedCategory === "aleatorio"
+      ? cats[Math.floor(Math.random() * cats.length)]
+      : gameState.selectedCategory;
 
-      if (deck.length === 0) {
-        const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
-        return getRandomFromArray(fallback);
-      }
+  gameState.word = pickWord(chosen);
 
-      const idx = Math.floor(Math.random() * deck.length);
-      const chosen = deck.splice(idx, 1)[0];
-      decksByCategory[deckKey] = deck;
+  // Elegir impostor
+  gameState.impostorIndex =
+    Math.floor(Math.random() * gameState.numPlayers) + 1;
 
-      return chosen.text;
-    }
+  gameState.currentPlayer = 1;
+}
 
-    // ==============================
-    // LÓGICA PRINCIPAL
-    // ==============================
+/* ============================================================
+   MOSTRAR ROL DEL JUGADOR ACTUAL
+============================================================ */
 
-    function startGame() {
-      const numPlayersInput = document.getElementById("numPlayers");
-      const categorySelect = document.getElementById("category");
+function prepareCurrentPlayerScreen() {
+  const badge = document.getElementById("playerBadge");
+  const roleTitle = document.getElementById("roleTitle");
+  const roleWord = document.getElementById("roleWord");
+  const roleTip = document.getElementById("roleTip");
+  const nextBtn = document.getElementById("nextPlayerBtn");
 
-      let n = parseInt(numPlayersInput.value, 10);
-      if (isNaN(n) || n < 3) n = 3;
-      if (n > 12) n = 12;
+  badge.textContent = `JUGADOR ${gameState.currentPlayer} DE ${gameState.numPlayers}`;
 
-      const cat = categorySelect.value;
+  const isImpostor = gameState.currentPlayer === gameState.impostorIndex;
 
-      gameState.numPlayers = n;
-      gameState.currentPlayer = 1;
-      gameState.secretWord = getRandomWord(cat);
-      gameState.impostorIndex = Math.floor(Math.random() * n) + 1;
-      gameState.roleShown = false;
-      gameState.currentCategory = cat;
+  if (isImpostor) {
+    roleTitle.textContent = "Impostorcillo";
+    roleWord.textContent = "???";
+    roleTip.textContent =
+      "No conoces la palabra secreta. Escucha las pistas de los demás y finge que tú también la sabes.";
+  } else {
+    roleTitle.textContent = "Ciudadano";
+    roleWord.textContent = `"${gameState.word}"`;
+    roleTip.textContent =
+      "Conoces la palabra secreta. Da pistas sin decirla directamente.";
+  }
 
-      prepareCurrentPlayerScreen();
-      showScreen("screen-role");
-    }
+  // Reset del botón
+  nextBtn.classList.add("hidden");
+  nextBtn.classList.remove("active");
+  gameState.roleShown = false;
 
-    function prepareCurrentPlayerScreen() {
-      const badge = document.getElementById("playerBadge");
-      const roleTitleEl = document.getElementById("roleTitle");
-      const roleWordEl = document.getElementById("roleWord");
-      const roleTipEl = document.getElementById("roleTip");
-      const nextBtn = document.getElementById("nextPlayerBtn");
-      const cardFront = document.getElementById("cardFront");
+  // Reset de la carta
+  document.getElementById("cardFront").style.transform = "translateY(0)";
+}
 
-      badge.textContent = `Jugador ${gameState.currentPlayer} de ${gameState.numPlayers}`;
-      gameState.roleShown = false;
-      nextBtn.classList.add("hidden");
+/* ============================================================
+   PASAR AL SIGUIENTE JUGADOR
+============================================================ */
 
-      // Reset posición de la carta frontal
-      cardFront.style.transform = "translateY(0)";
+function nextPlayer() {
+  const nextBtn = document.getElementById("nextPlayerBtn");
+  nextBtn.classList.remove("active");
+  nextBtn.classList.add("hidden");
 
-      if (gameState.currentPlayer === gameState.impostorIndex) {
-        roleTitleEl.textContent = "Eres el Impostorcillo 😈";
-        roleWordEl.textContent = "???";
-        roleTipEl.textContent = "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
-      } else {
-        roleTitleEl.textContent = "Eres ciudadano 👤";
-        roleWordEl.textContent = gameState.secretWord;
-        roleTipEl.textContent = "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
-      }
-    }
+  gameState.currentPlayer++;
 
-    function nextPlayer() {
-      if (!gameState.roleShown) return;
+  if (gameState.currentPlayer > gameState.numPlayers) {
+    showScreen("screen-start");
+    return;
+  }
 
-      if (gameState.currentPlayer < gameState.numPlayers) {
-        gameState.currentPlayer += 1;
-        prepareCurrentPlayerScreen();
-        showScreen("screen-role");
-      } else {
-        showScreen("screen-vote");
-      }
-    }
+  prepareCurrentPlayerScreen();
+}
 
-    function revealRoles() {
-      document.getElementById("finalWord").textContent = gameState.secretWord;
-      document.getElementById("impostorPlayer").textContent = `Jugador ${gameState.impostorIndex}`;
-      showScreen("screen-reveal");
-    }
-
-// ==============================
-// DESLIZAR CARTA (PRIVACIDAD DEL ROL)
-// ==============================
+/* ============================================================
+   DESLIZAMIENTO PRIVADO DE LA CARTA (ROL)
+============================================================ */
 
 const cardFrontEl = document.getElementById("cardFront");
-const nextBtnEl = document.getElementById("nextPlayerBtn");
+const nextBtnEl   = document.getElementById("nextPlayerBtn");
 
 let dragStartY = 0;
 let dragging = false;
 let cardHeight = 0;
 
 function onTouchStart(e) {
-  const slider = cardFrontEl.parentElement; // .card-slider
-  cardHeight = slider.offsetHeight || 300;
+  const slider = cardFrontEl.parentElement;
+  cardHeight = slider.offsetHeight;
 
   dragStartY = e.touches[0].clientY;
   dragging = true;
@@ -613,26 +611,22 @@ function onTouchMove(e) {
   if (!dragging) return;
 
   const currentY = e.touches[0].clientY;
-  let delta = currentY - dragStartY;   // negativo = hacia arriba
+  let delta = currentY - dragStartY;
 
-  // No permitimos bajar, solo subir
   if (delta > 0) delta = 0;
-
-  // Límite: que pueda salir casi del todo
-  const minDelta = -cardHeight; // se va completamente fuera
-  if (delta < minDelta) delta = minDelta;
+  if (delta < -cardHeight) delta = -cardHeight;
 
   cardFrontEl.style.transform = `translateY(${delta}px)`;
 
-  // Si ha subido más de un tercio de la carta, contamos que ha visto el rol
+  // Activamos botón si ha visto el rol
   if (delta < -cardHeight / 3 && !gameState.roleShown) {
     gameState.roleShown = true;
     nextBtnEl.classList.remove("hidden");
+    nextBtnEl.classList.add("active"); // <<< botón se enciende
   }
 }
 
 function onTouchEnd() {
-  if (!dragging) return;
   dragging = false;
 
   cardFrontEl.style.transition = "transform 0.25s ease";
@@ -646,6 +640,7 @@ function onTouchEnd() {
 cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
 cardFrontEl.addEventListener("touchmove", onTouchMove, { passive: true });
 cardFrontEl.addEventListener("touchend", onTouchEnd);
-  </script>
+
+</script>
 </body>
 </html>
