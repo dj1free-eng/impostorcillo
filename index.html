@@ -185,9 +185,22 @@
 }
 
 .title-icon {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+  .hero-illustration {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.hero-illustration img {
+  width: 80%;
+  max-width: 260px;   /* límite para que no se dispare en móvil */
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 </style>
 </head>
@@ -216,7 +229,6 @@
 
       <!-- Pantalla: Configuración -->
       <div id="screen-setup" class="hidden">
-        <h2>Configuración</h2>
 <div class="title-row">
   <img src="img/impostor-icon.png" class="title-icon">
   <h2>Configuración</h2>
