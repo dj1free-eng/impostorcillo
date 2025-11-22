@@ -4,306 +4,304 @@
   <meta charset="UTF-8" />
   <title>El Impostorcillo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<style>
-  * {
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-  body {
-    margin: 0;
-    background: #050816;
-    color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+      color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-  .app {
-    width: 100%;
-    max-width: 480px;
-    padding: 16px;
-  }
+    .app {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+    }
 
-  .card {
-    background: #111827;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    position: relative; /* para poder colocar el botón Menú flotando */
-  }
+    .card {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 20px;
+      padding: 24px 20px 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      position: relative;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
 
-  h1, h2, h3 {
-    margin-top: 0;
-    text-align: center;
-  }
+    h1, h2, h3 {
+      margin-top: 0;
+      text-align: center;
+    }
 
-  h1 {
-    font-size: 1.9rem;
-    margin-bottom: 0.5rem;
-  }
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 0.5rem;
+    }
 
-  p {
-    line-height: 1.4;
-  }
+    p {
+      line-height: 1.4;
+    }
 
-  label {
-    display: block;
-    margin: 10px 0 4px;
-    font-size: 0.9rem;
-    opacity: 0.9;
-  }
+    label {
+      display: block;
+      margin: 10px 0 4px;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
 
-  input, select {
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: none;
-    font-size: 1rem;
-    margin-bottom: 8px;
-  }
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
 
-  /* Botones normales del juego (Empezar, Volver, etc.) */
-  button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 999px;
-    border: none;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 14px;
-    cursor: pointer;
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    color: #fff;
-    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.5);
-    transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
-  }
+    /* Botones normales del juego */
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 999px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 14px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.5);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+    }
 
-  button.secondary {
-    background: #374151;
-    box-shadow: none;
-  }
+    button.secondary {
+      background: #374151;
+      box-shadow: none;
+    }
 
-  button:active {
-    transform: translateY(1px);
-    box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
-    opacity: 0.9;
-  }
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
+      opacity: 0.9;
+    }
 
-  .small {
-    font-size: 0.85rem;
-    text-align: center;
-    opacity: 0.8;
-    margin-top: 12px;
-  }
+    .small {
+      font-size: 0.85rem;
+      text-align: center;
+      opacity: 0.8;
+      margin-top: 12px;
+    }
 
-  .hidden {
-    display: none;
-  }
+    .hidden {
+      display: none;
+    }
 
-  .big-word {
-    font-size: 1.8rem;
-    text-align: center;
-    margin: 20px 0;
-    word-wrap: break-word;
-  }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: #1f2937;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
 
-  .role-text {
-    font-size: 1.1rem;
-    text-align: center;
-    margin-top: 10px;
-    min-height: 3em;
-  }
+    .center {
+      text-align: center;
+    }
 
-  .badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    background: #1f2937;
-    color: #9ca3af;
-    margin-bottom: 10px;
-  }
+    .highlight {
+      color: #22c55e;
+      font-weight: 700;
+    }
 
-  .center {
-    text-align: center;
-  }
+    /* Botón pequeño de menú */
+    .menu-button {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: #374151;
+      color: #e5e7eb;
+      font-size: 0.7rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px !important;
+      z-index: 10;
+    }
 
-  .highlight {
-    color: #22c55e;
-    font-weight: 700;
-  }
+    .menu-button span {
+      pointer-events: none;
+    }
 
-  /* Botón pequeño de Menú (sin romper los demás botones) */
-  .menu-button {
-    position: absolute;
-    top: -14px;
-    right: -14px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    background: #374151;
-    color: #e5e7eb;
-    font-size: 0.7rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px !important;  /* evita el width:100% global */
-  }
+    .menu-button:hover {
+      opacity: 1;
+    }
 
-  .menu-button span {
-    pointer-events: none;
-  }
+    /* Pantalla inicio: hero */
+    .hero-illustration {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
 
-  .menu-button:hover {
-    opacity: 1;
-  }
-  .role-image {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
+    .hero-illustration img {
+      width: 80%;
+      max-width: 260px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
 
-.role-image img {
-  width: 80%;
-  max-width: 280px;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-}
-  .title-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
+    /* Cabecera configuración con icono */
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
 
-.title-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-  .hero-illustration {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
-}
+    .title-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
 
-.hero-illustration img {
-  width: 80%;
-  max-width: 260px;   /* límite para que no se dispare en móvil */
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-  /* Contenedor de la carta */
-.card-slider {
-  width: 100%;
-  height: 350px;
-  background: #fff;
-  border-radius: 24px;
-  overflow: hidden;
-  position: relative;
-  touch-action: none;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-}
+    /* Carta deslizable para rol */
+    .role-badge-row {
+      text-align: center;
+      margin-bottom: 8px;
+    }
 
-/* Parte frontal (lo que se ve antes de deslizar) */
-.card-front {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  border-radius: 24px;
-}
+    .card-slider {
+      width: 100%;
+      height: 340px;
+      background: #f9fafb;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      touch-action: none;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      margin-bottom: 10px;
+    }
 
-.card-front-img {
-  width: 100%;
-  height: 70%;
-  object-fit: contain;
-}
+    .card-back {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
-.slide-text {
-  text-align: center;
-  font-size: 1rem;
-  margin-top: 4px;
-  color: #444;
-}
+    .card-front {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      touch-action: none;
+    }
 
-/* Parte trasera (el rol revelado) */
-.card-back {
-  position: absolute;
-  top: 100%; /* escondida debajo */
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  border-radius: 24px;
-  padding: 20px;
-  text-align: center;
-}
+    .card-front-img {
+      width: 100%;
+      height: 72%;
+      object-fit: contain;
+    }
 
-/* Título del rol */
-#roleTitle {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
+    .slide-text {
+      text-align: center;
+      font-size: 1rem;
+      margin-top: 6px;
+      color: #4b5563;
+    }
 
-/* Palabra */
-#roleWord {
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-</style>
+    #roleTitle {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    #roleWord {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .role-tip {
+      font-size: 0.9rem;
+      color: #4b5563;
+      max-width: 260px;
+    }
+  </style>
 </head>
 <body>
   <div class="app">
-<div class="card">
-  <!-- Botón de menú siempre visible -->
-  <button class="menu-button" onclick="goToSetup()">
-    <span>X</span>
-  </button>
+    <div class="card">
+      <!-- Botón menú global -->
+      <button class="menu-button" onclick="goToSetup()">
+        <span>≡</span>
+      </button>
+
       <!-- Pantalla: Inicio -->
-    <div id="screen-start">
-  <div class="hero-illustration">
-    <img src="img/impostor-hero.png" alt="Impostorcillo">
-  </div>
-
-  <h1>El Impostorcillo</h1>
-
-  <p class="center">
-    El juego social de deducción y engaño.<br>
-    ¡Intenta no parecer sospechoso!
-  </p>
-
-  <button onclick="goToSetup()">Nueva partida</button>
-</div>
+      <div id="screen-start">
+        <div class="hero-illustration">
+          <img src="img/impostor-hero.png" alt="Impostorcillo">
+        </div>
+        <h1>El Impostorcillo</h1>
+        <p class="center">
+          El juego social de deducción y engaño.<br>
+          ¡Intenta no parecer sospechoso!
+        </p>
+        <button onclick="goToSetup()">Nueva partida</button>
+      </div>
 
       <!-- Pantalla: Configuración -->
       <div id="screen-setup" class="hidden">
-<div class="title-row">
-  <img src="img/impostor-icon.png" class="title-icon">
-  <h2>Configuración</h2>
-</div>
-       <label for="numPlayers">Número de jugadores</label>
-<select id="numPlayers">
-  <option value="3" selected>3 jugadores</option>
-  <option value="4">4 jugadores</option>
-  <option value="5">5 jugadores</option>
-  <option value="6">6 jugadores</option>
-  <option value="7">7 jugadores</option>
-  <option value="8">8 jugadores</option>
-  <option value="9">9 jugadores</option>
-  <option value="10">10 jugadores</option>
-  <option value="11">11 jugadores</option>
-  <option value="12">12 jugadores</option>
-</select>
+        <div class="title-row">
+          <img src="img/impostor-icon.png" class="title-icon" alt="">
+          <h2>Configuración</h2>
+        </div>
+
+        <label for="numPlayers">Número de jugadores</label>
+        <select id="numPlayers">
+          <option value="3" selected>3 jugadores</option>
+          <option value="4">4 jugadores</option>
+          <option value="5">5 jugadores</option>
+          <option value="6">6 jugadores</option>
+          <option value="7">7 jugadores</option>
+          <option value="8">8 jugadores</option>
+          <option value="9">9 jugadores</option>
+          <option value="10">10 jugadores</option>
+          <option value="11">11 jugadores</option>
+          <option value="12">12 jugadores</option>
+        </select>
 
         <label for="category">Categoría</label>
         <select id="category">
@@ -317,36 +315,42 @@
         <button onclick="startGame()">Empezar</button>
         <button class="secondary" onclick="backToStart()">Volver</button>
 
-        <p class="small">Modo actual: 1 solo Impostorcillo, votos y acusaciones se hacen de viva voz.</p>
+        <p class="small">
+          Modo actual: 1 solo Impostorcillo, votos y acusaciones se hacen de viva voz.
+        </p>
       </div>
 
-      <!-- Pantalla: Rol de jugador -->
-<div id="screen-role" class="hidden">
-  
-  <!-- Deslizable -->
-  <div class="card-slider" id="cardSlider">
+      <!-- Pantalla: Rol del jugador (con carta deslizable) -->
+      <div id="screen-role" class="hidden">
+        <div class="role-badge-row">
+          <span class="badge" id="playerBadge"></span>
+        </div>
 
-    <!-- Cara frontal (oculta rol) -->
-    <div class="card-front">
-      <img src="img/group-players.png" class="card-front-img">
-      <p class="slide-text">Desliza hacia arriba 👆</p>
-    </div>
+        <div class="card-slider">
+          <!-- Parte trasera: el rol siempre está aquí, tapado por la frontal -->
+          <div class="card-back">
+            <h3 id="roleTitle"></h3>
+            <div id="roleWord"></div>
+            <p class="role-tip" id="roleTip"></p>
+          </div>
 
-    <!-- Cara trasera (rol revelado) -->
-    <div class="card-back">
-      <div class="role-box">
-        <h3 id="roleTitle"></h3>
-        <p id="roleWord"></p>
+          <!-- Parte frontal: lo que se arrastra hacia arriba -->
+          <div class="card-front" id="cardFront">
+            <img src="img/group-players.png" class="card-front-img" alt="Jugadores">
+            <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+          </div>
+        </div>
+
+        <p class="small">
+          Mantén el dedo mientras lees tu rol.<br>
+          Al soltar, la carta baja y lo tapa de nuevo.
+        </p>
+
+        <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
+          Jugador siguiente
+        </button>
       </div>
-    </div>
 
-  </div>
-
-  <button onclick="nextPlayer()" class="secondary hidden" id="nextPlayerBtn">
-    Jugador siguiente
-  </button>
-
-</div>
       <!-- Pantalla: Debate / votación -->
       <div id="screen-vote" class="hidden">
         <h2>Debatid y votad</h2>
@@ -370,7 +374,7 @@
       <div id="screen-reveal" class="hidden">
         <h2>Revelación</h2>
         <p class="center">La palabra secreta era:</p>
-        <div class="big-word" id="finalWord"></div>
+        <div style="font-size:1.9rem; text-align:center; margin: 12px 0;" id="finalWord"></div>
         <p class="center">
           El Impostorcillo era el <span class="highlight" id="impostorPlayer"></span>.
         </p>
@@ -383,284 +387,242 @@
     </div>
   </div>
 
-<script>
-  // ==============================
-  // BASE DE DATOS (JSON externo)
-  // ==============================
+  <script>
+    // ==============================
+    // BASE DE DATOS (JSON externo)
+    // ==============================
 
-  let WORDS_DB = [];
-  // barajas por categoría: "comida", "sitios", "peliculas", "objetos", "all" (para aleatorio)
-  let decksByCategory = {};
+    let WORDS_DB = [];
+    let decksByCategory = {}; // baraja por categoría o 'all'
 
-  // Mezcla un array (Fisher-Yates)
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
-
-  // Reinicia la baraja de UNA categoría concreta (o "all")
-  function resetCategoryDeck(categoryKey) {
-    if (!WORDS_DB || WORDS_DB.length === 0) return;
-
-    let words;
-    if (categoryKey === 'all') {
-      // baraja global con todas las palabras de tipo "word"
-      words = WORDS_DB.filter(w => w.type === 'word');
-    } else {
-      // solo palabras de esa categoría
-      words = WORDS_DB.filter(w => w.type === 'word' && w.category === categoryKey);
-    }
-
-    decksByCategory[categoryKey] = [...words];
-    shuffle(decksByCategory[categoryKey]);
-    console.log(`Baraja de categoría "${categoryKey}" reiniciada con`, decksByCategory[categoryKey].length, 'palabras.');
-  }
-
-  async function loadWordsDb() {
-    try {
-      const res = await fetch('data/words-es.json');
-      if (!res.ok) throw new Error('No se pudo cargar data/words-es.json');
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        WORDS_DB = data;
-        console.log('Base de datos de palabras cargada:', WORDS_DB.length, 'entradas');
-        // Preparamos al menos la baraja global para "aleatorio"
-        resetCategoryDeck('all');
-      } else {
-        console.error('El JSON de palabras no es un array');
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
-    } catch (err) {
-      console.error('Error cargando base de datos de palabras:', err);
-    }
-  }
-
-  // Cargamos la base nada más abrir la página
-  loadWordsDb();
-
-  // ==============================
-  // ESTADO DEL JUEGO
-  // ==============================
-
-  let gameState = {
-    numPlayers: 0,
-    currentPlayer: 1,
-    secretWord: "",
-    impostorIndex: 1,
-    roleShown: false  // controla si el jugador ya ha visto su rol
-  };
-
-  // ==============================
-  // UTILIDADES
-  // ==============================
-
-  function showScreen(id) {
-    document.getElementById("screen-start").classList.add("hidden");
-    document.getElementById("screen-setup").classList.add("hidden");
-    document.getElementById("screen-role").classList.add("hidden");
-    document.getElementById("screen-vote").classList.add("hidden");
-    document.getElementById("screen-reveal").classList.add("hidden");
-    document.getElementById(id).classList.remove("hidden");
-  }
-
-  function backToStart() {
-    showScreen("screen-start");
-  }
-
-  function goToSetup() {
-    showScreen("screen-setup");
-  }
-
-  function getRandomFromArray(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-
-  // Devuelve una palabra de la baraja de la categoría elegida,
-  // sin repetir en esta sesión de juego.
-  function getRandomWord(categoryKey) {
-    // Si aún no se ha cargado la base, devolvemos algo genérico
-    if (!WORDS_DB || WORDS_DB.length === 0) {
-      const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
-      return getRandomFromArray(fallback);
     }
 
-    // categoryKey de la UI: "comida", "sitios", "peliculas", "objetos", "random"
-    // clave interna para la baraja:
-    const deckKey = (categoryKey === 'random') ? 'all' : categoryKey;
+    function resetCategoryDeck(categoryKey) {
+      if (!WORDS_DB || WORDS_DB.length === 0) return;
 
-    // Si no existe baraja para esa categoría, la creamos
-    if (!decksByCategory[deckKey]) {
-      resetCategoryDeck(deckKey);
-    }
-
-    let deck = decksByCategory[deckKey] || [];
-
-    // Si la baraja de esa categoría está vacía -> avisamos y la reiniciamos
-    if (deck.length === 0) {
-      if (deckKey === 'all') {
-        alert("Se han usado todas las palabras disponibles. Se reinicia la baraja completa.");
+      let words;
+      if (categoryKey === 'all') {
+        words = WORDS_DB.filter(w => w.type === 'word');
       } else {
-        alert(`Se han usado todas las palabras de la categoría "${deckKey}". Se reinicia solo ese pack.`);
+        words = WORDS_DB.filter(w => w.type === 'word' && w.category === categoryKey);
       }
-      resetCategoryDeck(deckKey);
-      deck = decksByCategory[deckKey] || [];
+
+      decksByCategory[categoryKey] = [...words];
+      shuffle(decksByCategory[categoryKey]);
+      console.log(`Baraja de "${categoryKey}" reiniciada con`, decksByCategory[categoryKey].length, 'palabras.');
     }
 
-    // Si AÚN así no hay palabras (por ejemplo, ninguna en el JSON para esa categoría),
-    // hacemos un fallback genérico.
-    if (deck.length === 0) {
-      const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
-      return getRandomFromArray(fallback);
+    async function loadWordsDb() {
+      try {
+        const res = await fetch('data/words-es.json');
+        if (!res.ok) throw new Error('No se pudo cargar data/words-es.json');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          WORDS_DB = data;
+          console.log('Base de datos cargada:', WORDS_DB.length, 'entradas');
+          resetCategoryDeck('all');
+        } else {
+          console.error('El JSON de palabras no es un array');
+        }
+      } catch (err) {
+        console.error('Error cargando base de datos:', err);
+      }
     }
 
-    // Sacamos una carta al azar de la baraja (y la eliminamos para no repetir)
-    const idx = Math.floor(Math.random() * deck.length);
-    const chosen = deck.splice(idx, 1)[0];  // chosen es el objeto {id, text, ...}
-    decksByCategory[deckKey] = deck;        // guardamos la baraja actualizada
+    loadWordsDb();
 
-    return chosen.text;
-  }
+    // ==============================
+    // ESTADO DEL JUEGO
+    // ==============================
 
-  // ==============================
-  // LÓGICA PRINCIPAL
-  // ==============================
+    let gameState = {
+      numPlayers: 0,
+      currentPlayer: 1,
+      secretWord: "",
+      impostorIndex: 1,
+      roleShown: false,
+      currentCategory: "random"
+    };
 
-  function startGame() {
-    const numPlayersInput = document.getElementById("numPlayers");
-    const categorySelect = document.getElementById("category");
+    // ==============================
+    // UTILIDADES
+    // ==============================
 
-    let n = parseInt(numPlayersInput.value, 10);
-    if (isNaN(n) || n < 3) n = 3;
-    if (n > 12) n = 12;
-
-    const cat = categorySelect.value;
-
-    gameState.numPlayers = n;
-    gameState.currentPlayer = 1;
-    gameState.secretWord = getRandomWord(cat);
-    gameState.impostorIndex = Math.floor(Math.random() * n) + 1;
-    gameState.roleShown = false;
-
-    preparePlayerNeutralScreen();
-    showScreen("screen-role");
-  }
-
-  // Pantalla neutra para el jugador actual (sin mostrar todavía su rol)
-  function preparePlayerNeutralScreen() {
-    const { currentPlayer, numPlayers } = gameState;
-
-    const badge = document.getElementById("playerBadge");
-    const roleTitle = document.getElementById("roleTitle");
-    const roleDescription = document.getElementById("roleDescription");
-    const wordDisplay = document.getElementById("wordDisplay");
-    const btnShowRole = document.getElementById("btnShowRole");
-    const btnNextPlayer = document.getElementById("btnNextPlayer");
-
-    gameState.roleShown = false;
-
-    badge.textContent = `Jugador ${currentPlayer} de ${numPlayers}`;
-    roleTitle.textContent = "Tu rol";
-    roleDescription.innerHTML =
-      'Cuando estés <strong>solo</strong> y nadie mire la pantalla,<br/>pulsa el botón de abajo para ver tu rol.';
-
-    wordDisplay.textContent = "";
-    btnShowRole.classList.remove("hidden");
-    btnNextPlayer.classList.add("hidden");
-  }
-
-  // Se llama cuando el jugador pulsa "Mostrar rol"
-  function showPlayerRole() {
-    const { currentPlayer, impostorIndex, secretWord } = gameState;
-
-    const roleTitle = document.getElementById("roleTitle");
-    const roleDescription = document.getElementById("roleDescription");
-    const wordDisplay = document.getElementById("wordDisplay");
-    const btnShowRole = document.getElementById("btnShowRole");
-    const btnNextPlayer = document.getElementById("btnNextPlayer");
-
-    if (currentPlayer === impostorIndex) {
-      roleTitle.textContent = "Eres el Impostorcillo 😈";
-      roleDescription.textContent =
-        "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
-      wordDisplay.textContent = "???";
-    } else {
-      roleTitle.textContent = "Eres ciudadano 👤";
-      roleDescription.textContent =
-        "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
-      wordDisplay.textContent = secretWord;
+    function showScreen(id) {
+      ["screen-start","screen-setup","screen-role","screen-vote","screen-reveal"]
+        .forEach(s => document.getElementById(s).classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
     }
 
-    gameState.roleShown = true;
+    function backToStart() {
+      showScreen("screen-start");
+    }
 
-    btnShowRole.classList.add("hidden");
-    btnNextPlayer.classList.remove("hidden");
-  }
+    function goToSetup() {
+      showScreen("screen-setup");
+    }
 
-  function nextPlayer() {
-    if (!gameState.roleShown) return;
+    function getRandomFromArray(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
 
-    if (gameState.currentPlayer < gameState.numPlayers) {
-      gameState.currentPlayer += 1;
-      preparePlayerNeutralScreen();
+    function getRandomWord(categoryKey) {
+      if (!WORDS_DB || WORDS_DB.length === 0) {
+        const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
+        return getRandomFromArray(fallback);
+      }
+
+      const deckKey = (categoryKey === 'random') ? 'all' : categoryKey;
+
+      if (!decksByCategory[deckKey]) {
+        resetCategoryDeck(deckKey);
+      }
+
+      let deck = decksByCategory[deckKey] || [];
+
+      if (deck.length === 0) {
+        if (deckKey === 'all') {
+          alert("Se han usado todas las palabras disponibles. Se reinicia la baraja completa.");
+        } else {
+          alert(`Se han usado todas las palabras de la categoría "${deckKey}". Se reinicia solo ese pack.`);
+        }
+        resetCategoryDeck(deckKey);
+        deck = decksByCategory[deckKey] || [];
+      }
+
+      if (deck.length === 0) {
+        const fallback = ["Impostor", "Misterio", "Secreto", "Sombra"];
+        return getRandomFromArray(fallback);
+      }
+
+      const idx = Math.floor(Math.random() * deck.length);
+      const chosen = deck.splice(idx, 1)[0];
+      decksByCategory[deckKey] = deck;
+
+      return chosen.text;
+    }
+
+    // ==============================
+    // LÓGICA PRINCIPAL
+    // ==============================
+
+    function startGame() {
+      const numPlayersInput = document.getElementById("numPlayers");
+      const categorySelect = document.getElementById("category");
+
+      let n = parseInt(numPlayersInput.value, 10);
+      if (isNaN(n) || n < 3) n = 3;
+      if (n > 12) n = 12;
+
+      const cat = categorySelect.value;
+
+      gameState.numPlayers = n;
+      gameState.currentPlayer = 1;
+      gameState.secretWord = getRandomWord(cat);
+      gameState.impostorIndex = Math.floor(Math.random() * n) + 1;
+      gameState.roleShown = false;
+      gameState.currentCategory = cat;
+
+      prepareCurrentPlayerScreen();
       showScreen("screen-role");
-    } else {
-      showScreen("screen-vote");
     }
-  }
 
-  function revealRoles() {
-    document.getElementById("finalWord").textContent = gameState.secretWord;
-    document.getElementById("impostorPlayer").textContent = `Jugador ${gameState.impostorIndex}`;
-    showScreen("screen-reveal");
-  }
-  // --- DESLIZAR CARTA HACIA ARRIBA ---
-const slider = document.getElementById("cardSlider");
+    function prepareCurrentPlayerScreen() {
+      const badge = document.getElementById("playerBadge");
+      const roleTitleEl = document.getElementById("roleTitle");
+      const roleWordEl = document.getElementById("roleWord");
+      const roleTipEl = document.getElementById("roleTip");
+      const nextBtn = document.getElementById("nextPlayerBtn");
+      const cardFront = document.getElementById("cardFront");
 
-let startY = 0;
-let currentY = 0;
-let dragging = false;
+      badge.textContent = `Jugador ${gameState.currentPlayer} de ${gameState.numPlayers}`;
+      gameState.roleShown = false;
+      nextBtn.classList.add("hidden");
 
-slider.addEventListener("touchstart", (e) => {
-  startY = e.touches[0].clientY;
-  dragging = true;
-});
+      // Reset posición de la carta frontal
+      cardFront.style.transform = "translateY(0)";
 
-slider.addEventListener("touchmove", (e) => {
-  if (!dragging) return;
+      if (gameState.currentPlayer === gameState.impostorIndex) {
+        roleTitleEl.textContent = "Eres el Impostorcillo 😈";
+        roleWordEl.textContent = "???";
+        roleTipEl.textContent = "No conoces la palabra secreta. Escucha las pistas de los demás, improvisa y finge que tú también la sabes.";
+      } else {
+        roleTitleEl.textContent = "Eres ciudadano 👤";
+        roleWordEl.textContent = gameState.secretWord;
+        roleTipEl.textContent = "Conoces la palabra secreta. Da pistas sin decirla directamente, pero sin que te confundan con el Impostorcillo.";
+      }
+    }
 
-  const touchY = e.touches[0].clientY;
-  const deltaY = touchY - startY;
+    function nextPlayer() {
+      if (!gameState.roleShown) return;
 
-  // Solo permitimos mover hacia arriba
-  if (deltaY < 0) {
-    slider.style.transform = `translateY(${deltaY}px)`;
-  }
+      if (gameState.currentPlayer < gameState.numPlayers) {
+        gameState.currentPlayer += 1;
+        prepareCurrentPlayerScreen();
+        showScreen("screen-role");
+      } else {
+        showScreen("screen-vote");
+      }
+    }
 
-  currentY = deltaY;
-});
+    function revealRoles() {
+      document.getElementById("finalWord").textContent = gameState.secretWord;
+      document.getElementById("impostorPlayer").textContent = `Jugador ${gameState.impostorIndex}`;
+      showScreen("screen-reveal");
+    }
 
-slider.addEventListener("touchend", () => {
-  dragging = false;
+    // ==============================
+    // DESLIZAR CARTA (PRIVACIDAD DEL ROL)
+    // ==============================
 
-  // Si se ha deslizado bastante hacia arriba, mostrar la parte del rol
-  if (currentY < -120) {
-    slider.style.transition = "transform 0.3s ease";
-    slider.style.transform = "translateY(-100%)";
+    const cardFrontEl = document.getElementById("cardFront");
+    const nextBtnEl = document.getElementById("nextPlayerBtn");
 
-    // Mostrar botón para pasar al siguiente jugador
-    document.getElementById("nextPlayerBtn").classList.remove("hidden");
+    let dragStartY = 0;
+    let dragging = false;
+    let hasSeenRole = false;
 
-  } else {
-    // Volver a la posición original
-    slider.style.transition = "transform 0.3s ease";
-    slider.style.transform = "translateY(0)";
-  }
+    function onTouchStart(e) {
+      dragStartY = e.touches[0].clientY;
+      dragging = true;
+      hasSeenRole = false;
+      cardFrontEl.style.transition = "none";
+    }
 
-  setTimeout(() => {
-    slider.style.transition = "";
-  }, 300);
-});
-</script>
+    function onTouchMove(e) {
+      if (!dragging) return;
+      const currentY = e.touches[0].clientY;
+      let delta = currentY - dragStartY; // negativo hacia arriba
+      if (delta > 0) delta = 0;          // no bajar, solo subir
+      if (delta < -160) delta = -160;    // límite máximo
+
+      cardFrontEl.style.transform = `translateY(${delta}px)`;
+
+      // Si ha subido suficientemente, consideramos que ya ha visto el rol
+      if (delta < -80 && !gameState.roleShown) {
+        gameState.roleShown = true;
+        nextBtnEl.classList.remove("hidden");
+      }
+    }
+
+    function onTouchEnd() {
+      if (!dragging) return;
+      dragging = false;
+      cardFrontEl.style.transition = "transform 0.25s ease";
+      cardFrontEl.style.transform = "translateY(0)";
+      setTimeout(() => {
+        cardFrontEl.style.transition = "";
+      }, 250);
+    }
+
+    cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
+    cardFrontEl.addEventListener("touchmove", onTouchMove, { passive: true });
+    cardFrontEl.addEventListener("touchend", onTouchEnd);
+  </script>
 </body>
 </html>
