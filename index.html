@@ -202,6 +202,64 @@
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
+  /* Contenedor de la carta */
+.card-slider {
+  width: 100%;
+  height: 350px;
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  touch-action: none;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+/* Parte frontal (lo que se ve antes de deslizar) */
+.card-front {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 24px;
+}
+
+.card-front-img {
+  width: 100%;
+  height: 70%;
+  object-fit: contain;
+}
+
+.slide-text {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 4px;
+  color: #444;
+}
+
+/* Parte trasera (el rol revelado) */
+.card-back {
+  position: absolute;
+  top: 100%; /* escondida debajo */
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 24px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Título del rol */
+#roleTitle {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Palabra */
+#roleWord {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -263,30 +321,32 @@
       </div>
 
       <!-- Pantalla: Rol de jugador -->
-      <div id="screen-role" class="hidden">
-        <div class="center">
-          <span class="badge" id="playerBadge"></span>
-        </div>
-        <h2 id="roleTitle">Tu rol</h2>
-  <div class="role-image">
-  <img src="img/group-players.png" alt="Jugadores sospechando">
-</div>
-        <p class="role-text" id="roleDescription">
-          Cuando estés <strong>solo</strong> y nadie mire la pantalla,<br/>
-          pulsa el botón de abajo para ver tu rol.
-        </p>
+<div id="screen-role" class="hidden">
+  
+  <!-- Deslizable -->
+  <div class="card-slider" id="cardSlider">
 
-        <div class="big-word" id="wordDisplay"></div>
+    <!-- Cara frontal (oculta rol) -->
+    <div class="card-front">
+      <img src="img/group-players.png" class="card-front-img">
+      <p class="slide-text">Desliza hacia arriba 👆</p>
+    </div>
 
-        <p class="small">
-          Primero pulsa <strong>“Mostrar rol”</strong> cuando estés solo.<br/>
-          Después, pulsa <strong>“Listo, pasa el móvil”</strong> y entrégaselo al siguiente jugador.
-        </p>
-
-        <button id="btnShowRole" onclick="showPlayerRole()">Mostrar rol</button>
-        <button id="btnNextPlayer" class="secondary hidden" onclick="nextPlayer()">Listo, pasa el móvil</button>
+    <!-- Cara trasera (rol revelado) -->
+    <div class="card-back">
+      <div class="role-box">
+        <h3 id="roleTitle"></h3>
+        <p id="roleWord"></p>
       </div>
+    </div>
 
+  </div>
+
+  <button onclick="nextPlayer()" class="secondary hidden" id="nextPlayerBtn">
+    Jugador siguiente
+  </button>
+
+</div>
       <!-- Pantalla: Debate / votación -->
       <div id="screen-vote" class="hidden">
         <h2>Debatid y votad</h2>
@@ -554,6 +614,53 @@
     document.getElementById("impostorPlayer").textContent = `Jugador ${gameState.impostorIndex}`;
     showScreen("screen-reveal");
   }
+  // --- DESLIZAR CARTA HACIA ARRIBA ---
+const slider = document.getElementById("cardSlider");
+
+let startY = 0;
+let currentY = 0;
+let dragging = false;
+
+slider.addEventListener("touchstart", (e) => {
+  startY = e.touches[0].clientY;
+  dragging = true;
+});
+
+slider.addEventListener("touchmove", (e) => {
+  if (!dragging) return;
+
+  const touchY = e.touches[0].clientY;
+  const deltaY = touchY - startY;
+
+  // Solo permitimos mover hacia arriba
+  if (deltaY < 0) {
+    slider.style.transform = `translateY(${deltaY}px)`;
+  }
+
+  currentY = deltaY;
+});
+
+slider.addEventListener("touchend", () => {
+  dragging = false;
+
+  // Si se ha deslizado bastante hacia arriba, mostrar la parte del rol
+  if (currentY < -120) {
+    slider.style.transition = "transform 0.3s ease";
+    slider.style.transform = "translateY(-100%)";
+
+    // Mostrar botón para pasar al siguiente jugador
+    document.getElementById("nextPlayerBtn").classList.remove("hidden");
+
+  } else {
+    // Volver a la posición original
+    slider.style.transition = "transform 0.3s ease";
+    slider.style.transform = "translateY(0)";
+  }
+
+  setTimeout(() => {
+    slider.style.transition = "";
+  }, 300);
+});
 </script>
 </body>
 </html>
