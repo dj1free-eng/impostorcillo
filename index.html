@@ -423,13 +423,19 @@ button:active {
   </div>
 
   <p class="small">
-    Mantén el dedo mientras lees tu rol.<br>
-    Suelta para que la carta vuelva a bajar.
-  </p>
+  Mantén el dedo mientras lees tu rol.<br>
+  Suelta para que la carta vuelva a bajar.
+</p>
 
-  <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
-    Jugador siguiente
-  </button>
+<!-- Botón alternativo para ratón / dispositivos sin touch -->
+<button id="toggleRoleBtn" class="secondary" style="width:90%;max-width:320px;margin:10px auto 0;display:block;">
+  Mostrar rol
+</button>
+
+<button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
+  Jugador siguiente
+</button>
+
 </div>
 
       <!-- PANTALLA: DEBATE -->
@@ -712,8 +718,11 @@ function startAnotherRound() {
 // ============================
 // MOSTRAR ROL DEL JUGADOR
 // ============================
-const cardFrontEl = document.getElementById("cardFront");
-const nextBtnEl   = document.getElementById("nextPlayerBtn");
+const cardFrontEl    = document.getElementById("cardFront");
+const nextBtnEl      = document.getElementById("nextPlayerBtn");
+const toggleRoleBtn  = document.getElementById("toggleRoleBtn");
+let cardLiftedByButton = false;
+
 
 function prepareCurrentPlayerScreen() {
   const orderBadge = document.getElementById("playerOrder");
@@ -763,11 +772,51 @@ function prepareCurrentPlayerScreen() {
       gameState.secretHint || "Da pistas sin decir la palabra directamente.";
   }
 
-  // Reset de estado de la carta y botón
+   // Reset de estado de la carta y botón
   gameState.roleShown = false;
   nextBtnEl.classList.add("hidden");
   nextBtnEl.classList.remove("active");
+
   cardFrontEl.style.transform = "translateY(0)";
+  cardLiftedByButton = false;
+  if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
+}
+// Botón Mostrar / Ocultar rol (para ratón/desktop)
+if (toggleRoleBtn) {
+  toggleRoleBtn.addEventListener("click", () => {
+    const slider = cardFrontEl.parentElement;
+    const h = slider.offsetHeight || 300;
+
+    if (!cardLiftedByButton) {
+      // Levantar la carta
+      cardFrontEl.style.transition = "transform 0.25s ease";
+      cardFrontEl.style.transform = `translateY(${-h * 0.7}px)`;
+
+      setTimeout(() => {
+        cardFrontEl.style.transition = "";
+      }, 260);
+
+      if (!gameState.roleShown) {
+        gameState.roleShown = true;
+        nextBtnEl.classList.remove("hidden");
+        nextBtnEl.classList.add("active");
+      }
+
+      toggleRoleBtn.textContent = "Ocultar rol";
+      cardLiftedByButton = true;
+    } else {
+      // Bajar la carta
+      cardFrontEl.style.transition = "transform 0.25s ease";
+      cardFrontEl.style.transform = "translateY(0)";
+
+      setTimeout(() => {
+        cardFrontEl.style.transition = "";
+      }, 260);
+
+      toggleRoleBtn.textContent = "Mostrar rol";
+      cardLiftedByButton = false;
+    }
+  });
 }
 
 // ============================
@@ -821,6 +870,9 @@ function onTouchStart(e) {
   dragStartY = e.touches[0].clientY;
   dragging   = true;
   cardFrontEl.style.transition = "none";
+
+  cardLiftedByButton = false;
+  if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
 }
 
 function onTouchMove(e) {
