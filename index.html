@@ -65,7 +65,8 @@ label {
   opacity: 0.9;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 8px 10px;
   border-radius: 8px;
@@ -107,11 +108,13 @@ button:active {
   opacity: 0.8;
   margin-top: 12px;
 }
+
 .version-label {
   margin-top: 8px;
   font-size: 0.8rem;
   opacity: 0.7;
 }
+
 .badge {
   display: inline-block;
   padding: 4px 10px;
@@ -151,7 +154,6 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px !important;
   z-index: 10;
 }
 
@@ -188,7 +190,8 @@ button:active {
   border-radius: 50%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
-/* Fila de configuración de jugador */
+
+/* Fila de jugador: nombre + avatar */
 .player-row {
   display: flex;
   align-items: center;
@@ -198,19 +201,19 @@ button:active {
 
 .player-row input {
   flex: 1;
-  margin-bottom: 0;
 }
 
-/* Avatar pequeño para elegir en la configuración */
+/* Avatar pequeño junto al nombre (configuración) */
 .avatar-thumb {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(148,163,184,0.8);
   cursor: pointer;
   box-shadow: 0 0 6px rgba(0,0,0,0.5);
   transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+  flex-shrink: 0;
 }
 
 .avatar-thumb:hover {
@@ -218,11 +221,23 @@ button:active {
   box-shadow: 0 0 10px rgba(34,197,94,0.7);
   border-color: rgba(34,197,94,0.8);
 }
-/* Badge del rol */
+
+/* Badge del rol (fila superior en pantalla de rol) */
 .role-badge-row .badge {
   background: rgba(15,23,42,0.95);
   color: #e5e7eb;
   padding: 6px 14px;
+}
+
+/* Nombre del jugador grande en pantalla de rol */
+.player-name-big {
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 14px 0;
+  color: #f8fafc;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 /* Carta deslizable */
@@ -247,6 +262,7 @@ button:active {
   box-shadow: 0 10px 25px rgba(0,0,0,0.35);
 }
 
+/* Parte trasera (rol) */
 .card-back {
   background: #f9fafb;
   padding: 24px 16px;
@@ -256,15 +272,8 @@ button:active {
   align-items: center;
   text-align: center;
 }
-.role-avatar {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 12px;
-  border: 4px solid rgba(34,197,94,0.7); /* borde verde neon suave */
-  box-shadow: 0 0 12px rgba(0,0,0,0.25);
-}
+
+/* Parte frontal (imagen + texto deslizar) */
 .card-front {
   background: linear-gradient(to bottom, #facc15 0%, #fff 55%);
   display: flex;
@@ -308,8 +317,7 @@ button:active {
   max-width: 260px;
 }
 
-/* Botón siguiente */
-/* Botón "Jugador siguiente" */
+/* Botón siguiente jugador */
 #nextPlayerBtn {
   background: #3f3f46;
   color: #d4d4d8;
@@ -331,15 +339,91 @@ button:active {
   opacity: 1;
   box-shadow: 0 0 12px rgba(34,197,94,0.6);
 }
-  /* Nombre del jugador grande arriba */
-.player-name-big {
-  font-size: 1.8rem;         /* tamaño grande */
-  font-weight: 800;          /* bien marcado */
-  text-align: center;
-  margin: 0 0 14px 0;
-  color: #f8fafc;            /* blanco bonito */
-  letter-spacing: 1px;
-  text-transform: uppercase; /* estilo de juego */
+
+/* Botón mostrar/ocultar rol en escritorio */
+#toggleRoleBtn {
+  width: auto;
+  padding-inline: 18px;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+/* MODAL SELECCIÓN DE AVATAR */
+.avatar-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.avatar-modal.hidden {
+  display: none;
+}
+
+.avatar-modal-content {
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 20px;
+  padding: 20px 16px 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.avatar-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.avatar-modal-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.avatar-modal-close {
+  background: none;
+  border: none;
+  color: #e5e7eb;
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: auto;
+  box-shadow: none;
+  padding: 0;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.avatar-option {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.avatar-option img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid transparent;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.avatar-option:hover img {
+  transform: translateY(-2px) scale(1.03);
+  border-color: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
 }
 </style>
 </head>
@@ -352,23 +436,29 @@ button:active {
         <span>≡</span>
       </button>
 
-      <!-- PANTALLA: INICIO -->
+      <!-- ========================= -->
+      <!-- PANTALLA: INICIO          -->
+      <!-- ========================= -->
       <div id="screen-start" class="screen">
         <div class="hero-illustration">
           <img src="img/impostor-hero.png" alt="Impostorcillo">
         </div>
 
         <h1>El Impostorcillo</h1>
+
         <p class="center">
           El juego social de deducción y engaño.<br>
           ¡Intenta no parecer sospechoso!
         </p>
 
         <button onclick="goToSetup()">Nueva partida</button>
-          <p id="appVersion" class="small version-label"></p>
+
+        <p id="appVersion" class="small version-label"></p>
       </div>
 
-      <!-- PANTALLA: CONFIGURACIÓN -->
+      <!-- ========================= -->
+      <!-- PANTALLA: CONFIGURACIÓN   -->
+      <!-- ========================= -->
       <div id="screen-setup" class="screen hidden">
 
         <div class="title-row">
@@ -388,101 +478,132 @@ button:active {
           <option value="10">10 jugadores</option>
         </select>
 
-        <label>Nombre de los jugadores</label>
+        <label>Nombre y avatar de los jugadores</label>
         <div id="playerNamesContainer"></div>
 
         <label for="selectCategory">Categoría</label>
         <select id="selectCategory">
-  <option value="aleatorio">Aleatorio</option>
-  <option value="comida">Comida</option>
-  <option value="animales">Animales</option>
-  <option value="objetos">Objetos</option>
-  <option value="sitios">Sitios</option>
-  <option value="deportes">Deportes</option>
-  <option value="videojuegos">Videojuegos</option>
-  <option value="transportes">Transportes</option>
-</select>
-
+          <option value="aleatorio">Aleatorio</option>
+          <option value="comida">Comida</option>
+          <option value="animales">Animales</option>
+          <option value="objetos">Objetos</option>
+          <option value="sitios">Sitios</option>
+          <option value="deportes">Deportes</option>
+          <option value="videojuegos">Videojuegos</option>
+          <option value="transportes">Transportes</option>
+        </select>
 
         <button onclick="startGame()">Empezar</button>
         <button class="secondary" onclick="backToStart()">Volver</button>
 
         <p class="small">
-          Modo: 1 Impostorcillo por ronda. Las acusaciones se hacen hablando.
+          1 impostorcillo por ronda. Pistas orales. Deducción pura.
         </p>
-
       </div>
 
+      <!-- ========================= -->
       <!-- PANTALLA: ROL DEL JUGADOR -->
+      <!-- ========================= -->
       <div id="screen-role" class="screen hidden">
 
-<div class="role-badge-row">
-  <span class="badge" id="playerOrder"></span>
-</div>
-<h2 id="playerNameBig" class="player-name-big"></h2>
-  <div class="card-slider">
-    <!-- Parte trasera: el rol -->
-    <div class="card-back">
-      <h3 id="roleTitle"></h3>
-      <div id="roleWord"></div>
-      <p class="role-tip" id="roleTip"></p>
-    </div>
+        <!-- Orden del jugador ("X de Y") -->
+        <div class="role-badge-row">
+          <span class="badge" id="playerOrder"></span>
+        </div>
 
-    <!-- Parte frontal: carta deslizante con avatar -->
-    <div class="card-front" id="cardFront">
-      <img id="frontAvatar" src="img/avatar1.png" class="card-front-img" alt="avatar del jugador">
-      <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
-    </div>
-  </div>
+        <!-- Nombre del jugador (bien grande) -->
+        <h3 id="playerNameBig" class="player-name-big"></h3>
 
-  <p id="instructionText" class="small"></p>
+        <div class="card-slider">
+          <!-- Parte trasera: el rol -->
+          <div class="card-back">
+            <h3 id="roleTitle"></h3>
+            <div id="roleWord"></div>
+            <p class="role-tip" id="roleTip"></p>
+          </div>
 
+          <!-- Parte frontal: carta deslizante -->
+          <div class="card-front" id="cardFront">
+            <img id="frontAvatar" src="" class="card-front-img">
+            <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+          </div>
+        </div>
 
-<!-- Botón alternativo para ratón / dispositivos sin touch -->
-<button id="toggleRoleBtn" class="secondary" style="width:90%;max-width:320px;margin:10px auto 0;display:block;">
-  Mostrar rol
-</button>
+        <p id="instructionText" class="small"></p>
 
-<button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
-  Jugador siguiente
-</button>
+        <!-- Botón para escritorio -->
+        <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
 
-</div>
+        <!-- Botón de siguiente jugador -->
+        <button id="nextPlayerBtn" class="secondary hidden">
+          Jugador siguiente
+        </button>
+      </div>
 
-      <!-- PANTALLA: DEBATE -->
+      <!-- ========================= -->
+      <!-- PANTALLA: DEBATE          -->
+      <!-- ========================= -->
       <div id="screen-debate" class="screen hidden">
         <h2>Debatid y votad</h2>
-<p id="starterInfo" class="center" style="font-size:1.1rem; margin-top:10px;">
-  </p>
+
         <p class="center">
-          Todos han visto ya su rol.<br><br>
+          Todos han visto ya su rol.<br>
           Ahora toca hablar:
         </p>
 
+        <!-- Jugador inicial aleatorio -->
+        <p id="starterInfo" class="center" 
+           style="font-size:1.1rem; margin-top:10px;"></p>
+
         <ul style="font-size:0.95rem; line-height:1.5;">
-          <li>Cada jugador dice una pista sobre la palabra.</li>
-          <li>Comentad, defendedos y acusad al sospechoso.</li>
+          <li>Cada jugador dice una pista.</li>
+          <li>Debatid y acusad a quien creáis sospechoso.</li>
           <li>Haced una votación final.</li>
         </ul>
 
         <button id="btnGoReveal">Ver resultado</button>
       </div>
 
-      <!-- PANTALLA: REVELACIÓN -->
+      <!-- ========================= -->
+      <!-- PANTALLA: REVELACIÓN      -->
+      <!-- ========================= -->
       <div id="screen-reveal" class="screen hidden">
 
         <h2>Revelación</h2>
 
         <p class="center">La palabra secreta era:</p>
-        <div id="finalWord" style="font-size:1.9rem; text-align:center; margin:12px 0;"></div>
+        <div id="finalWord"
+             style="font-size:1.9rem; text-align:center; margin:12px 0;">
+        </div>
 
         <p class="center">
-          El Impostorcillo era<br>
+          El Impostorcillo era:<br>
           <span class="highlight" id="impostorPlayer"></span>
         </p>
 
         <button onclick="startAnotherRound()">Jugar otra ronda</button>
         <button class="secondary" onclick="backToStart()">Volver al inicio</button>
+      </div>
+
+      <!-- ========================= -->
+      <!-- MODAL: SELECCIÓN AVATAR   -->
+      <!-- ========================= -->
+      <div id="avatarModal" class="avatar-modal hidden">
+        <div class="avatar-modal-content">
+
+          <div class="avatar-modal-header">
+            <div class="avatar-modal-title">Elige un avatar</div>
+            <button id="avatarModalClose" class="avatar-modal-close" type="button">✕</button>
+          </div>
+
+          <p class="small" style="margin-top:0;margin-bottom:12px;">
+            Toca un avatar para asignarlo al jugador.
+          </p>
+
+          <!-- Aquí se generarán los avatares -->
+          <div id="avatarGrid" class="avatar-grid"></div>
+
+        </div>
       </div>
 
     </div>
