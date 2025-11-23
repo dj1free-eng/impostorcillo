@@ -406,7 +406,7 @@ button:active {
   <div class="role-badge-row">
     <span class="badge" id="playerBadge"></span>
   </div>
-
+<h2 id="playerNameBig" class="player-name-big"></h2>
   <div class="card-slider">
     <!-- Parte trasera: el rol -->
     <div class="card-back">
@@ -725,7 +725,7 @@ function prepareCurrentPlayerScreen() {
   const name =
     gameState.playerNames[idx] ||
     `Jugador ${gameState.currentPlayer}`;
-
+document.getElementById("playerNameBig").textContent = name;
   // Avatar en la carta que se desliza (frontAvatar)
   const avatarIndex =
   gameState.playerAvatars[idx] ||
