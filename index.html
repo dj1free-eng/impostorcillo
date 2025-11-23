@@ -490,7 +490,7 @@ const gameState = {
   impostorIndex: 1,
   roleShown: false,
   playerNames: [],
-  playerAvatars: []   // 👈 nuevo: índice de avatar por jugador (1–8)
+  playerAvatars: []   // índice de avatar elegido por jugador (1–8)
 };
 
 const MAX_AVATARS = 8; // avatar1.png ... avatar8.png
@@ -568,7 +568,8 @@ async function loadWordsFromCsv() {
 // ============================
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
+  const el = document.getElementById(id);
+  if (el) el.classList.remove("hidden");
 }
 
 function backToStart() {
@@ -580,7 +581,7 @@ function goToSetup() {
 }
 
 // ============================
-// INPUTS DE NOMBRES DE JUGADOR
+// INPUTS DE NOMBRES + AVATARES
 // ============================
 function refreshPlayerNameInputs() {
   const numSel    = document.getElementById("selectPlayers");
@@ -600,7 +601,7 @@ function refreshPlayerNameInputs() {
     input.placeholder = `Jugador ${i}`;
     input.id = `playerName${i}`;
 
-    // Avatar por defecto (si no había uno ya guardado)
+    // Avatar por defecto si no estaba
     const idxArr = i - 1;
     if (!gameState.playerAvatars[idxArr]) {
       gameState.playerAvatars[idxArr] = ((idxArr % MAX_AVATARS) + 1);
@@ -623,7 +624,8 @@ function refreshPlayerNameInputs() {
     container.appendChild(row);
   }
 }
-  function cycleAvatar(playerIdx, imgEl) {
+
+function cycleAvatar(playerIdx, imgEl) {
   let current = gameState.playerAvatars[playerIdx] || 1;
   let next = current + 1;
   if (next > MAX_AVATARS) next = 1;
@@ -633,6 +635,7 @@ function refreshPlayerNameInputs() {
     imgEl.src = `img/avatar${next}.png`;
   }
 }
+
 // ============================
 // SELECCIONAR PALABRA
 // ============================
@@ -713,7 +716,7 @@ const cardFrontEl = document.getElementById("cardFront");
 const nextBtnEl   = document.getElementById("nextPlayerBtn");
 
 function prepareCurrentPlayerScreen() {
-  const orderBadge = document.getElementById("playerOrder"); // 👈 antes playerBadge
+  const orderBadge = document.getElementById("playerOrder");
   const roleTitle  = document.getElementById("roleTitle");
   const roleWord   = document.getElementById("roleWord");
   const roleTip    = document.getElementById("roleTip");
@@ -767,30 +770,6 @@ function prepareCurrentPlayerScreen() {
   cardFrontEl.style.transform = "translateY(0)";
 }
 
-  badge.textContent = `${name} (${gameState.currentPlayer} de ${gameState.numPlayers})`;
-
-  if (isImpostor) {
-    roleTitle.textContent = "Impostorcillo";
-    roleWord.textContent  = "???";
-    roleTip.textContent   =
-      "No conoces la palabra secreta. Escucha y finge normalidad.";
-  } else {
-    roleTitle.textContent = "Ciudadano";
-    roleWord.textContent  = `"${gameState.secretWord}"`;
-    roleTip.textContent   =
-      gameState.secretHint || "Da pistas sin decir la palabra directamente.";
-  }
-
-  gameState.roleShown = false;
-  nextBtnEl.classList.add("hidden");
-  nextBtnEl.classList.remove("active");
-
-  cardFrontEl.style.transform = "translateY(0)";
-}
-
-// ============================
-// SIGUIENTE JUGADOR
-// ============================
 // ============================
 // SIGUIENTE JUGADOR
 // ============================
@@ -809,6 +788,7 @@ function nextPlayer() {
   prepareCurrentPlayerScreen();
   showScreen("screen-role");
 }
+
 // ============================
 // DEBATE Y REVELACIÓN
 // ============================
