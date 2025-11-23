@@ -6,6 +6,16 @@ Formato de versión: MAJOR.MINOR.PATCH
 - PATCH: ajustes pequeños, mejoras visuales, correcciones de fallos.
 
 ---
+## [1.1.0] – Orden aleatorio y jugador inicial aleatorio
+### Nuevas funciones
+- Cada ronda genera un **orden aleatorio** en el que los jugadores ven su rol.
+- La aplicación decide automáticamente un **jugador inicial** aleatorio para el debate.
+- El orden mostrado en pantalla (“X de Y”) ahora indica el turno, no el número real del jugador.
+
+### Cambios internos
+- Añadida la variable `ordenRonda` al estado global.
+- Integrado el jugador inicial aleatorio `starterPlayer`.
+- Actualización de versión a **1.1.0**.
 
 ## [1.0.0] – Versión actual (estable)
 **Estado general:**  
