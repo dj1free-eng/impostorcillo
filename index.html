@@ -486,8 +486,8 @@ button:active {
 // CONFIG: ruta del CSV
 // ============================
 const CSV_URL = "data/words-es.csv?v=3";
-  
-  // Detectar si el dispositivo tiene pantalla táctil
+
+// Detectar si el dispositivo tiene pantalla táctil
 const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
 // Datos en memoria
@@ -730,13 +730,20 @@ function startAnotherRound() {
 const cardFrontEl    = document.getElementById("cardFront");
 const nextBtnEl      = document.getElementById("nextPlayerBtn");
 const toggleRoleBtn  = document.getElementById("toggleRoleBtn");
-  // Si es dispositivo táctil, ocultamos botón Mostrar/Ocultar rol
+let cardLiftedByButton = false;
+
+// Ocultar botón en dispositivos táctiles
 if (isTouch && toggleRoleBtn) {
   toggleRoleBtn.style.display = "none";
 }
 
-let cardLiftedByButton = false;
-
+// Texto dinámico de instrucciones
+const instructionText = document.getElementById("instructionText");
+if (instructionText) {
+  instructionText.innerHTML = isTouch
+    ? "Desliza hacia arriba para ver tu rol.<br>Suelta para bajarla."
+    : "Haz clic en el botón para ver u ocultar tu rol.";
+}
 
 function prepareCurrentPlayerScreen() {
   const orderBadge = document.getElementById("playerOrder");
@@ -786,7 +793,7 @@ function prepareCurrentPlayerScreen() {
       gameState.secretHint || "Da pistas sin decir la palabra directamente.";
   }
 
-   // Reset de estado de la carta y botón
+  // Reset de estado de la carta y botón
   gameState.roleShown = false;
   nextBtnEl.classList.add("hidden");
   nextBtnEl.classList.remove("active");
@@ -795,6 +802,7 @@ function prepareCurrentPlayerScreen() {
   cardLiftedByButton = false;
   if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
 }
+
 // Botón Mostrar / Ocultar rol (para ratón/desktop)
 if (toggleRoleBtn) {
   toggleRoleBtn.addEventListener("click", () => {
