@@ -377,11 +377,10 @@ button:active {
 </div>
 
           <!-- Parte frontal: carta deslizante -->
-          <div class="card-front" id="cardFront">
-            <img src="img/group-players.png" class="card-front-img">
-            <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
-          </div>
-        </div>
+<div class="card-front" id="cardFront">
+  <img id="frontAvatar" src="img/avatar1.png" class="card-front-img" alt="avatar del jugador">
+  <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+</div>
 
         <p class="small">
           Mantén el dedo mientras lees tu rol.<br>
@@ -650,9 +649,9 @@ function prepareCurrentPlayerScreen() {
     gameState.playerNames[idx] ||
     `Jugador ${gameState.currentPlayer}`;
 
-  // 👇 Avatar automático según el número de jugador (1–8, luego vuelve a empezar)
-  const avatarIndex = (idx % 8) + 1; // si tienes avatar1.png ... avatar8.png
-  const avatarEl = document.getElementById("roleAvatar");
+  // Avatar en la carta que se desliza (frontAvatar)
+  const avatarIndex = (idx % 8) + 1; // avatar1.png ... avatar8.png
+  const avatarEl = document.getElementById("frontAvatar");
   if (avatarEl) {
     avatarEl.src = `img/avatar${avatarIndex}.png`;
   }
