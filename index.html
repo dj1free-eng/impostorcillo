@@ -370,6 +370,7 @@ button:active {
         <div class="card-slider">
           <!-- Parte trasera: el rol -->
 <div class="card-back">
+  <img id="roleAvatar" class="role-avatar" src="img/avatar1.png" alt="avatar del jugador">
   <h3 id="roleTitle"></h3>
   <div id="roleWord"></div>
   <p class="role-tip" id="roleTip"></p>
@@ -642,12 +643,19 @@ function prepareCurrentPlayerScreen() {
   const roleTip  = document.getElementById("roleTip");
 
   const isImpostor = gameState.currentPlayer === gameState.impostorIndex;
-  const name       =
-    // Avatar del jugador
-document.getElementById("roleAvatar").src =
-  `img/${gameState.playerAvatars[idx]}.png`;
-    gameState.playerNames[gameState.currentPlayer - 1] ||
+  const idx        = gameState.currentPlayer - 1;
+
+  // Nombre del jugador
+  const name =
+    gameState.playerNames[idx] ||
     `Jugador ${gameState.currentPlayer}`;
+
+  // 👇 Avatar automático según el número de jugador (1–8, luego vuelve a empezar)
+  const avatarIndex = (idx % 8) + 1; // si tienes avatar1.png ... avatar8.png
+  const avatarEl = document.getElementById("roleAvatar");
+  if (avatarEl) {
+    avatarEl.src = `img/avatar${avatarIndex}.png`;
+  }
 
   badge.textContent = `${name} (${gameState.currentPlayer} de ${gameState.numPlayers})`;
 
