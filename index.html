@@ -950,6 +950,11 @@ document.getElementById("selectPlayers")
 loadWordsFromCsv();
 refreshPlayerNameInputs();
 showScreen("screen-start");
+  // Mostrar versión en la pantalla de inicio
+const versionEl = document.getElementById("appVersion");
+if (versionEl) {
+  versionEl.textContent = "Versión " + APP_VERSION;
+}
 </script>
 </body>
 </html>
