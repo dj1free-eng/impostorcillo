@@ -747,10 +747,12 @@ function onTouchMove(e) {
 
   cardFrontEl.style.transform = `translateY(${delta}px)`;
 
+  // ACTIVAR BOTÓN AL SUPERAR 1/3 DEL DESLIZAMIENTO
   if (delta < -cardHeight / 3 && !gameState.roleShown) {
     gameState.roleShown = true;
     nextBtnEl.classList.remove("hidden");
     nextBtnEl.classList.add("active");
+    nextBtnEl.style.pointerEvents = "auto";   // << OBLIGATORIO EN SAFARI
   }
 }
 
