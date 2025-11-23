@@ -491,13 +491,10 @@ button:active {
 // ============================
 // CONFIG: ruta del CSV
 // ============================
-// Versión de la aplicación
 const APP_VERSION = "1.1.0";
-
-// CSV usando la versión para evitar caché vieja
 const CSV_URL = "data/words-es.csv?v=" + APP_VERSION;
-
-// Detectar si el dispositivo tiene pantalla táctil
+  
+  // Detectar si el dispositivo tiene pantalla táctil
 const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
 // Datos en memoria
@@ -515,7 +512,9 @@ const gameState = {
   impostorIndex: 1,
   roleShown: false,
   playerNames: [],
-  playerAvatars: []   // índice de avatar elegido por jugador (1–8)
+  playerAvatars: [],   // índice de avatar elegido por jugador (1–8)
+  ordenRonda: [],
+  starterPlayer: 1
 };
 
 const MAX_AVATARS = 8; // avatar1.png ... avatar8.png
@@ -716,6 +715,17 @@ function startGame() {
   gameState.impostorIndex =
     Math.floor(Math.random() * gameState.numPlayers) + 1;
 
+  // Elegir jugador inicial del debate
+  gameState.starterPlayer =
+    Math.floor(Math.random() * gameState.numPlayers) + 1;
+
+  // Crear orden aleatorio de jugadores para ver el rol
+  gameState.ordenRonda = [];
+  for (let i = 1; i <= gameState.numPlayers; i++) {
+    gameState.ordenRonda.push(i);
+  }
+  shuffle(gameState.ordenRonda);
+
   gameState.currentPlayer = 1;
 
   prepareCurrentPlayerScreen();
@@ -728,6 +738,18 @@ function startAnotherRound() {
   gameState.secretHint = card.hint || "";
   gameState.impostorIndex =
     Math.floor(Math.random() * gameState.numPlayers) + 1;
+
+  // Elegir jugador inicial del debate
+  gameState.starterPlayer =
+    Math.floor(Math.random() * gameState.numPlayers) + 1;
+
+  // Crear orden aleatorio de jugadores para ver el rol
+  gameState.ordenRonda = [];
+  for (let i = 1; i <= gameState.numPlayers; i++) {
+    gameState.ordenRonda.push(i);
+  }
+  shuffle(gameState.ordenRonda);
+
   gameState.currentPlayer = 1;
 
   prepareCurrentPlayerScreen();
@@ -740,12 +762,13 @@ function startAnotherRound() {
 const cardFrontEl    = document.getElementById("cardFront");
 const nextBtnEl      = document.getElementById("nextPlayerBtn");
 const toggleRoleBtn  = document.getElementById("toggleRoleBtn");
-let cardLiftedByButton = false;
 
 // Ocultar botón en dispositivos táctiles
 if (isTouch && toggleRoleBtn) {
   toggleRoleBtn.style.display = "none";
 }
+
+let cardLiftedByButton = false;
 
 // Texto dinámico de instrucciones
 const instructionText = document.getElementById("instructionText");
@@ -761,15 +784,23 @@ function prepareCurrentPlayerScreen() {
   const roleWord   = document.getElementById("roleWord");
   const roleTip    = document.getElementById("roleTip");
 
-  const isImpostor = gameState.currentPlayer === gameState.impostorIndex;
-  // jugador real según orden aleatorio
-const realPlayer = gameState.ordenRonda[gameState.currentPlayer - 1];
-const idx = realPlayer - 1;
+  // Índice de turno (1..N)
+  const turnIndex = gameState.currentPlayer;
+
+  // Jugador real según orden aleatorio (si existe), si no, el propio índice
+  const realPlayer =
+    gameState.ordenRonda && gameState.ordenRonda.length === gameState.numPlayers
+      ? gameState.ordenRonda[turnIndex - 1]
+      : turnIndex;
+
+  const idx = realPlayer - 1;
+
+  const isImpostor = realPlayer === gameState.impostorIndex;
 
   // Nombre del jugador
   const name =
     gameState.playerNames[idx] ||
-    `Jugador ${gameState.currentPlayer}`;
+    `Jugador ${realPlayer}`;
 
   // Nombre grande en medio
   const bigNameEl = document.getElementById("playerNameBig");
@@ -787,9 +818,9 @@ const idx = realPlayer - 1;
     avatarEl.src = `img/avatar${avatarIndex}.png`;
   }
 
-  // Badge solo con el orden "X de Y"
+  // Badge solo con el orden "X de Y" (turno de visionado)
   if (orderBadge) {
-    orderBadge.textContent = `${gameState.currentPlayer} de ${gameState.numPlayers}`;
+    orderBadge.textContent = `${turnIndex} de ${gameState.numPlayers}`;
   }
 
   // Texto del rol
@@ -814,7 +845,6 @@ const idx = realPlayer - 1;
   cardLiftedByButton = false;
   if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
 }
-
 // Botón Mostrar / Ocultar rol (para ratón/desktop)
 if (toggleRoleBtn) {
   toggleRoleBtn.addEventListener("click", () => {
@@ -861,20 +891,18 @@ function nextPlayer() {
   nextBtnEl.classList.add("hidden");
 
   gameState.currentPlayer++;
-// Crear orden aleatorio de jugadores
-gameState.ordenRonda = [];
-for (let i = 1; i <= gameState.numPlayers; i++) {
-  gameState.ordenRonda.push(i);
-}
-shuffle(gameState.ordenRonda);  // ya existe la función shuffle()
+
   if (gameState.currentPlayer > gameState.numPlayers) {
     // Ya han pasado todos -> pantalla de debate
-   const starterName =
-  gameState.playerNames[gameState.starterPlayer - 1] ||
-  `Jugador ${gameState.starterPlayer}`;
+    const starterIndex = gameState.starterPlayer || 1;
+    const starterName =
+      gameState.playerNames[starterIndex - 1] ||
+      `Jugador ${starterIndex}`;
+    const starterEl = document.getElementById("starterInfo");
+    if (starterEl) {
+      starterEl.textContent = `Empieza diciendo su pista: ${starterName}`;
+    }
 
-document.getElementById("starterInfo").textContent =
-  `Empieza diciendo su pista: ${starterName}`;
     showScreen("screen-debate");
     return;
   }
@@ -899,13 +927,10 @@ function prepareRevealScreen() {
 document.getElementById("btnGoReveal").addEventListener("click", () => {
   prepareRevealScreen();
   showScreen("screen-reveal");
-  // Jugador inicial aleatorio
-gameState.starterPlayer =
-  Math.floor(Math.random() * gameState.numPlayers) + 1;
 });
 
 // ============================
-// CARTA DESLIZABLE
+// CARTA DESLIZABLE (TOUCH)
 // ============================
 let dragStartY = 0;
 let dragging   = false;
@@ -967,7 +992,8 @@ document.getElementById("selectPlayers")
 loadWordsFromCsv();
 refreshPlayerNameInputs();
 showScreen("screen-start");
-  // Mostrar versión en la pantalla de inicio
+
+// Mostrar versión en la pantalla de inicio (si existe el elemento)
 const versionEl = document.getElementById("appVersion");
 if (versionEl) {
   versionEl.textContent = "Versión " + APP_VERSION;
