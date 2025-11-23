@@ -403,9 +403,9 @@ button:active {
       <!-- PANTALLA: ROL DEL JUGADOR -->
       <div id="screen-role" class="screen hidden">
 
-  <div class="role-badge-row">
-    <span class="badge" id="playerBadge"></span>
-  </div>
+<div class="role-badge-row">
+  <span class="badge" id="playerOrder"></span>
+</div>
 <h2 id="playerNameBig" class="player-name-big"></h2>
   <div class="card-slider">
     <!-- Parte trasera: el rol -->
@@ -713,10 +713,10 @@ const cardFrontEl = document.getElementById("cardFront");
 const nextBtnEl   = document.getElementById("nextPlayerBtn");
 
 function prepareCurrentPlayerScreen() {
-  const badge    = document.getElementById("playerBadge");
-  const roleTitle= document.getElementById("roleTitle");
-  const roleWord = document.getElementById("roleWord");
-  const roleTip  = document.getElementById("roleTip");
+  const orderBadge = document.getElementById("playerOrder"); // 👈 antes playerBadge
+  const roleTitle  = document.getElementById("roleTitle");
+  const roleWord   = document.getElementById("roleWord");
+  const roleTip    = document.getElementById("roleTip");
 
   const isImpostor = gameState.currentPlayer === gameState.impostorIndex;
   const idx        = gameState.currentPlayer - 1;
@@ -725,15 +725,46 @@ function prepareCurrentPlayerScreen() {
   const name =
     gameState.playerNames[idx] ||
     `Jugador ${gameState.currentPlayer}`;
-document.getElementById("playerNameBig").textContent = name;
+
+  // Nombre grande en medio
+  const bigNameEl = document.getElementById("playerNameBig");
+  if (bigNameEl) {
+    bigNameEl.textContent = name;
+  }
+
   // Avatar en la carta que se desliza (frontAvatar)
   const avatarIndex =
-  gameState.playerAvatars[idx] ||
-  ((idx % MAX_AVATARS) + 1);
+    gameState.playerAvatars[idx] ||
+    ((idx % MAX_AVATARS) + 1);
 
-const avatarEl = document.getElementById("frontAvatar");
-if (avatarEl) {
-  avatarEl.src = `img/avatar${avatarIndex}.png`;
+  const avatarEl = document.getElementById("frontAvatar");
+  if (avatarEl) {
+    avatarEl.src = `img/avatar${avatarIndex}.png`;
+  }
+
+  // Badge solo con el orden "X de Y"
+  if (orderBadge) {
+    orderBadge.textContent = `${gameState.currentPlayer} de ${gameState.numPlayers}`;
+  }
+
+  // Texto del rol
+  if (isImpostor) {
+    roleTitle.textContent = "Impostorcillo";
+    roleWord.textContent  = "???";
+    roleTip.textContent   =
+      "No conoces la palabra secreta. Escucha y finge normalidad.";
+  } else {
+    roleTitle.textContent = "Ciudadano";
+    roleWord.textContent  = `"${gameState.secretWord}"`;
+    roleTip.textContent   =
+      gameState.secretHint || "Da pistas sin decir la palabra directamente.";
+  }
+
+  // Reset de estado de la carta y botón
+  gameState.roleShown = false;
+  nextBtnEl.classList.add("hidden");
+  nextBtnEl.classList.remove("active");
+  cardFrontEl.style.transform = "translateY(0)";
 }
 
   badge.textContent = `${name} (${gameState.currentPlayer} de ${gameState.numPlayers})`;
