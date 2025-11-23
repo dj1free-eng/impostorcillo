@@ -219,7 +219,15 @@ button:active {
   align-items: center;
   text-align: center;
 }
-
+.role-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+  border: 4px solid rgba(34,197,94,0.7); /* borde verde neon suave */
+  box-shadow: 0 0 12px rgba(0,0,0,0.25);
+}
 .card-front {
   background: linear-gradient(to bottom, #facc15 0%, #fff 55%);
   display: flex;
@@ -361,11 +369,11 @@ button:active {
 
         <div class="card-slider">
           <!-- Parte trasera: el rol -->
-          <div class="card-back">
-            <h3 id="roleTitle"></h3>
-            <div id="roleWord"></div>
-            <p class="role-tip" id="roleTip"></p>
-          </div>
+<div class="card-back">
+  <h3 id="roleTitle"></h3>
+  <div id="roleWord"></div>
+  <p class="role-tip" id="roleTip"></p>
+</div>
 
           <!-- Parte frontal: carta deslizante -->
           <div class="card-front" id="cardFront">
@@ -635,6 +643,9 @@ function prepareCurrentPlayerScreen() {
 
   const isImpostor = gameState.currentPlayer === gameState.impostorIndex;
   const name       =
+    // Avatar del jugador
+document.getElementById("roleAvatar").src =
+  `img/${gameState.playerAvatars[idx]}.png`;
     gameState.playerNames[gameState.currentPlayer - 1] ||
     `Jugador ${gameState.currentPlayer}`;
 
