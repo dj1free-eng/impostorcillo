@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <title>El Impostorcillo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
 <style>
 * {
   box-sizing: border-box;
@@ -426,10 +430,8 @@ button:active {
     </div>
   </div>
 
-  <p class="small">
-  Mantén el dedo mientras lees tu rol.<br>
-  Suelta para que la carta vuelva a bajar.
-</p>
+  <p id="instructionText" class="small"></p>
+
 
 <!-- Botón alternativo para ratón / dispositivos sin touch -->
 <button id="toggleRoleBtn" class="secondary" style="width:90%;max-width:320px;margin:10px auto 0;display:block;">
@@ -483,7 +485,10 @@ button:active {
 // ============================
 // CONFIG: ruta del CSV
 // ============================
-const CSV_URL = "data/words-es.csv";
+const CSV_URL = "data/words-es.csv?v=3";
+  
+  // Detectar si el dispositivo tiene pantalla táctil
+const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
 // Datos en memoria
 let categories = {};      // { categoria: [ {word, hint}, ... ] }
@@ -725,6 +730,11 @@ function startAnotherRound() {
 const cardFrontEl    = document.getElementById("cardFront");
 const nextBtnEl      = document.getElementById("nextPlayerBtn");
 const toggleRoleBtn  = document.getElementById("toggleRoleBtn");
+  // Si es dispositivo táctil, ocultamos botón Mostrar/Ocultar rol
+if (isTouch && toggleRoleBtn) {
+  toggleRoleBtn.style.display = "none";
+}
+
 let cardLiftedByButton = false;
 
 
