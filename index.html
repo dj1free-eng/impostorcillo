@@ -180,7 +180,36 @@ button:active {
   border-radius: 50%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
+/* Fila de configuración de jugador */
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
 
+.player-row input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* Avatar pequeño para elegir en la configuración */
+.avatar-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(148,163,184,0.8);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+}
+
+.avatar-thumb:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(34,197,94,0.7);
+  border-color: rgba(34,197,94,0.8);
+}
 /* Badge del rol */
 .role-badge-row .badge {
   background: rgba(15,23,42,0.95);
@@ -450,8 +479,11 @@ const gameState = {
   secretHint: "",
   impostorIndex: 1,
   roleShown: false,
-  playerNames: []
+  playerNames: [],
+  playerAvatars: []   // 👈 nuevo: índice de avatar por jugador (1–8)
 };
+
+const MAX_AVATARS = 8; // avatar1.png ... avatar8.png
 
 // ============================
 // UTILIDADES
@@ -546,17 +578,51 @@ function refreshPlayerNameInputs() {
   const n         = parseInt(numSel.value, 10);
 
   container.innerHTML = "";
+  gameState.playerAvatars = gameState.playerAvatars || [];
 
   for (let i = 1; i <= n; i++) {
+    const row = document.createElement("div");
+    row.className = "player-row";
+
+    // Input de nombre
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = `Jugador ${i}`;
     input.id = `playerName${i}`;
-    input.style.marginBottom = "6px";
-    container.appendChild(input);
+
+    // Avatar por defecto (si no había uno ya guardado)
+    const idxArr = i - 1;
+    if (!gameState.playerAvatars[idxArr]) {
+      gameState.playerAvatars[idxArr] = ((idxArr % MAX_AVATARS) + 1);
+    }
+    const avatarIndex = gameState.playerAvatars[idxArr];
+
+    // Imagen de avatar
+    const avatarImg = document.createElement("img");
+    avatarImg.className = "avatar-thumb";
+    avatarImg.src = `img/avatar${avatarIndex}.png`;
+    avatarImg.alt = `Avatar jugador ${i}`;
+    avatarImg.dataset.playerIndex = idxArr;
+
+    avatarImg.addEventListener("click", () => {
+      cycleAvatar(idxArr, avatarImg);
+    });
+
+    row.appendChild(input);
+    row.appendChild(avatarImg);
+    container.appendChild(row);
   }
 }
+  function cycleAvatar(playerIdx, imgEl) {
+  let current = gameState.playerAvatars[playerIdx] || 1;
+  let next = current + 1;
+  if (next > MAX_AVATARS) next = 1;
 
+  gameState.playerAvatars[playerIdx] = next;
+  if (imgEl) {
+    imgEl.src = `img/avatar${next}.png`;
+  }
+}
 // ============================
 // SELECCIONAR PALABRA
 // ============================
@@ -651,11 +717,14 @@ function prepareCurrentPlayerScreen() {
     `Jugador ${gameState.currentPlayer}`;
 
   // Avatar en la carta que se desliza (frontAvatar)
-  const avatarIndex = (idx % 8) + 1; // avatar1.png ... avatar8.png
-  const avatarEl = document.getElementById("frontAvatar");
-  if (avatarEl) {
-    avatarEl.src = `img/avatar${avatarIndex}.png`;
-  }
+  const avatarIndex =
+  gameState.playerAvatars[idx] ||
+  ((idx % MAX_AVATARS) + 1);
+
+const avatarEl = document.getElementById("frontAvatar");
+if (avatarEl) {
+  avatarEl.src = `img/avatar${avatarIndex}.png`;
+}
 
   badge.textContent = `${name} (${gameState.currentPlayer} de ${gameState.numPlayers})`;
 
