@@ -285,6 +285,10 @@ button:active {
   margin: 20px auto 0;
   display: block;
   box-shadow: none;
+
+  position: relative;
+  z-index: 20;         /* 👈 FIX 1 */
+  pointer-events: none; /* 👈 FIX 2 (desactivado hasta revelar rol) */
 }
 
 #nextPlayerBtn.active {
@@ -292,6 +296,8 @@ button:active {
   color: #ffffff;
   opacity: 1;
   box-shadow: 0 0 12px rgba(34,197,94,0.6);
+
+  pointer-events: auto; /* 👈 FIX 3: se activa al deslizar */
 }
 </style>
 </head>
@@ -681,6 +687,8 @@ function prepareCurrentPlayerScreen() {
 // SIGUIENTE JUGADOR
 // ============================
 function nextPlayer() {
+  // Desactivamos el botón hasta el siguiente rol
+  nextBtnEl.style.pointerEvents = "none";
   nextBtnEl.classList.remove("active");
   nextBtnEl.classList.add("hidden");
 
@@ -694,7 +702,6 @@ function nextPlayer() {
   prepareCurrentPlayerScreen();
   showScreen("screen-role");
 }
-
 // ============================
 // DEBATE Y REVELACIÓN
 // ============================
