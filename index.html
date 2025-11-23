@@ -107,7 +107,11 @@ button:active {
   opacity: 0.8;
   margin-top: 12px;
 }
-
+.version-label {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
 .badge {
   display: inline-block;
   padding: 4px 10px;
@@ -361,6 +365,7 @@ button:active {
         </p>
 
         <button onclick="goToSetup()">Nueva partida</button>
+          <p id="appVersion" class="small version-label"></p>
       </div>
 
       <!-- PANTALLA: CONFIGURACIÓN -->
@@ -485,7 +490,11 @@ button:active {
 // ============================
 // CONFIG: ruta del CSV
 // ============================
-const CSV_URL = "data/words-es.csv?v=3";
+// Versión de la aplicación
+const APP_VERSION = "1.0.0";
+
+// CSV usando la versión para evitar caché vieja
+const CSV_URL = "data/words-es.csv?v=" + APP_VERSION;
 
 // Detectar si el dispositivo tiene pantalla táctil
 const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
