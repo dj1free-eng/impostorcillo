@@ -272,6 +272,7 @@ button:active {
 }
 
 /* Botón siguiente */
+/* Botón "Jugador siguiente" */
 #nextPlayerBtn {
   background: #3f3f46;
   color: #d4d4d8;
@@ -285,10 +286,6 @@ button:active {
   margin: 20px auto 0;
   display: block;
   box-shadow: none;
-
-  position: relative;
-  z-index: 20;         /* 👈 FIX 1 */
-  pointer-events: none; /* 👈 FIX 2 (desactivado hasta revelar rol) */
 }
 
 #nextPlayerBtn.active {
@@ -296,8 +293,6 @@ button:active {
   color: #ffffff;
   opacity: 1;
   box-shadow: 0 0 12px rgba(34,197,94,0.6);
-
-  pointer-events: auto; /* 👈 FIX 3: se activa al deslizar */
 }
 </style>
 </head>
@@ -369,34 +364,34 @@ button:active {
       <!-- PANTALLA: ROL DEL JUGADOR -->
       <div id="screen-role" class="screen hidden">
 
-        <div class="role-badge-row">
-          <span class="badge" id="playerBadge"></span>
-        </div>
+  <div class="role-badge-row">
+    <span class="badge" id="playerBadge"></span>
+  </div>
 
-        <div class="card-slider">
-          <!-- Parte trasera: el rol -->
-<div class="card-back">
-  <img id="roleAvatar" class="role-avatar" src="img/avatar1.png" alt="avatar del jugador">
-  <h3 id="roleTitle"></h3>
-  <div id="roleWord"></div>
-  <p class="role-tip" id="roleTip"></p>
+  <div class="card-slider">
+    <!-- Parte trasera: el rol -->
+    <div class="card-back">
+      <h3 id="roleTitle"></h3>
+      <div id="roleWord"></div>
+      <p class="role-tip" id="roleTip"></p>
+    </div>
+
+    <!-- Parte frontal: carta deslizante con avatar -->
+    <div class="card-front" id="cardFront">
+      <img id="frontAvatar" src="img/avatar1.png" class="card-front-img" alt="avatar del jugador">
+      <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+    </div>
+  </div>
+
+  <p class="small">
+    Mantén el dedo mientras lees tu rol.<br>
+    Suelta para que la carta vuelva a bajar.
+  </p>
+
+  <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
+    Jugador siguiente
+  </button>
 </div>
-
-          <!-- Parte frontal: carta deslizante -->
-<div class="card-front" id="cardFront">
-  <img id="frontAvatar" src="img/avatar1.png" class="card-front-img" alt="avatar del jugador">
-  <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
-</div>
-
-        <p class="small">
-          Mantén el dedo mientras lees tu rol.<br>
-          Suelta para que la carta vuelva a bajar.
-        </p>
-
-        <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
-          Jugador siguiente
-        </button>
-      </div>
 
       <!-- PANTALLA: DEBATE -->
       <div id="screen-debate" class="screen hidden">
@@ -686,15 +681,17 @@ function prepareCurrentPlayerScreen() {
 // ============================
 // SIGUIENTE JUGADOR
 // ============================
+// ============================
+// SIGUIENTE JUGADOR
+// ============================
 function nextPlayer() {
-  // Desactivamos el botón hasta el siguiente rol
-  nextBtnEl.style.pointerEvents = "none";
   nextBtnEl.classList.remove("active");
   nextBtnEl.classList.add("hidden");
 
   gameState.currentPlayer++;
 
   if (gameState.currentPlayer > gameState.numPlayers) {
+    // Ya han pasado todos -> pantalla de debate
     showScreen("screen-debate");
     return;
   }
@@ -747,12 +744,11 @@ function onTouchMove(e) {
 
   cardFrontEl.style.transform = `translateY(${delta}px)`;
 
-  // ACTIVAR BOTÓN AL SUPERAR 1/3 DEL DESLIZAMIENTO
+  // Cuando se ha deslizado suficiente, mostramos el botón
   if (delta < -cardHeight / 3 && !gameState.roleShown) {
     gameState.roleShown = true;
     nextBtnEl.classList.remove("hidden");
     nextBtnEl.classList.add("active");
-    nextBtnEl.style.pointerEvents = "auto";   // << OBLIGATORIO EN SAFARI
   }
 }
 
