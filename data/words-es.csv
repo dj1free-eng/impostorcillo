@@ -1,64 +1,105 @@
 category,word,hint
-comida,Pizza,Pan plano con salsa de tomate y queso derretido
-comida,Hamburguesa,Carne entre dos panes con ingredientes
-comida,Tortilla de patatas,Huevo cuajado con patata
-comida,Croquetas,Masa rebozada y frita con relleno
-comida,Lasaña,Pasta en capas con carne y queso
-comida,Paella,Arroz típico español con ingredientes variados
-comida,Ensalada César,Lechuga con pollo y salsa cremosa
-comida,Helado,Postre frío y dulce
-comida,Galletas,Pequeños dulces crujientes
-comida,Bocadillo,Pan relleno de ingredientes simples
-comida,Sushi,Arroz enrollado con pescado
-comida,Hot dog,Salchicha en pan alargado
-comida,Tarta de chocolate,Postre dulce con cacao
-comida,Churros,Masa frita alargada espolvoreada con azúcar
-comida,Empanada,Masa rellena y horneada
+comida,pizza,Masa plana con salsa y queso fundido
+comida,hamburguesa,Pan con carne y otros ingredientes dentro
+comida,ensalada,Plato frío con verduras crudas mezcladas
+comida,espaguetis,Pasta larga que suele ir con salsa
+comida,tortilla de patatas,Huevos batidos con patata cuajada en sartén
+comida,sushi,Arroz prensado con pescado o verduras
+comida,paella,Arroz amarillo típico con cosas por encima
+comida,helado,Postre frío que se derrite si esperas
+comida,chocolate,Dulce marrón muy querido por casi todos
+comida,sándwich,Pan de molde con algo en medio
+comida,arepa,Disco de masa que se abre para rellenar
+comida,queso,Producto lácteo sólido que se corta en porciones
+comida,croquetas,Bocados rebozados crujientes por fuera y cremosos por dentro
+comida,sopa,Plato caliente de líquido con tropezones
 
-animales,Perro,Animal doméstico muy leal
-animales,Gato,Animal doméstico independiente y ágil
-animales,Elefante,Animal enorme con trompa
-animales,León,Felino grande conocido como el rey de la selva
-animales,Tigre,Felino rayado muy fuerte
-animales,Mono,Animal ágil que trepa árboles
-animales,Delfín,Mamífero marino inteligente
-animales,Tortuga,Animal con caparazón duro
-animales,Loro,Ave que puede imitar sonidos
-animales,Caballo,Animal fuerte usado para montar
-animales,Zorro,Animal astuto con cola esponjosa
-animales,Águila,Ave grande con vista poderosa
-animales,Oso,Animal grande y peludo omnívoro
-animales,Canguro,Animal que salta y tiene bolsa
-animales,Pingüino,Ave que no vuela y vive en frío
+animales,perro,Animal doméstico muy fiel que mueve la cola
+animales,gato,Animal que maúlla y suele ignorarte
+animales,león,Felino grande llamado el rey de la selva
+animales,elefante,Animal enorme con trompa larga
+animales,delfín,Animal marino muy listo que salta del agua
+animales,águila,Ave que vuela muy alto y ve muy bien
+animales,tiburón,Pez grande con muchas filas de dientes
+animales,tortuga,Animal con caparazón que se mueve despacio
+animales,conejo,Animal pequeño con orejas largas que brinca
+animales,cabra,Animal de granja que sube por rocas
+animales,koala,Animal que duerme abrazado a los árboles
+animales,pingüino,Ave que no vuela y anda como si llevara traje
+animales,zorro,Animal de hocico fino conocido por ser astuto
+animales,oso panda,Animal blanco y negro que suele comer bambú
 
-objetos,Móvil,Teléfono portátil que usamos a diario
-objetos,Mando a distancia,Dispositivo para controlar aparatos
-objetos,Llaves,Objetos de metal para abrir cerraduras
-objetos,Mochila,Bolsa que se lleva a la espalda
-objetos,Reloj,Aparato que muestra la hora
-objetos,Gafas,Lentes para ver mejor
-objetos,Portátil,Ordenador que se puede transportar
-objetos,Libro,Conjunto de hojas con texto
-objetos,Taza,Recipiente para bebidas calientes
-objetos,Televisión,Aparato que muestra imágenes en pantalla
-objetos,Auriculares,Dispositivo para escuchar sonidos
-objetos,Linterna,Luz portátil para iluminar
-objetos,Cámara de fotos,Aparato para capturar imágenes
-objetos,Bolígrafo,Instrumento para escribir
-objetos,Silla,Asiento con respaldo
+objetos,móvil,Aparato que llevas encima para llamar y chatear
+objetos,libro,Conjunto de páginas que se leen
+objetos,bolígrafo,Objeto para escribir con tinta
+objetos,llave,Objeto metálico para abrir cerraduras
+objetos,televisor,Pantalla grande para ver programas
+objetos,ordenador,Dispositivo para trabajar jugar o navegar
+objetos,auriculares,Se ponen en las orejas para escuchar sin molestar
+objetos,mochila,Bolso que se lleva a la espalda
+objetos,vaso,Recipiente para beber líquidos
+objetos,silla,Objeto con patas para sentarse
+objetos,mesa,Superficie plana donde apoyas cosas
+objetos,mando a distancia,Objeto con botones para controlar aparatos desde lejos
+objetos,linterna,Objeto que da luz portátil en la oscuridad
+objetos,reloj,Objeto que sirve para saber la hora
 
-sitios,Playa,Lugar con arena junto al mar
-sitios,Montaña,Elevación natural del terreno
-sitios,Cine,Lugar donde se proyectan películas
-sitios,Restaurante,Sitio donde se sirve comida
-sitios,Supermercado,Lugar donde compras productos
-sitios,Aeropuerto,Lugar donde despegan aviones
-sitios,Hotel,Lugar donde puedes alojarte
-sitios,Colegio,Lugar donde estudian los niños
-sitios,Hospital,Centro médico para tratar pacientes
-sitios,Parque,Espacio verde para pasear o jugar
-sitios,Museo,Lugar donde exhiben objetos importantes
-sitios,Estadio,Lugar para ver deportes o conciertos
-sitios,Gimnasio,Lugar para entrenar y hacer ejercicio
-sitios,Biblioteca,Centro con libros para leer o estudiar
-sitios,Centro comercial,Edificio con muchas tiendas
+sitios,playa,Lugar con arena junto al mar
+sitios,montaña,Lugar elevado con cuestas y senderos
+sitios,hotel,Edificio donde duermes cuando estás de viaje
+sitios,aeropuerto,Lugar donde despegan y aterrizan aviones
+sitios,colegio,Lugar al que van los niños a estudiar
+sitios,supermercado,Lugar grande donde compras comida y productos
+sitios,parque,Lugar con árboles bancos y a veces columpios
+sitios,hospital,Lugar donde atienden a los enfermos
+sitios,cine,Lugar oscuro con pantalla grande y palomitas
+sitios,restaurante,Lugar donde te sirven comida en mesa
+sitios,estadio,Lugar grande donde se juegan partidos con público
+sitios,piscina,Lugar lleno de agua para nadar
+sitios,puerto,Lugar donde se amarran barcos
+sitios,museo,Lugar donde se exponen obras y piezas antiguas
+
+deportes,fútbol,Deporte de equipo donde se marca gol con un balón
+deportes,baloncesto,Deporte con aro en alto y balón que se bota
+deportes,tenis,Deporte con raqueta y pelota sobre una red
+deportes,natación,Deporte que se practica moviéndose en el agua
+deportes,voleibol,Deporte con red donde no se deja caer el balón
+deportes,atletismo,Conjunto de pruebas de correr saltar y lanzar
+deportes,boxeo,Deporte de combate con guantes en un ring
+deportes,ciclismo,Deporte en el que se compite montado en bici
+deportes,gimnasia,Deporte con acrobacias saltos y equilibrio
+deportes,surf,Deporte sobre una tabla en las olas
+deportes,balonmano,Deporte de equipo con balón que se lanza con la mano
+deportes,patinaje,Deporte sobre ruedas o hielo moviéndose deslizado
+deportes,escalada,Deporte de subir paredes rocosas o muros artificiales
+deportes,taekwondo,Deporte de artes marciales con muchas patadas
+
+videojuegos,Mario Kart,Videojuego de carreras con objetos locos en circuitos
+videojuegos,FIFA,Videojuego de fútbol con equipos reales
+videojuegos,Minecraft,Videojuego de cubos donde construyes y exploras
+videojuegos,Fortnite,Videojuego de batalla donde solo puede quedar uno
+videojuegos,Rocket League,Videojuego de coches que juegan al fútbol
+videojuegos,Call of Duty,Videojuego de disparos en primera persona
+videojuegos,The Legend of Zelda,Videojuego de aventuras con mazmorras y puzzles
+videojuegos,Among Us,Videojuego de impostores en una nave espacial
+videojuegos,Clash Royale,Videojuego de cartas y torres en tiempo real
+videojuegos,League of Legends,Videojuego de equipos en un mapa con tres calles
+videojuegos,Roblox,Plataforma con muchos juegos creados por usuarios
+videojuegos,Gran Turismo,Videojuego de conducción de coches realistas
+videojuegos,Street Fighter,Videojuego de lucha uno contra uno
+videojuegos,Animal Crossing,Videojuego tranquilo de vivir en una isla con vecinos
+
+transportes,coche,Vehículo con cuatro ruedas para ir por carretera
+transportes,autobús,Vehículo grande para llevar a muchas personas
+transportes,tren,Medio que circula sobre vías y tiene varios vagones
+transportes,avión,Medio que vuela y recorre largas distancias
+transportes,barco,Medio para viajar por mar ríos o lagos
+transportes,moto,Transporte de dos ruedas más rápido que una bici
+transportes,bicicleta,Transporte de dos ruedas que se mueve pedaleando
+transportes,tranvía,Transporte urbano sobre raíles dentro de la ciudad
+transportes,metro,Transporte que suele ir bajo tierra con varias paradas
+transportes,patinete eléctrico,Transporte pequeño de pie con motor y manillar
+transportes,taxi,Vehículo que te lleva a un destino por un precio
+transportes,camión,Vehículo grande para transportar mercancías
+transportes,helicóptero,Aparato que vuela gracias a un rotor arriba
+transportes,caravana,Vehículo para viajar y dormir dentro durante las vacaciones
