@@ -243,16 +243,23 @@
     border: 1px solid rgba(148,163,184,0.4);
   }
 
-  .card-back,
-  .card-front {
-    position: absolute;
-    inset: 10px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-    overflow: hidden;
-    background: transparent;
-  }
+.card-back {
+  position: absolute;
+  inset: 0;
+  z-index: 1;        /* detrás */
+}
 
+.card-front {
+  position: absolute;
+  inset: 0;
+  z-index: 5;        /* SIEMPRE delante */
+  pointer-events: auto;
+}
+.card-slider {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
   /* Marco ilustrado de la carta (frontal y trasera) */
   .card-frame-img {
     position: absolute;
