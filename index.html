@@ -237,106 +237,124 @@ button:active {
   text-transform: uppercase;
 }
 
-/* ===================== */
-/* CARTA DESLIZANTE NIVEL DIOS */
-/* ===================== */
+/* ==========================
+   CARTA NIVEL DIOS
+   ========================== */
 
-/* Contenedor general de la carta */
 .card-slider {
   width: 100%;
-  max-width: 360px;
-  height: 380px;
-  margin: 0 auto 18px;
-  background: transparent;
-  border-radius: 28px;
+  height: 420px;
   position: relative;
+  margin: 0 auto 20px auto;
+  border-radius: 26px;
   overflow: hidden;
   touch-action: none;
 }
 
-/* Parte trasera: marco dorado + pergamino */
-.card-back {
+/* Marco general */
+.card-frame {
+  width: 100%;
+  height: 100%;
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  background: url("img/card-frame-back.png") center/contain no-repeat;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-/* Zona donde van los textos dentro del pergamino */
-.card-back-inner {
-  position: absolute;
-  left: 50%;
-  top: 62%;              /* baja / sube este valor para ajustar */
-  transform: translateX(-50%);
-  width: 70%;
-  text-align: center;
-}
-
-/* Título del rol (IMPOSTORCILLO / CIUDADANO) */
-#roleTitle {
-  font-size: 1.35rem;
-  letter-spacing: 0.08em;
-  font-weight: 800;
-  color: #111827;
-  margin: 0 0 6px;
-}
-
-/* Palabra / ??? */
-#roleWord {
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: #111827;
-  margin-bottom: 6px;
-}
-
-/* Pista / texto explicativo */
-.role-tip {
-  font-size: 0.9rem;
-  line-height: 1.35;
-  color: #374151;
-}
-
-/* Parte frontal: marco cuero + aro dorado + avatar */
+/* Parte delantera (avatar + instrucciones) */
 .card-front {
   position: absolute;
   inset: 0;
-  background: url("img/card-frame-front.png") center/contain no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Contenido frontal centrado */
-.card-front-inner {
-  position: absolute;
-  top: 46%;                 /* centra verticalmente el avatar */
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* Avatar redondo dentro del aro dorado */
-.front-avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 0 12px rgba(0,0,0,0.45);
-}
-
-/* Texto “desliza hacia arriba…” debajo del avatar */
-.slide-text {
-  margin-top: 14px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #f9fafb;
+  justify-content: flex-start;
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  touch-action: none;
+}
+
+/* Marco frontal con textura cuero */
+.card-front-frame {
+  position: absolute;
+  inset: 0;
+  background-image: url("img/card-frame-front.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 1;
+}
+
+/* Avatar centrado */
+.front-avatar-wrapper {
+  margin-top: 70px; /* AJUSTE PRINCIPAL */
+  width: 160px;
+  height: 160px;
+  z-index: 3;
+}
+
+.front-avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid #fff4;
+}
+
+/* Texto de instrucción */
+.slide-text {
+  margin-top: 260px;
+  font-size: 1.1rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 3;
+}
+
+/* ==========================
+   PARTE TRASERA DE LA CARTA
+   ========================== */
+
+.card-back {
+  position: absolute;
+  inset: 0;
+  padding-top: 160px; 
+  text-align: center;
+  z-index: 2;
+}
+
+.card-back-frame {
+  position: absolute;
+  inset: 0;
+  background-image: url("img/card-frame-back.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.card-back-content {
+  z-index: 2;
+  position: relative;
+  padding: 20px;
+}
+
+.card-back-content h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #2a1f0a;
+}
+
+.card-back-content #roleWord {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 8px;
+  color: #1e1a12;
+}
+
+.card-back-content .role-tip {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #333;
 }
 /* Botón siguiente jugador */
 #nextPlayerBtn {
@@ -518,35 +536,44 @@ button:active {
         </p>
       </div>
 
-      <!-- PANTALLA: ROL DEL JUGADOR -->
-      <div id="screen-role" class="screen hidden">
+<!-- PANTALLA: ROL -->
+<div id="screen-role" class="screen hidden">
 
-        <div class="role-badge-row">
-          <span class="badge" id="playerOrder"></span>
-        </div>
-
-        <h3 id="playerNameBig" class="player-name-big"></h3>
-
-        <div class="card-slider">
-  <!-- Parte trasera: rol sobre pergamino -->
-  <div class="card-back">
-    <div class="card-back-inner">
-      <h3 id="roleTitle"></h3>
-      <div id="roleWord"></div>
-      <p class="role-tip" id="roleTip"></p>
-    </div>
+  <!-- Orden del jugador -->
+  <div class="role-badge-row">
+    <span class="badge" id="playerOrderBadge"></span>
   </div>
 
-  <!-- Parte frontal: marco + avatar + texto de “desliza” -->
-  <div class="card-front" id="cardFront">
-    <div class="card-front-inner">
-      <img id="frontAvatar" class="front-avatar" src="img/avatars/avatar1.png" alt="Avatar">
+  <h2 id="playerNameBig"></h2>
+
+  <div class="card-slider">
+
+    <!-- Parte trasera -->
+    <div class="card-back">
+      <div class="card-back-frame"></div>
+
+      <div class="card-back-content">
+        <h3 id="roleTitle"></h3>
+        <div id="roleWord"></div>
+        <p class="role-tip" id="roleTip"></p>
+      </div>
+    </div>
+
+    <!-- Parte delantera (deslizable) -->
+    <div class="card-front" id="cardFront">
+      <div class="card-front-frame"></div>
+
+      <div class="front-avatar-wrapper">
+        <img id="frontAvatar" src="img/avatars/avatar1.png">
+      </div>
+
       <p class="slide-text" id="instructionText">
-        Desliza hacia arriba para ver tu rol<br>
-        Suelta para bajarla.
+        Desliza hacia arriba para ver tu rol<br>Suéltala para bajarla
       </p>
     </div>
   </div>
+
+  <button id="nextPlayerBtn" class="secondary hidden">Jugador siguiente</button>
 </div>
         <!-- Botón para escritorio -->
         <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
