@@ -250,18 +250,10 @@
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.35);
     overflow: hidden;
-  }
-
-  .card-back {
     background: transparent;
   }
 
-  .card-front {
-    background: transparent;
-    touch-action: none;
-  }
-
-  /* Marco ilustrado de la carta */
+  /* Marco ilustrado de la carta (frontal y trasera) */
   .card-frame-img {
     position: absolute;
     inset: 0;
@@ -269,41 +261,13 @@
     height: 100%;
     object-fit: contain;
     pointer-events: none;
+    z-index: 1;
   }
 
-  /* Avatar dentro del aro dorado */
-  .card-front-img {
-    position: absolute;
-    top: 32%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 54%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 0 12px rgba(0,0,0,0.4);
-    z-index: 2;
-  }
-
-  .slide-text {
-    position: absolute;
-    bottom: 16%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 72%;
-    text-align: center;
-    font-size: 0.95rem;
-    margin: 0;
-    color: #111827;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-    z-index: 2;
-  }
-
-  /* Contenido del rol sobre el pergamino */
+  /* Contenido del rol sobre el pergamino, más abajo para que no se vea por el agujero */
   .card-back-content {
     position: absolute;
-    top: 52%;
+    top: 65%;               /* bajado para evitar que se vea en el agujero */
     left: 50%;
     transform: translate(-50%, -50%);
     width: 72%;
@@ -330,6 +294,45 @@
     font-size: 0.95rem;
     color: #4b5563;
     max-width: 100%;
+  }
+
+  /* Avatar centrado tapando el agujero, debajo del marco frontal y encima del pergamino */
+  .avatar-overlay {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 54%;
+    aspect-ratio: 1 / 1;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .avatar-overlay img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+  }
+
+  /* Texto de instrucciones en la parte inferior de la carta frontal */
+  .slide-text {
+    position: absolute;
+    bottom: 14%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 72%;
+    text-align: center;
+    font-size: 0.95rem;
+    margin: 0;
+    color: #111827;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+    z-index: 2;
   }
 
   /* Botón "Jugador siguiente" */
@@ -445,7 +448,7 @@
         <h2 id="playerNameBig" class="player-name-big"></h2>
 
         <div class="card-slider">
-          <!-- Parte trasera: el rol -->
+          <!-- Parte trasera: el rol con pergamino -->
           <div class="card-back">
             <img src="img/card-frame-back.png" class="card-frame-img" alt="Carta de rol">
             <div class="card-back-content">
@@ -455,10 +458,12 @@
             </div>
           </div>
 
-          <!-- Parte frontal: carta deslizante con avatar -->
+          <!-- Parte frontal: marco cuero + avatar + texto deslizar -->
           <div class="card-front" id="cardFront">
             <img src="img/card-frame-front.png" class="card-frame-img" alt="Carta frontal">
-            <img id="frontAvatar" src="img/avatar1.png" class="card-front-img" alt="avatar del jugador">
+            <div class="avatar-overlay">
+              <img id="frontAvatar" src="img/avatar1.png" alt="avatar del jugador">
+            </div>
             <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
           </div>
         </div>
@@ -473,7 +478,6 @@
         <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
           Jugador siguiente
         </button>
-
       </div>
 
       <!-- PANTALLA: DEBATE -->
@@ -1001,7 +1005,7 @@
     versionEl.textContent = "Versión " + APP_VERSION;
   }
 
-  // Exponer funciones globales que usa el HTML
+  // Exponer funciones globales
   window.startGame = startGame;
   window.nextPlayer = nextPlayer;
   window.startAnotherRound = startAnotherRound;
