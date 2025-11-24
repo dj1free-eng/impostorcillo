@@ -536,54 +536,48 @@ button:active {
         </p>
       </div>
 
-<!-- PANTALLA: ROL -->
+<!-- PANTALLA: ROL DEL JUGADOR -->
 <div id="screen-role" class="screen hidden">
 
-  <!-- Orden del jugador -->
   <div class="role-badge-row">
-    <span class="badge" id="playerOrderBadge"></span>
+    <span class="badge" id="playerOrder"></span>
   </div>
 
-  <h2 id="playerNameBig"></h2>
+  <h2 id="playerNameBig" class="player-name-big"></h2>
 
   <div class="card-slider">
-
-    <!-- Parte trasera -->
+    <!-- Parte trasera: el rol -->
     <div class="card-back">
-      <div class="card-back-frame"></div>
-
-      <div class="card-back-content">
-        <h3 id="roleTitle"></h3>
-        <div id="roleWord"></div>
-        <p class="role-tip" id="roleTip"></p>
-      </div>
+      <h3 id="roleTitle"></h3>
+      <div id="roleWord"></div>
+      <p class="role-tip" id="roleTip"></p>
     </div>
 
-    <!-- Parte delantera (deslizable) -->
+    <!-- Parte frontal: carta deslizante con avatar -->
     <div class="card-front" id="cardFront">
-      <div class="card-front-frame"></div>
-
-      <div class="front-avatar-wrapper">
-        <img id="frontAvatar" src="img/avatars/avatar1.png">
+      <div class="card-front-inner">
+        <img id="frontAvatar" class="front-avatar" src="img/avatars/avatar1.png" alt="Avatar">
       </div>
-
-      <p class="slide-text" id="instructionText">
-        Desliza hacia arriba para ver tu rol<br>Suéltala para bajarla
-      </p>
     </div>
   </div>
 
-  <button id="nextPlayerBtn" class="secondary hidden">Jugador siguiente</button>
+  <p id="instructionText" class="small"></p>
+
+  <!-- Botón alternativo solo para ratón / sin touch -->
+  <button
+    id="toggleRoleBtn"
+    class="secondary hidden"
+    type="button"
+    style="width:90%;max-width:320px;margin:10px auto 0;display:block;">
+    Mostrar rol
+  </button>
+
+  <!-- Botón real para pasar de jugador -->
+  <button id="nextPlayerBtn" class="secondary hidden" type="button" onclick="nextPlayer()">
+    Jugador siguiente
+  </button>
+
 </div>
-        <!-- Botón para escritorio -->
-        <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
-
-        <!-- Botón de siguiente jugador -->
-        <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
-          Jugador siguiente
-        </button>
-      </div>
-
       <!-- PANTALLA: DEBATE -->
       <div id="screen-debate" class="screen hidden">
         <h2>Debatid y votad</h2>
