@@ -241,92 +241,102 @@ button:active {
 /* CARTA DESLIZANTE NIVEL DIOS */
 /* ===================== */
 
+/* Contenedor general de la carta */
 .card-slider {
   width: 100%;
+  max-width: 360px;
   height: 380px;
-  background: radial-gradient(circle at top, #020617 0%, #000 55%, #000 100%);
-  border-radius: 30px;
-  padding: 0;
+  margin: 0 auto 18px;
+  background: transparent;
+  border-radius: 28px;
   position: relative;
   overflow: hidden;
-  box-shadow:
-    0 22px 50px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(15, 23, 42, 0.9);
-}
-
-/* Base de las dos caras */
-.card-back,
-.card-front {
-  position: absolute;
-  inset: 8px;
-  border-radius: 26px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-/* Cara trasera: marco negro dorado */
-.card-back {
-  background-image: url("img/card-frame-back.png");
-  justify-content: center;
-  padding: 40px 28px 28px;
-}
-
-/* Cara frontal: marco con círculo y panel inferior */
-.card-front {
-  background-image: url("img/card-frame-front.png");
-  justify-content: flex-start;
-  padding: 90px 24px 24px; /* empuja el contenido hacia la zona del círculo/panel */
   touch-action: none;
 }
 
-/* Avatar dentro de la carta frontal */
-.card-front-img {
-  width: 140px;
-  height: 140px;
+/* Parte trasera: marco dorado + pergamino */
+.card-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: url("img/card-frame-back.png") center/contain no-repeat;
+}
+
+/* Zona donde van los textos dentro del pergamino */
+.card-back-inner {
+  position: absolute;
+  left: 50%;
+  top: 62%;              /* baja / sube este valor para ajustar */
+  transform: translateX(-50%);
+  width: 70%;
+  text-align: center;
+}
+
+/* Título del rol (IMPOSTORCILLO / CIUDADANO) */
+#roleTitle {
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 6px;
+}
+
+/* Palabra / ??? */
+#roleWord {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+/* Pista / texto explicativo */
+.role-tip {
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: #374151;
+}
+
+/* Parte frontal: marco cuero + aro dorado + avatar */
+.card-front {
+  position: absolute;
+  inset: 0;
+  background: url("img/card-frame-front.png") center/contain no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenido frontal centrado */
+.card-front-inner {
+  position: absolute;
+  top: 46%;                 /* centra verticalmente el avatar */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Avatar redondo dentro del aro dorado */
+.front-avatar {
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #fefce8;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
-  margin-bottom: 16px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.45);
 }
 
-/* Texto "Desliza..." en la zona del panel inferior */
+/* Texto “desliza hacia arriba…” debajo del avatar */
 .slide-text {
-  text-align: center;
-  font-size: 1rem;
-  margin: 10px 8px 0;
-  color: #111827;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-/* ---------- TEXTO DEL ROL EN LA CARA TRASERA ---------- */
-
-#roleTitle {
-  font-size: 1.7rem;
-  margin-bottom: 10px;
+  margin-top: 14px;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: #f9fafb;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-#roleWord {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #e5e7eb;
-  margin-bottom: 12px;
-}
-
-.role-tip {
-  font-size: 0.98rem;
-  color: #d1d5db;
-  max-width: 260px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
 }
 /* Botón siguiente jugador */
 #nextPlayerBtn {
@@ -518,22 +528,26 @@ button:active {
         <h3 id="playerNameBig" class="player-name-big"></h3>
 
         <div class="card-slider">
-          <!-- Parte trasera: el rol -->
-          <div class="card-back">
-            <h3 id="roleTitle"></h3>
-            <div id="roleWord"></div>
-            <p class="role-tip" id="roleTip"></p>
-          </div>
+  <!-- Parte trasera: rol sobre pergamino -->
+  <div class="card-back">
+    <div class="card-back-inner">
+      <h3 id="roleTitle"></h3>
+      <div id="roleWord"></div>
+      <p class="role-tip" id="roleTip"></p>
+    </div>
+  </div>
 
-          <!-- Parte frontal: carta deslizante -->
-          <div class="card-front" id="cardFront">
-            <img id="frontAvatar" src="" class="card-front-img">
-            <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
-          </div>
-        </div>
-
-        <p id="instructionText" class="small"></p>
-
+  <!-- Parte frontal: marco + avatar + texto de “desliza” -->
+  <div class="card-front" id="cardFront">
+    <div class="card-front-inner">
+      <img id="frontAvatar" class="front-avatar" src="img/avatars/avatar1.png" alt="Avatar">
+      <p class="slide-text" id="instructionText">
+        Desliza hacia arriba para ver tu rol<br>
+        Suelta para bajarla.
+      </p>
+    </div>
+  </div>
+</div>
         <!-- Botón para escritorio -->
         <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
 
