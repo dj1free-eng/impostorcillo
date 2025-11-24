@@ -265,40 +265,55 @@ button:active {
 /* Parte delantera (avatar + instrucciones) */
 .card-front {
   position: absolute;
-  inset: 0;
+  inset: 10px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  text-align: center;
   touch-action: none;
+  /* Sin fondo sólido: se ve el PNG con el agujero */
+  background: transparent;
 }
 
-/* Marco frontal con textura cuero */
-.card-front-frame {
+.card-front-inner {
+  position: relative;
+  width: 78%;
+  max-width: 320px;
+  aspect-ratio: 3 / 4;
+}
+
+/* Marco de cuero + oro */
+.card-frame-front {
   position: absolute;
   inset: 0;
-  background-image: url("img/card-frame-front.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  z-index: 1;
-}
-
-/* Avatar centrado */
-.front-avatar-wrapper {
-  margin-top: 70px; /* AJUSTE PRINCIPAL */
-  width: 160px;
-  height: 160px;
-  z-index: 3;
-}
-
-.front-avatar-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Avatar dentro del agujero circular */
+.card-avatar {
+  position: absolute;
+  top: 21%;              /* ajusta si ves que queda muy arriba/abajo */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 54%;
+  height: 54%;
   border-radius: 50%;
-  border: 6px solid #fff4;
+  object-fit: cover;
+}
+
+/* Texto de “Desliza hacia arriba…” en la plaquita inferior */
+.card-front-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 11%;
+  transform: translateX(-50%);
+  width: 70%;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #111827;
+  font-weight: 600;
 }
 
 /* Texto de instrucción */
@@ -545,24 +560,29 @@ button:active {
 
   <h2 id="playerNameBig" class="player-name-big"></h2>
 
-  <div class="card-slider">
-    <!-- Parte trasera: el rol -->
-    <div class="card-back">
+<div class="card-slider">
+  <!-- Parte trasera: rol (se queda como ya la tienes) -->
+  <div class="card-back">
+    <img src="img/card-frame-back.png" class="card-frame-back">
+    <div class="card-back-inner">
       <h3 id="roleTitle"></h3>
       <div id="roleWord"></div>
       <p class="role-tip" id="roleTip"></p>
     </div>
-
-    <!-- Parte frontal: carta deslizante con avatar -->
-    <div class="card-front" id="cardFront">
-      <div class="card-front-inner">
-        <img id="frontAvatar" class="front-avatar" src="img/avatars/avatar1.png" alt="Avatar">
-      </div>
-    </div>
   </div>
 
-  <p id="instructionText" class="small"></p>
-
+  <!-- Parte frontal: marco + avatar + texto deslizar -->
+  <div class="card-front" id="cardFront">
+    <div class="card-front-inner">
+      <img src="img/card-frame-front.png" class="card-frame-front" alt="">
+      <img id="frontAvatar" class="card-avatar" src="img/avatars/avatar1.png" alt="">
+      <p id="instructionText" class="card-front-caption">
+        Desliza hacia arriba para ver tu rol.<br>
+        Suelta para bajarla.
+      </p>
+    </div>
+  </div>
+</div>
   <!-- Botón alternativo solo para ratón / sin touch -->
   <button
     id="toggleRoleBtn"
