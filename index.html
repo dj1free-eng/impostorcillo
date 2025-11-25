@@ -253,32 +253,29 @@ button:active {
     0 0 0 1px rgba(15, 23, 42, 0.9);
 }
 
-/* cara trasera: carta de rol CON MARCO E IMAGEN */
+/* 🔙 Cara trasera: ocupa TODA la carta deslizante */
 .card-back {
-  position: relative;
+  position: absolute;   /* clave: ahora llena el card-slider */
+  inset: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
-/* fondo con la carta de cuero + pergamino */
+/* Imagen de la carta trasera (cuero + pergamino) */
 .card-back::before {
   content: "";
   position: absolute;
   inset: 0;
-
-  /* 🔥 ESTO ES LO QUE FALTABA */
-  width: 100%;
-  height: 100%;
-
-  background: url("img/card-frame-back.png") center/cover no-repeat;
+  background: url("img/card-frame-back.png") center/contain no-repeat;
   pointer-events: none;
   z-index: 1;
 }
 
-/* texto encima del pergamino */
+/* Texto del rol encima del pergamino */
 .card-back-inner {
   position: relative;
+  z-index: 2;
   text-align: center;
   max-width: 70%;
   margin: 0 auto;
