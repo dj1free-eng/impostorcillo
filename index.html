@@ -481,17 +481,25 @@ button:active {
   border-color: #22c55e;
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
 }
-    .slide-instructions {
+.slide-instructions {
   position: absolute;
-  bottom: 7.5%;
+  /* centrado en el recuadro beige */
+  top: 73%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
+
   width: 70%;
   text-align: center;
-  font-size: 0.9rem;
-  color: #111;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: #1f2933;
   font-weight: 500;
   z-index: 3;
+}
+
+/* ocultar el texto viejo de instrucciones debajo de la carta */
+#instructionText {
+  display: none;
 }
   </style>
 </head>
@@ -586,22 +594,18 @@ button:active {
     </div>
 
     <!-- Parte frontal: marco + avatar deslizante -->
-    <div class="card-front" id="cardFront">
-      <!-- fondo de la carta frontal (SIN aro) -->
-      <img src="img/card-frame-front.png" alt="" class="card-frame-front">
+<div class="card-front" id="cardFront">
+  <img src="img/card-frame-front.png" alt="" class="card-frame-front">
 
-      <!-- contenedor del avatar + aro CSS -->
-      <div class="card-avatar-wrapper">
-        <img id="frontAvatar" src="" class="card-front-avatar">
-        <div class="card-avatar-ring"></div>
-      </div>
-
-      <!-- texto de ayuda -->
-   <div class="slide-instructions">
-  Desliza hacia arriba para ver tu rol.<br>Suelta para bajarla.
-</div>
-    </div>
+  <div class="card-avatar-wrapper">
+    <img id="frontAvatar" src="" class="card-front-avatar">
+    <div class="card-avatar-ring"></div>
   </div>
+
+  <div class="slide-instructions">
+    Desliza hacia arriba para ver tu rol.<br>Suelta para bajarla.
+  </div>
+</div>
 
   <!-- texto de instrucciones (lo usa el JS) -->
   <p id="instructionText" class="small"></p>
