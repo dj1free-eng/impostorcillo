@@ -291,28 +291,48 @@ button:active {
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-  z-index: 3; /* por encima del avatar */
+  z-index: 1;
 }
 
-/* avatar que se ve por el agujero */
-.card-front-avatar {
+/* contenedor del avatar en el hueco */
+.card-avatar-wrapper {
   position: absolute;
-  /* centrado horizontal */
   left: 50%;
   transform: translateX(-50%);
-
-  /* tamaño exacto respecto a la carta (≈424px del PNG) */
-  width: 41.4%;
-  aspect-ratio: 1 / 1;   /* mantiene el círculo perfecto */
-
-  /* posición vertical: centrado en el agujero */
-  top: 14.6%;
-
-  border-radius: 50%;
-  object-fit: cover;
-  z-index: 2;             /* por debajo del marco, por encima del fondo */
+  top: 14.6%;          /* posición vertical del centro del hueco */
+  width: 41.4%;        /* tamaño relativo al alto de la carta */
+  aspect-ratio: 1 / 1; /* siempre cuadrado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;          /* por encima del fondo de la carta */
 }
 
+/* avatar en sí (la imagen del jugador) */
+.card-front-avatar {
+  width: 74%;
+  height: 74%;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* aro dorado generado por CSS encima del avatar */
+.card-avatar-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  border: 6px solid #facc15;
+  box-shadow:
+    0 0 0 2px #854d0e,
+    0 6px 14px rgba(0,0,0,0.6),
+    0 0 18px rgba(234, 179, 8, 0.7);
+  background:
+    radial-gradient(circle at 30% 30%, #fef9c3 0%, transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(0,0,0,0.35) 0%, transparent 60%);
+}
 /* texto "desliza..." en la banda clara */
 .slide-text {
   position: absolute;
@@ -551,16 +571,18 @@ button:active {
   </div>
 
   <!-- Parte frontal: marco + avatar deslizante -->
-  <div class="card-front" id="cardFront">
-    <!-- marco de la carta frontal -->
-    <img src="img/card-frame-front.png" alt="" class="card-frame-front">
+<div class="card-front" id="cardFront">
+  <!-- fondo de la carta frontal (SIN aro) -->
+  <img src="img/card-frame-front.png" alt="" class="card-frame-front">
 
-    <!-- avatar (queda detrás del marco, visible por el círculo) -->
+  <!-- contenedor del avatar + aro CSS -->
+  <div class="card-avatar-wrapper">
     <img id="frontAvatar" src="" class="card-front-avatar">
-
-    <!-- texto de ayuda -->
-    <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+    <div class="card-avatar-ring"></div>
   </div>
+
+  <!-- texto de ayuda -->
+  <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
 </div>
         <!-- Botón para escritorio -->
         <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
