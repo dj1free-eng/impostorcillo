@@ -294,13 +294,12 @@ button:active {
 }
 
 /* contenedor del avatar en el hueco */
-/* contenedor del avatar */
 .card-avatar-wrapper {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   top: 14.6%;
-  width: 37%;              /* menos grande que antes */
+  width: 37%;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -308,10 +307,9 @@ button:active {
   z-index: 3;
 }
 
-/* avatar */
 .card-front-avatar {
-  width: 78%;
-  height: 78%;
+  width: 84%;
+  height: 84%;
   border-radius: 50%;
   object-fit: cover;
   z-index: 2;
@@ -322,31 +320,20 @@ button:active {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  z-index: 3;
   pointer-events: none;
+  z-index: 3;
 
-  /* Aro ancho */
-  border: 10px solid transparent;
+  /* centro totalmente transparente */
+  background: transparent;
 
-  /* Efectos metalizados */
-  background:
-    radial-gradient(circle at 50% 50%,
-      rgba(255,255,255,0.35) 0%,
-      rgba(255,255,255,0.25) 35%,
-      rgba(0,0,0,0.35) 75%,
-      rgba(0,0,0,0.55) 100%
-    ),
-    radial-gradient(circle at 30% 30%,
-      rgba(255,255,200,0.9) 0%,
-      rgba(240,200,60,0.8) 50%,
-      rgba(200,150,30,0.9) 100%
-    );
+  /* aro dorado */
+  border: 7px solid #f8e08a;
 
+  /* relieve y brillo sin llenar el centro */
   box-shadow:
-    0 0 0 2px #e2b847 inset,
-    0 0 0 6px #c08a1e inset,
-    0 6px 12px rgba(0,0,0,0.6),
-    0 0 14px rgba(255,215,100,0.6);
+    0 0 0 2px #b8861b inset,
+    0 4px 8px rgba(0,0,0,0.6),
+    0 0 10px rgba(255,215,100,0.7);
 }
 /* texto "desliza..." en la banda clara */
 .slide-text {
