@@ -282,8 +282,7 @@ button:active {
   touch-action: none;
   z-index: 2;
 }
-
-/* marco dorado con agujero circular */
+/* fondo de la carta (leather + marco) */
 .card-frame-front {
   position: absolute;
   inset: 0;
@@ -291,7 +290,7 @@ button:active {
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-  z-index: 3;
+  z-index: 1;   /* AHORA debajo del avatar */
 }
 
 /* contenedor del avatar en el hueco */
@@ -299,31 +298,31 @@ button:active {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 14.6%;          /* posición vertical del centro del hueco */
-  width: 41.4%;        /* tamaño relativo al alto de la carta */
-  aspect-ratio: 1 / 1; /* siempre cuadrado */
+  top: 14.6%;
+  width: 41.4%;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;          /* por encima del fondo de la carta */
+  z-index: 2;   /* por encima del fondo */
 }
 
-/* avatar en sí (la imagen del jugador) */
+/* avatar en sí */
 .card-front-avatar {
   width: 74%;
   height: 74%;
   border-radius: 50%;
   object-fit: cover;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* aro dorado generado por CSS encima del avatar */
+/* aro dorado CSS encima del avatar */
 .card-avatar-ring {
   position: absolute;
   inset: 0;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;   /* lo más alto */
   border: 6px solid #facc15;
   box-shadow:
     0 0 0 2px #854d0e,
