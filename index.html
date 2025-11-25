@@ -256,20 +256,17 @@ button:active {
 
 /* capa trasera: carta de rol */
 .card-back {
-  position: absolute;
-  inset: 0;
-  border-radius: 28px;
-  background: url("img/card-frame-back.png") center/cover no-repeat;
+  /* ya lo tienes, solo añado esto para asegurar */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
 }
 
 .card-back-inner {
   text-align: center;
-  max-width: 70%;
-}
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 16px 10px 10px;
 
 /* capa frontal: marco + avatar que se desliza */
 .card-front {
@@ -349,29 +346,32 @@ button:active {
   font-weight: 600;
   letter-spacing: 0.02em;
 }
-
-/* ---------- TEXTO DE ROL EN LA PARTE TRASERA ---------- */
-
+/* título del rol ("CIUDADANO", "IMPOSTORCILLO"...) */
 #roleTitle {
-  font-size: 1.7rem;
-  margin-bottom: 10px;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
   color: #2b2115;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
+/* palabra secreta o ??? */
 #roleWord {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #111827;
-  margin-bottom: 12px;
+  margin: 0 auto 10px;
+  max-width: 90%;
+  word-wrap: break-word;
 }
 
+/* texto explicativo */
 .role-tip {
-  font-size: 0.98rem;
+  font-size: 0.9rem;
   color: #4b5563;
-  max-width: 260px;
+  max-width: 90%;
+  margin: 0 auto;
 }
 /* Botón siguiente jugador */
 #nextPlayerBtn {
