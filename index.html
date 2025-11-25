@@ -552,47 +552,52 @@ button:active {
       </div>
 
       <!-- PANTALLA: ROL DEL JUGADOR -->
-      <div id="screen-role" class="screen hidden">
+<div id="screen-role" class="screen hidden">
 
-        <div class="role-badge-row">
-          <span class="badge" id="playerOrder"></span>
-        </div>
+  <div class="role-badge-row">
+    <span class="badge" id="playerOrder"></span>
+  </div>
 
-        <h3 id="playerNameBig" class="player-name-big"></h3>
+  <h3 id="playerNameBig" class="player-name-big"></h3>
 
-        <div class="card-slider">
-  <!-- Parte trasera: el rol -->
-  <div class="card-back">
-    <div class="card-back-inner">
-      <h3 id="roleTitle"></h3>
-      <div id="roleWord"></div>
-      <p class="role-tip" id="roleTip"></p>
+  <!-- Carta deslizante -->
+  <div class="card-slider">
+    <!-- Parte trasera: el rol -->
+    <div class="card-back">
+      <div class="card-back-inner">
+        <h3 id="roleTitle"></h3>
+        <div id="roleWord"></div>
+        <p class="role-tip" id="roleTip"></p>
+      </div>
+    </div>
+
+    <!-- Parte frontal: marco + avatar deslizante -->
+    <div class="card-front" id="cardFront">
+      <!-- fondo de la carta frontal (SIN aro) -->
+      <img src="img/card-frame-front.png" alt="" class="card-frame-front">
+
+      <!-- contenedor del avatar + aro CSS -->
+      <div class="card-avatar-wrapper">
+        <img id="frontAvatar" src="" class="card-front-avatar">
+        <div class="card-avatar-ring"></div>
+      </div>
+
+      <!-- texto de ayuda -->
+      <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
     </div>
   </div>
 
-  <!-- Parte frontal: marco + avatar deslizante -->
-<div class="card-front" id="cardFront">
-  <!-- fondo de la carta frontal (SIN aro) -->
-  <img src="img/card-frame-front.png" alt="" class="card-frame-front">
+  <!-- texto de instrucciones (lo usa el JS) -->
+  <p id="instructionText" class="small"></p>
 
-  <!-- contenedor del avatar + aro CSS -->
-  <div class="card-avatar-wrapper">
-    <img id="frontAvatar" src="" class="card-front-avatar">
-    <div class="card-avatar-ring"></div>
-  </div>
+  <!-- Botón para escritorio -->
+  <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
 
-  <!-- texto de ayuda -->
-  <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+  <!-- Botón de siguiente jugador -->
+  <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
+    Jugador siguiente
+  </button>
 </div>
-        <!-- Botón para escritorio -->
-        <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
-
-        <!-- Botón de siguiente jugador -->
-        <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
-          Jugador siguiente
-        </button>
-      </div>
-
       <!-- PANTALLA: DEBATE -->
       <div id="screen-debate" class="screen hidden">
         <h2>Debatid y votad</h2>
