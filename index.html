@@ -297,14 +297,20 @@ button:active {
 /* avatar que se ve por el agujero */
 .card-front-avatar {
   position: absolute;
-  top: 63px;
+  /* centrado horizontal */
   left: 50%;
   transform: translateX(-50%);
-  width: 182px;
-  height: 182px;
+
+  /* tamaño exacto respecto a la carta (≈424px del PNG) */
+  width: 41.4%;
+  aspect-ratio: 1 / 1;   /* mantiene el círculo perfecto */
+
+  /* posición vertical: centrado en el agujero */
+  top: 14.6%;
+
   border-radius: 50%;
   object-fit: cover;
-  z-index: 2;
+  z-index: 2;             /* por debajo del marco, por encima del fondo */
 }
 
 /* texto "desliza..." en la banda clara */
