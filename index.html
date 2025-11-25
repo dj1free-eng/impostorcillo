@@ -294,43 +294,59 @@ button:active {
 }
 
 /* contenedor del avatar en el hueco */
+/* contenedor del avatar */
 .card-avatar-wrapper {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   top: 14.6%;
-  width: 41.4%;
+  width: 37%;              /* menos grande que antes */
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;   /* por encima del fondo */
+  z-index: 3;
 }
 
-/* avatar en sí */
+/* avatar */
 .card-front-avatar {
-  width: 74%;
-  height: 74%;
+  width: 78%;
+  height: 78%;
   border-radius: 50%;
   object-fit: cover;
   z-index: 2;
 }
 
-/* aro dorado CSS encima del avatar */
+/* aro dorado versión PRO */
 .card-avatar-ring {
   position: absolute;
   inset: 0;
   border-radius: 50%;
+  z-index: 3;
   pointer-events: none;
-  z-index: 3;   /* lo más alto */
-  border: 6px solid #facc15;
-  box-shadow:
-    0 0 0 2px #854d0e,
-    0 6px 14px rgba(0,0,0,0.6),
-    0 0 18px rgba(234, 179, 8, 0.7);
+
+  /* Aro ancho */
+  border: 10px solid transparent;
+
+  /* Efectos metalizados */
   background:
-    radial-gradient(circle at 30% 30%, #fef9c3 0%, transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(0,0,0,0.35) 0%, transparent 60%);
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.35) 0%,
+      rgba(255,255,255,0.25) 35%,
+      rgba(0,0,0,0.35) 75%,
+      rgba(0,0,0,0.55) 100%
+    ),
+    radial-gradient(circle at 30% 30%,
+      rgba(255,255,200,0.9) 0%,
+      rgba(240,200,60,0.8) 50%,
+      rgba(200,150,30,0.9) 100%
+    );
+
+  box-shadow:
+    0 0 0 2px #e2b847 inset,
+    0 0 0 6px #c08a1e inset,
+    0 6px 12px rgba(0,0,0,0.6),
+    0 0 14px rgba(255,215,100,0.6);
 }
 /* texto "desliza..." en la banda clara */
 .slide-text {
@@ -478,6 +494,18 @@ button:active {
   border-color: #22c55e;
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
 }
+    .slide-instructions {
+  position: absolute;
+  bottom: 7.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #111;
+  font-weight: 500;
+  z-index: 3;
+}
   </style>
 </head>
 <body>
@@ -582,7 +610,9 @@ button:active {
       </div>
 
       <!-- texto de ayuda -->
-      <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+   <div class="slide-instructions">
+  Desliza hacia arriba para ver tu rol.<br>Suelta para bajarla.
+</div>
     </div>
   </div>
 
