@@ -1,1224 +1,2107 @@
-
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>El Impostorcillo</title>
+  <title>El Impostorcillo - Suma Cum Laude</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <style>
-* {
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  * {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+:root {
+–primary-start: #667eea;
+–primary-end: #764ba2;
+–secondary-start: #f093fb;
+–secondary-end: #f5576c;
+–success: #10b981;
+–danger: #ef4444;
+–warning: #f59e0b;
+–dark: #1f2937;
+–gray: #6b7280;
+–light-gray: #e5e7eb;
 }
 
 body {
-  margin: 0;
-  background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
-  color: #f5f5f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+margin: 0;
+background: linear-gradient(135deg, var(–primary-start) 0%, var(–primary-end) 50%, var(–secondary-start) 100%);
+background-attachment: fixed;
+color: var(–dark);
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+padding: 20px 0;
+transition: background 0.3s ease;
+}
+
+body.dark-mode {
+background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 50%, #831843 100%);
+}
+
+body.dark-mode .card {
+background: rgba(31, 41, 55, 0.95);
+color: #f3f4f6;
+border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+color: #f3f4f6;
+}
+
+body.dark-mode p, body.dark-mode label {
+color: #d1d5db;
+}
+
+body.dark-mode input, body.dark-mode select {
+background: #374151;
+color: #f3f4f6;
+border-color: #4b5563;
 }
 
 .app {
-  width: 100%;
-  max-width: 480px;
-  padding: 16px;
+width: 100%;
+max-width: 480px;
+padding: 16px;
 }
 
 .card {
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 20px;
-  padding: 24px 20px 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-  position: relative;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(148, 163, 184, 0.3);
+background: rgba(255, 255, 255, 0.98);
+border-radius: 24px;
+padding: 32px 24px 28px;
+box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 0 10px 20px rgba(0, 0, 0, 0.15);
+position: relative;
+backdrop-filter: blur(20px);
+border: 2px solid rgba(255, 255, 255, 0.5);
+transition: all 0.3s ease;
 }
 
 .screen.hidden {
-  display: none;
+display: none;
 }
 
 h1, h2, h3 {
-  margin-top: 0;
-  text-align: center;
+margin-top: 0;
+text-align: center;
+color: var(–dark);
 }
 
 h1 {
-  font-size: 1.9rem;
-  margin-bottom: 0.5rem;
+font-size: 2.2rem;
+margin-bottom: 0.5rem;
+background: linear-gradient(135deg, var(–primary-start), var(–primary-end));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+font-weight: 800;
+}
+
+h2 {
+font-size: 1.8rem;
+font-weight: 700;
 }
 
 p {
-  line-height: 1.4;
+line-height: 1.6;
+color: #4b5563;
 }
 
 label {
-  display: block;
-  margin: 10px 0 4px;
-  font-size: 0.9rem;
-  opacity: 0.9;
+display: block;
+margin: 16px 0 6px;
+font-size: 0.95rem;
+font-weight: 600;
+color: #374151;
 }
 
-input,
-select {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: none;
-  font-size: 1rem;
-  margin-bottom: 8px;
+input, select {
+width: 100%;
+padding: 12px 14px;
+border-radius: 12px;
+border: 2px solid var(–light-gray);
+font-size: 1rem;
+margin-bottom: 8px;
+background: white;
+transition: all 0.2s ease;
 }
 
-/* Botones */
+input:focus, select:focus {
+outline: none;
+border-color: var(–primary-start);
+box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
 button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 999px;
-  border: none;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 14px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.5);
-  transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+width: 100%;
+padding: 14px;
+border-radius: 16px;
+border: none;
+font-size: 1.05rem;
+font-weight: 700;
+margin-top: 16px;
+cursor: pointer;
+background: linear-gradient(135deg, var(–primary-start), var(–primary-end));
+color: #fff;
+box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+transition: all 0.2s ease;
+position: relative;
+overflow: hidden;
+}
+
+button::before {
+content: ‘’;
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+transition: left 0.5s ease;
+}
+
+button:hover::before {
+left: 100%;
+}
+
+button:hover {
+transform: translateY(-2px);
+box-shadow: 0 12px 28px rgba(102, 126, 234, 0.5);
 }
 
 button.secondary {
-  background: #374151;
-  box-shadow: none;
+background: linear-gradient(135deg, #6b7280, #4b5563);
+box-shadow: 0 4px 12px rgba(75, 85, 99, 0.3);
+}
+
+button.danger {
+background: linear-gradient(135deg, var(–danger), #dc2626);
 }
 
 button:active {
-  transform: translateY(1px);
-  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.4);
-  opacity: 0.9;
+transform: translateY(0);
 }
 
 .small {
-  font-size: 0.85rem;
-  text-align: center;
-  opacity: 0.8;
-  margin-top: 12px;
-}
-
-.version-label {
-  margin-top: 8px;
-  font-size: 0.8rem;
-  opacity: 0.7;
+font-size: 0.9rem;
+text-align: center;
+color: var(–gray);
+margin-top: 16px;
+line-height: 1.5;
 }
 
 .badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: #1f2937;
-  color: #9ca3af;
-  margin-bottom: 10px;
+display: inline-block;
+padding: 6px 16px;
+border-radius: 999px;
+font-size: 0.8rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+background: linear-gradient(135deg, var(–primary-start), var(–primary-end));
+color: white;
+margin-bottom: 12px;
+font-weight: 600;
+box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .center {
-  text-align: center;
+text-align: center;
 }
 
 .highlight {
-  color: #22c55e;
-  font-weight: 700;
+color: var(–primary-end);
+font-weight: 700;
+font-size: 1.2em;
 }
 
-/* Botón pequeño menú */
-.menu-button {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: #374151;
-  color: #e5e7eb;
-  font-size: 0.7rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
+/* Controles superiores */
+.top-controls {
+position: absolute;
+top: 16px;
+right: 16px;
+display: flex;
+gap: 8px;
+z-index: 100;
 }
 
-.menu-button span {
-  pointer-events: none;
+.icon-btn {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+border: none;
+cursor: pointer;
+background: linear-gradient(135deg, var(–primary-start), var(–primary-end));
+color: white;
+font-size: 1.2rem;
+box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+padding: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.2s ease;
+margin: 0;
 }
 
-/* Inicio */
+.icon-btn:hover {
+transform: scale(1.1);
+}
+
+/* Hero */
 .hero-illustration {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
+display: flex;
+justify-content: center;
+margin-bottom: 20px;
+animation: float 3s ease-in-out infinite;
 }
 
-.hero-illustration img {
-  width: 80%;
-  max-width: 260px;
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+@keyframes float {
+0%, 100% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
 }
 
-/* Configuración */
+.hero-illustration .emoji {
+font-size: 120px;
+text-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+/* Setup */
 .title-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+margin-bottom: 8px;
 }
 
 .title-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+font-size: 64px;
+animation: pulse 2s ease-in-out infinite;
 }
 
-/* Fila de jugador: nombre + avatar */
+@keyframes pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.05); }
+}
+
 .player-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 12px;
 }
 
 .player-row input {
-  flex: 1;
+flex: 1;
+margin-bottom: 0;
 }
 
-/* Avatar pequeño junto al nombre (configuración) */
 .avatar-thumb {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(148,163,184,0.8);
-  cursor: pointer;
-  box-shadow: 0 0 6px rgba(0,0,0,0.5);
-  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
-  flex-shrink: 0;
+width: 48px;
+height: 48px;
+border-radius: 50%;
+font-size: 24px;
+cursor: pointer;
+box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+transition: all 0.2s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+background: linear-gradient(135deg, #fef3c7, #fde68a);
+border: 3px solid var(–light-gray);
 }
 
 .avatar-thumb:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(34,197,94,0.7);
-  border-color: rgba(34,197,94,0.8);
+transform: scale(1.15);
+box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+border-color: var(–primary-start);
 }
 
-/* Badge del rol (fila superior en pantalla de rol) */
-.role-badge-row .badge {
-  background: rgba(15,23,42,0.95);
-  color: #e5e7eb;
-  padding: 6px 14px;
+/* Game modes */
+.game-mode-selector {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin: 16px 0;
 }
 
-/* Nombre del jugador grande en pantalla de rol */
-.player-name-big {
-  font-size: 1.8rem;
-  font-weight: 800;
-  text-align: center;
-  margin: 0 0 14px 0;
-  color: #f8fafc;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+.mode-card {
+padding: 16px;
+border-radius: 12px;
+border: 2px solid var(–light-gray);
+cursor: pointer;
+transition: all 0.2s ease;
+text-align: center;
 }
 
-/* ===================== */
-/* CARTA DESLIZANTE PRO  */
-/* ===================== */
+.mode-card:hover {
+border-color: var(–primary-start);
+box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
 
+.mode-card.selected {
+border-color: var(–primary-start);
+background: rgba(102, 126, 234, 0.1);
+}
+
+.mode-card .emoji {
+font-size: 32px;
+margin-bottom: 8px;
+}
+
+.mode-card .title {
+font-weight: 600;
+font-size: 0.9rem;
+color: var(–dark);
+}
+
+/* Card slider */
 .card-slider {
-  width: 100%;
-  height: 380px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 28px;
-  background: radial-gradient(circle at top, #020617 0%, #000 55%, #000 100%);
-  box-shadow:
-    0 22px 50px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(15, 23, 42, 0.9);
+width: 100%;
+height: 400px;
+background: linear-gradient(135deg, var(–primary-start) 0%, var(–primary-end) 100%);
+border-radius: 28px;
+overflow: hidden;
+position: relative;
+touch-action: none;
+box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+margin-bottom: 20px;
+border: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-/* 🔙 Cara trasera: ocupa TODA la carta deslizante */
-.card-back {
-  position: absolute;   /* clave: ahora llena el card-slider */
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.card-back, .card-front {
+position: absolute;
+inset: 12px;
+border-radius: 24px;
+box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+overflow: hidden;
+background: white;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 24px;
 }
 
-/* Imagen de la carta trasera (cuero + pergamino) */
-.card-back::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("img/card-frame-back.png") center/contain no-repeat;
-  pointer-events: none;
-  z-index: 1;
+body.dark-mode .card-back,
+body.dark-mode .card-front {
+background: #374151;
 }
 
-/* Texto del rol encima del pergamino */
-.card-back-inner {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 70%;
-  margin: 0 auto;
-  padding: 24px 12px 16px;
-}
-/* capa frontal: marco + avatar que se desliza */
-.card-front {
-  position: absolute;
-  inset: 0;
-  border-radius: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  touch-action: none;
-  z-index: 2;
+.card-back-content {
+text-align: center;
+width: 100%;
 }
 
-/* fondo de la carta (leather + marco) */
-.card-frame-front {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* contenedor del avatar en el hueco */
-.card-avatar-wrapper {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 14.6%;
-  width: 37%;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-}
-
-.card-front-avatar {
-  width: 84%;
-  height: 84%;
-  border-radius: 50%;
-  object-fit: cover;
-  z-index: 2;
-}
-
-/* aro dorado versión PRO */
-.card-avatar-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 3;
-
-  background: transparent;
-  border: 7px solid #f8e08a;
-  box-shadow:
-    0 0 0 2px #b8861b inset,
-    0 4px 8px rgba(0,0,0,0.6),
-    0 0 10px rgba(255,215,100,0.7);
-}
-
-/* texto "desliza..." en banda clara (lo dejamos por si lo quieres usar) */
-.slide-text {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  text-align: center;
-  font-size: 0.95rem;
-  margin: 0;
-  color: #111827;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-/* título del rol ("CIUDADANO", "IMPOSTORCILLO"...) */
 #roleTitle {
-  font-size: 1.4rem;
-  margin-bottom: 8px;
-  color: #2b2115;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+font-size: 1.7rem;
+margin-bottom: 10px;
+color: var(–dark);
+font-weight: 700;
 }
 
-/* palabra secreta o ??? */
 #roleWord {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #111827;
-  margin: 0 auto 10px;
-  max-width: 90%;
-  word-wrap: break-word;
+font-size: 2.5rem;
+font-weight: 900;
+color: var(–primary-end);
+margin-bottom: 12px;
+word-wrap: break-word;
 }
 
-/* texto explicativo */
 .role-tip {
-  font-size: 0.9rem;
-  color: #4b5563;
-  max-width: 90%;
-  margin: 0 auto;
+font-size: 1rem;
+color: #4b5563;
+line-height: 1.4;
 }
 
-/* Botón siguiente jugador */
+.avatar-overlay {
+width: 120px;
+height: 120px;
+font-size: 80px;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 20px;
+border-radius: 50%;
+background: linear-gradient(135deg, #fef3c7, #fde68a);
+box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+border: 4px solid rgba(255, 255, 255, 0.9);
+}
+
+.slide-text {
+position: absolute;
+bottom: 24px;
+left: 50%;
+transform: translateX(-50%);
+width: 80%;
+text-align: center;
+font-size: 1rem;
+color: var(–dark);
+font-weight: 700;
+}
+
+.player-name-big {
+font-size: 2rem;
+font-weight: 900;
+text-align: center;
+margin: 0 0 16px 0;
+background: linear-gradient(135deg, var(–primary-start), var(–primary-end));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+letter-spacing: 1px;
+text-transform: uppercase;
+}
+
+/* Timer */
+.timer-container {
+text-align: center;
+margin: 20px 0;
+}
+
+.timer-display {
+font-size: 3rem;
+font-weight: 900;
+background: linear-gradient(135deg, var(–primary-start), var(–primary-end));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin: 12px 0;
+}
+
+.timer-display.warning {
+background: linear-gradient(135deg, var(–warning), var(–danger));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+animation: pulse-warning 1s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.6; }
+}
+
+.timer-controls {
+display: flex;
+gap: 8px;
+justify-content: center;
+margin-top: 12px;
+}
+
+.timer-controls button {
+width: auto;
+padding: 8px 16px;
+margin: 0;
+font-size: 0.9rem;
+}
+
+/* Voting */
+.voting-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 12px;
+margin: 20px 0;
+}
+
+.vote-card {
+padding: 16px;
+border-radius: 12px;
+border: 2px solid var(–light-gray);
+cursor: pointer;
+transition: all 0.2s ease;
+text-align: center;
+}
+
+.vote-card:hover {
+border-color: var(–primary-start);
+transform: scale(1.05);
+}
+
+.vote-card.voted {
+border-color: var(–success);
+background: rgba(16, 185, 129, 0.1);
+}
+
+.vote-card.eliminated {
+opacity: 0.4;
+cursor: not-allowed;
+background: repeating-linear-gradient(
+45deg,
+transparent,
+transparent 10px,
+rgba(239, 68, 68, 0.1) 10px,
+rgba(239, 68, 68, 0.1) 20px
+);
+}
+
+.vote-card .emoji {
+font-size: 48px;
+margin-bottom: 8px;
+}
+
+.vote-card .name {
+font-weight: 600;
+color: var(–dark);
+}
+
+.vote-card .vote-count {
+font-size: 0.85rem;
+color: var(–gray);
+margin-top: 4px;
+}
+
+/* Results */
+.result-card {
+background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+border-radius: 16px;
+padding: 20px;
+margin: 20px 0;
+text-align: center;
+}
+
+.result-emoji {
+font-size: 80px;
+margin-bottom: 16px;
+}
+
+#finalWord {
+font-size: 2.2rem;
+text-align: center;
+margin: 16px 0;
+font-weight: 900;
+background: linear-gradient(135deg, var(–primary-start), var(–primary-end));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+padding: 12px;
+border-radius: 16px;
+}
+
+/* Stats */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 12px;
+margin: 20px 0;
+}
+
+.stat-card {
+background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+border-radius: 12px;
+padding: 16px;
+text-align: center;
+}
+
+.stat-value {
+font-size: 2rem;
+font-weight: 900;
+color: var(–primary-end);
+margin-bottom: 4px;
+}
+
+.stat-label {
+font-size: 0.85rem;
+color: var(–gray);
+text-transform: uppercase;
+letter-spacing: 0.05em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+from {
+opacity: 0;
+transform: translateY(10px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.screen {
+animation: fadeIn 0.3s ease;
+}
+
+@keyframes confetti {
+0% { transform: translateY(0) rotateZ(0deg); opacity: 1; }
+100% { transform: translateY(1000px) rotateZ(720deg); opacity: 0; }
+}
+
+.confetti {
+position: fixed;
+width: 10px;
+height: 10px;
+background: var(–primary-start);
+animation: confetti 3s ease-out forwards;
+z-index: 1000;
+}
+
+/* Tutorial */
+.tutorial-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0, 0, 0, 0.8);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 2000;
+animation: fadeIn 0.3s ease;
+}
+
+.tutorial-content {
+background: white;
+border-radius: 24px;
+padding: 32px;
+max-width: 400px;
+margin: 20px;
+text-align: center;
+}
+
+body.dark-mode .tutorial-content {
+background: #374151;
+}
+
+.tutorial-step {
+display: none;
+}
+
+.tutorial-step.active {
+display: block;
+}
+
+.tutorial-emoji {
+font-size: 80px;
+margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+.voting-grid {
+grid-template-columns: 1fr;
+}
+
+```
+.stats-grid {
+  grid-template-columns: 1fr;
+}
+```
+
+}
+
+ul {
+font-size: 1rem;
+line-height: 1.7;
+color: #4b5563;
+padding-left: 24px;
+}
+
+ul li {
+margin-bottom: 8px;
+}
+
+.difficulty-badge {
+display: inline-block;
+padding: 4px 12px;
+border-radius: 12px;
+font-size: 0.75rem;
+font-weight: 600;
+margin-left: 8px;
+}
+
+.difficulty-easy {
+background: #d1fae5;
+color: #065f46;
+}
+
+.difficulty-medium {
+background: #fef3c7;
+color: #92400e;
+}
+
+.difficulty-hard {
+background: #fee2e2;
+color: #991b1b;
+}
+
 #nextPlayerBtn {
-  background: #3f3f46;
-  color: #d4d4d8;
-  opacity: 0.5;
-  border-radius: 12px;
-  padding: 14px 24px;
-  font-size: 1.05rem;
-  border: none;
-  width: 90%;
-  max-width: 320px;
-  margin: 20px auto 0;
-  display: block;
-  box-shadow: none;
+background: linear-gradient(135deg, #d1d5db, #9ca3af);
+color: #6b7280;
+opacity: 0.6;
+border-radius: 16px;
+padding: 16px 28px;
+font-size: 1.1rem;
+border: none;
+width: 90%;
+max-width: 340px;
+margin: 24px auto 0;
+display: block;
+box-shadow: none;
+transition: all 0.3s ease;
 }
 
 #nextPlayerBtn.active {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  color: #ffffff;
-  opacity: 1;
-  box-shadow: 0 0 12px rgba(34,197,94,0.6);
+background: linear-gradient(135deg, var(–success), #059669);
+color: #ffffff;
+opacity: 1;
+box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+animation: bounce 0.5s ease;
 }
 
-/* Botón mostrar/ocultar rol en escritorio */
-#toggleRoleBtn {
-  width: auto;
-  padding-inline: 18px;
-  margin-top: 8px;
-  font-size: 0.9rem;
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-5px); }
 }
 
-/* MODAL SELECCIÓN DE AVATAR */
-.avatar-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+#nextPlayerBtn.active:hover {
+transform: translateY(-2px);
+box-shadow: 0 12px 28px rgba(16, 185, 129, 0.5);
 }
+</style>
 
-.avatar-modal.hidden {
-  display: none;
-}
-
-.avatar-modal-content {
-  background: rgba(15, 23, 42, 0.98);
-  border-radius: 20px;
-  padding: 20px 16px 16px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75);
-  border: 1px solid rgba(148, 163, 184, 0.4);
-}
-
-.avatar-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.avatar-modal-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.avatar-modal-close {
-  background: none;
-  border: none;
-  color: #e5e7eb;
-  font-size: 1.2rem;
-  cursor: pointer;
-  width: auto;
-  box-shadow: none;
-  padding: 0;
-}
-
-.avatar-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.avatar-option {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  border-radius: 999px;
-}
-
-.avatar-option img {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid transparent;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
-}
-
-.avatar-option:hover img {
-  transform: translateY(-2px) scale(1.03);
-  border-color: #22c55e;
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
-}
-
-/* Avatar pequeño junto al nombre (configuración) – duplicado por seguridad */
-.avatar-thumb {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(148,163,184,0.8);
-  cursor: pointer;
-  box-shadow: 0 0 6px rgba(0,0,0,0.5);
-  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
-  flex-shrink: 0;
-}
-
-.avatar-thumb:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(34,197,94,0.7);
-  border-color: rgba(34,197,94,0.8);
-}
-
-/* Texto dentro del recuadro beige de la carta */
-.slide-instructions {
-  position: absolute;
-  top: 73%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  text-align: center;
-  font-size: 0.85rem;
-  line-height: 1.3;
-  color: #1f2933;
-  font-weight: 500;
-  z-index: 3;
-}
-
-/* ocultar el texto viejo de instrucciones debajo de la carta */
-#instructionText {
-  display: none;
-}
-  </style>
 </head>
 <body>
   <div class="app">
     <div class="card">
 
-      <!-- botón de menú global -->
-      <button class="menu-button" onclick="goToSetup()">
-        <span>≡</span>
-      </button>
-
-      <!-- PANTALLA: INICIO -->
-      <div id="screen-start" class="screen">
-        <div class="hero-illustration">
-          <img src="img/impostor-hero.png" alt="Impostorcillo">
-        </div>
-
-        <h1>El Impostorcillo</h1>
-
-        <p class="center">
-          El juego social de deducción y engaño.<br>
-          ¡Intenta no parecer sospechoso!
-        </p>
-
-        <button onclick="goToSetup()">Nueva partida</button>
-
-        <p id="appVersion" class="small version-label"></p>
-      </div>
-
-      <!-- PANTALLA: CONFIGURACIÓN -->
-      <div id="screen-setup" class="screen hidden">
-
-        <div class="title-row">
-          <img src="img/impostor-icon.png" class="title-icon">
-          <h2>Configuración</h2>
-        </div>
-
-        <label for="selectPlayers">Número de jugadores</label>
-        <select id="selectPlayers">
-          <option value="3" selected>3 jugadores</option>
-          <option value="4">4 jugadores</option>
-          <option value="5">5 jugadores</option>
-          <option value="6">6 jugadores</option>
-          <option value="7">7 jugadores</option>
-          <option value="8">8 jugadores</option>
-          <option value="9">9 jugadores</option>
-          <option value="10">10 jugadores</option>
-        </select>
-
-        <label>Nombre y avatar de los jugadores</label>
-        <div id="playerNamesContainer"></div>
-
-        <label for="selectCategory">Categoría</label>
-        <select id="selectCategory">
-          <option value="aleatorio">Aleatorio</option>
-          <option value="comida">Comida</option>
-          <option value="animales">Animales</option>
-          <option value="objetos">Objetos</option>
-          <option value="sitios">Sitios</option>
-          <option value="deportes">Deportes</option>
-          <option value="videojuegos">Videojuegos</option>
-          <option value="transportes">Transportes</option>
-        </select>
-
-        <button onclick="startGame()">Empezar</button>
-        <button class="secondary" onclick="backToStart()">Volver</button>
-
-        <p class="small">
-          1 impostorcillo por ronda. Pistas orales. Deducción pura.
-        </p>
-      </div>
-
-      <!-- PANTALLA: ROL DEL JUGADOR -->
-      <div id="screen-role" class="screen hidden">
-
-        <div class="role-badge-row">
-          <span class="badge" id="playerOrder"></span>
-        </div>
-
-        <h3 id="playerNameBig" class="player-name-big"></h3>
-
-        <!-- Carta deslizante -->
-        <div class="card-slider">
-          <!-- Parte trasera: el rol -->
-          <div class="card-back">
-            <div class="card-back-inner">
-              <h3 id="roleTitle"></h3>
-              <div id="roleWord"></div>
-              <p class="role-tip" id="roleTip"></p>
-            </div>
-          </div>
-
-          <!-- Parte frontal: marco + avatar deslizante -->
-          <div class="card-front" id="cardFront">
-            <img src="img/card-frame-front.png" alt="" class="card-frame-front">
-
-            <div class="card-avatar-wrapper">
-              <img id="frontAvatar" src="" class="card-front-avatar">
-              <div class="card-avatar-ring"></div>
-            </div>
-
-            <div class="slide-instructions">
-              Desliza hacia arriba para ver tu rol.<br>Suelta para bajarla.
-            </div>
-          </div>
-        </div> <!-- /card-slider -->
-
-        <!-- texto de instrucciones (lo usa el JS, pero lo tenemos oculto por CSS) -->
-        <p id="instructionText" class="small"></p>
-
-        <!-- Botón para escritorio -->
-        <button id="toggleRoleBtn" class="secondary">Mostrar rol</button>
-
-        <!-- Botón de siguiente jugador -->
-        <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
-          Jugador siguiente
-        </button>
-      </div>
-
-      <!-- PANTALLA: DEBATE -->
-      <div id="screen-debate" class="screen hidden">
-        <h2>Debatid y votad</h2>
-
-        <p class="center">
-          Todos han visto ya su rol.<br>
-          Ahora toca hablar:
-        </p>
-
-        <p id="starterInfo" class="center" style="font-size:1.1rem; margin-top:10px;"></p>
-
-        <ul style="font-size:0.95rem; line-height:1.5;">
-          <li>Cada jugador dice una pista.</li>
-          <li>Debatid y acusad a quien creáis sospechoso.</li>
-          <li>Haced una votación final.</li>
-        </ul>
-
-        <button id="btnGoReveal">Ver resultado</button>
-      </div>
-
-      <!-- PANTALLA: REVELACIÓN -->
-      <div id="screen-reveal" class="screen hidden">
-
-        <h2>Revelación</h2>
-
-        <p class="center">La palabra secreta era:</p>
-        <div id="finalWord"
-             style="font-size:1.9rem; text-align:center; margin:12px 0;">
-        </div>
-
-        <p class="center">
-          El Impostorcillo era:<br>
-          <span class="highlight" id="impostorPlayer"></span>
-        </p>
-
-        <button onclick="startAnotherRound()">Jugar otra ronda</button>
-        <button class="secondary" onclick="backToStart()">Volver al inicio</button>
-      </div>
-
-      <!-- MODAL: SELECCIÓN AVATAR -->
-      <div id="avatarModal" class="avatar-modal hidden">
-        <div class="avatar-modal-content">
-
-          <div class="avatar-modal-header">
-            <div class="avatar-modal-title">Elige un avatar</div>
-            <button id="avatarModalClose" class="avatar-modal-close" type="button">✕</button>
-          </div>
-
-          <p class="small" style="margin-top:0;margin-bottom:12px;">
-            Toca un avatar para asignarlo al jugador.
-          </p>
-
-          <div id="avatarGrid" class="avatar-grid"></div>
-
-        </div>
-      </div>
-    </div>
+```
+  <!-- Controles superiores -->
+  <div class="top-controls">
+    <button class="icon-btn" onclick="toggleDarkMode()" title="Modo oscuro">🌙</button>
+    <button class="icon-btn" onclick="toggleSound()" title="Sonido" id="soundBtn">🔊</button>
+    <button class="icon-btn" onclick="goToSetup()" title="Menú">≡</button>
   </div>
 
-<script>
-const APP_VERSION = "1.1.1";
-const CSV_URL = "data/words-es.csv?v=" + APP_VERSION;
+  <!-- PANTALLA: INICIO -->
+  <div id="screen-start" class="screen">
+    <div class="hero-illustration">
+      <div class="emoji">🕵️</div>
+    </div>
 
-// detectar táctil
-const isTouch = ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+    <h1>El Impostorcillo</h1>
+    <p class="center">
+      El juego social de deducción y engaño.<br>
+      ¡Intenta no parecer sospechoso!
+    </p>
 
-// avatares
-const AVATAR_COUNT = 8; // pon aquí el número real de avatares que tengas
+    <button onclick="goToSetup()">Nueva partida</button>
+    <button class="secondary" onclick="showTutorial()">Tutorial</button>
+    <button class="secondary" onclick="showStats()">Estadísticas</button>
+    <p class="small">Versión 2.0.0 - Suma Cum Laude Edition</p>
+  </div>
 
-function avatarSrcFromIndex(idx) {
-  const padded = String(idx).padStart(2, "0");
-  return `img/avatars/avatar${padded}.png`;
-}
+  <!-- PANTALLA: CONFIGURACIÓN -->
+  <div id="screen-setup" class="screen hidden">
+    <div class="title-row">
+      <div class="title-icon">⚙️</div>
+      <h2>Configuración</h2>
+    </div>
 
-let categories = {};
-let decksByCategory = {};
-let sheetLoaded = false;
+    <label>Modo de juego</label>
+    <div class="game-mode-selector">
+      <div class="mode-card selected" onclick="selectMode('classic')" data-mode="classic">
+        <div class="emoji">🎭</div>
+        <div class="title">Clásico</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('mrwhite')" data-mode="mrwhite">
+        <div class="emoji">👥</div>
+        <div class="title">Mr. White</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('expert')" data-mode="expert">
+        <div class="emoji">🎓</div>
+        <div class="title">Experto</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('rapid')" data-mode="rapid">
+        <div class="emoji">⚡</div>
+        <div class="title">Rápido</div>
+      </div>
+    </div>
 
-const gameState = {
-  numPlayers: 3,
-  currentPlayer: 1,
-  selectedCategory: "aleatorio",
-  secretWord: "",
-  secretHint: "",
-  impostorIndex: 1,
-  roleShown: false,
-  playerNames: [],
-  playerAvatars: [],
-  ordenRonda: [],
-  starterPlayer: 1
-};
+    <label for="selectPlayers">Número de jugadores</label>
+    <select id="selectPlayers">
+      <option value="3" selected>3 jugadores</option>
+      <option value="4">4 jugadores</option>
+      <option value="5">5 jugadores</option>
+      <option value="6">6 jugadores</option>
+      <option value="7">7 jugadores</option>
+      <option value="8">8 jugadores</option>
+      <option value="9">9 jugadores</option>
+      <option value="10">10 jugadores</option>
+    </select>
 
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    <label>Nombre de los jugadores</label>
+    <div id="playerNamesContainer"></div>
+
+    <label for="selectCategory">Categoría</label>
+    <select id="selectCategory">
+      <option value="aleatorio">🎲 Aleatorio</option>
+      <option value="comida">🍕 Comida</option>
+      <option value="animales">🦁 Animales</option>
+      <option value="objetos">📦 Objetos</option>
+      <option value="sitios">🏛️ Sitios</option>
+      <option value="deportes">⚽ Deportes</option>
+      <option value="videojuegos">🎮 Videojuegos</option>
+      <option value="transportes">🚗 Transportes</option>
+      <option value="peliculas">🎬 Películas</option>
+      <option value="profesiones">👨‍⚕️ Profesiones</option>
+      <option value="paises">🌍 Países</option>
+    </select>
+
+    <label>
+      <input type="checkbox" id="timerEnabled" checked> Temporizador activado
+    </label>
+
+    <button onclick="startGame()">Empezar</button>
+    <button class="secondary" onclick="backToStart()">Volver</button>
+  </div>
+
+  <!-- PANTALLA: ROL DEL JUGADOR -->
+  <div id="screen-role" class="screen hidden">
+    <div class="role-badge-row">
+      <span class="badge" id="playerOrder"></span>
+    </div>
+    <h2 id="playerNameBig" class="player-name-big"></h2>
+
+    <div class="card-slider">
+      <div class="card-back">
+        <div class="card-back-content">
+          <div class="avatar-overlay">
+            <span id="backAvatar">😎</span>
+          </div>
+          <h3 id="roleTitle"></h3>
+          <div id="roleWord"></div>
+          <p class="role-tip" id="roleTip"></p>
+        </div>
+      </div>
+
+      <div class="card-front" id="cardFront">
+        <div class="avatar-overlay">
+          <span id="frontAvatar">😎</span>
+        </div>
+        <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+      </div>
+    </div>
+
+    <p id="instructionText" class="small"></p>
+
+    <button id="toggleRoleBtn" class="secondary" style="width:90%;max-width:340px;margin:10px auto 0;display:block;">
+      Mostrar rol
+    </button>
+
+    <button id="nextPlayerBtn" class="secondary hidden" onclick="nextPlayer()">
+      Jugador siguiente
+    </button>
+  </div>
+
+  <!-- PANTALLA: DEBATE -->
+  <div id="screen-debate" class="screen hidden">
+    <h2>💬 Debate</h2>
+    <p id="starterInfo" class="center"></p>
+
+    <div class="timer-container" id="timerContainer" style="display: none;">
+      <p class="small">⏱️ Tiempo restante</p>
+      <div class="timer-display" id="timerDisplay">3:00</div>
+      <div class="timer-controls">
+        <button onclick="pauseTimer()">⏸️ Pausar</button>
+        <button onclick="resetTimer()">🔄 Reiniciar</button>
+        <button onclick="addTime()">➕ +1min</button>
+      </div>
+    </div>
+
+    <p class="center">
+      Cada jugador da una pista sobre la palabra.<br>
+      Comentad, defendedos y acusad al sospechoso.
+    </p>
+
+    <button onclick="startVoting()">Iniciar votación</button>
+  </div>
+
+  <!-- PANTALLA: VOTACIÓN -->
+  <div id="screen-voting" class="screen hidden">
+    <h2>🗳️ Votación</h2>
+    <p class="center" id="votingInstruction">Vota a quién crees que es el impostorcillo</p>
+    
+    <div class="voting-grid" id="votingGrid"></div>
+
+    <p class="small" id="voteStatus">0 de 0 votos emitidos</p>
+
+    <button onclick="revealVotes()" id="revealVotesBtn" style="display: none;">
+      Ver resultados
+    </button>
+  </div>
+
+  <!-- PANTALLA: RESULTADOS DE VOTACIÓN -->
+  <div id="screen-vote-results" class="screen hidden">
+    <h2>📊 Resultados</h2>
+    
+    <div class="result-card">
+      <div class="result-emoji" id="voteResultEmoji">🎯</div>
+      <h3 id="voteResultText"></h3>
+      <p id="voteResultDetail"></p>
+    </div>
+
+    <div id="voteBreakdown"></div>
+
+    <button onclick="showReveal()">Revelar palabra secreta</button>
+  </div>
+
+  <!-- PANTALLA: REVELACIÓN -->
+  <div id="screen-reveal" class="screen hidden">
+    <h2>🎭 Revelación</h2>
+
+    <p class="center">La palabra secreta era:</p>
+    <div id="finalWord"></div>
+
+    <p class="center">
+      El Impostorcillo era<br>
+      <span class="highlight" id="impostorPlayer"></span>
+    </p>
+
+    <div class="result-card" id="gameResult">
+      <div class="result-emoji" id="finalResultEmoji"></div>
+      <h3 id="finalResultText"></h3>
+    </div>
+
+    <button onclick="startAnotherRound()">Jugar otra ronda</button>
+    <button class="secondary" onclick="backToStart()">Volver al inicio</button>
+  </div>
+
+  <!-- PANTALLA: ESTADÍSTICAS -->
+  <div id="screen-stats" class="screen hidden">
+    <h2>📊 Estadísticas</h2>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="totalGames">0</div>
+        <div class="stat-label">Partidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="citizenWins">0</div>
+        <div class="stat-label">Victoria Ciudadanos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="impostorWins">0</div>
+        <div class="stat-label">Victoria Impostores</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="winRate">0%</div>
+        <div class="stat-label">% Victoria Ciudadanos</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 24px;">🏆 Top 5 Palabras Jugadas</h3>
+    <div id="topWords" style="margin: 16px 0;"></div>
+
+    <button class="danger" onclick="resetStats()">Resetear estadísticas</button>
+    <button class="secondary" onclick="backToStart()">Volver</button>
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- Tutorial Overlay -->
+
+  <div id="tutorialOverlay" class="tutorial-overlay" style="display: none;">
+    <div class="tutorial-content">
+      <div class="tutorial-step active" data-step="1">
+        <div class="tutorial-emoji">🎭</div>
+        <h3>Bienvenido a El Impostorcillo</h3>
+        <p>Un juego social de deducción donde debes encontrar al impostor entre los jugadores.</p>
+        <button onclick="nextTutorialStep()">Siguiente</button>
+      </div>
+
+```
+  <div class="tutorial-step" data-step="2">
+    <div class="tutorial-emoji">👥</div>
+    <h3>Los Roles</h3>
+    <p><strong>Ciudadanos:</strong> Conocen la palabra secreta y deben dar pistas.<br><br>
+    <strong>Impostorcillo:</strong> No conoce la palabra y debe fingir que sí.</p>
+    <button onclick="nextTutorialStep()">Siguiente</button>
+  </div>
+
+  <div class="tutorial-step" data-step="3">
+    <div class="tutorial-emoji">💬</div>
+    <h3>Cómo se Juega</h3>
+    <p>1️⃣ Cada jugador ve su rol en secreto<br>
+    2️⃣ Por turnos, dan pistas sobre la palabra<br>
+    3️⃣ Debaten quién es el impostor<br>
+    4️⃣ Votan al sospechoso</p>
+    <button onclick="nextTutorialStep()">Siguiente</button>
+  </div>
+
+  <div class="tutorial-step" data-step="4">
+    <div class="tutorial-emoji">🏆</div>
+    <h3>Victoria</h3>
+    <p><strong>Ciudadanos ganan:</strong> Si eliminan al impostorcillo<br><br>
+    <strong>Impostor gana:</strong> Si sobrevive la votación o adivina la palabra</p>
+    <button onclick="closeTutorial()">¡Empezar a jugar!</button>
+  </div>
+</div>
+```
+
+  </div>
+
+  <script>
+  // ============================
+  // CONFIGURACIÓN
+  // ============================
+  const APP_VERSION = "2.0.0";
+
+  // Palabras expandidas por categoría
+  const WORDS_DATABASE = {
+    comida: [
+      {word: "Pizza", hint: "Italiana, redonda, con queso", difficulty: 1},
+      {word: "Sushi", hint: "Japonés, crudo, con arroz", difficulty: 2},
+      {word: "Hamburguesa", hint: "Entre dos panes", difficulty: 1},
+      {word: "Paella", hint: "Española, con arroz", difficulty: 2},
+      {word: "Tacos", hint: "Mexicanos, tortilla", difficulty: 1},
+      {word: "Croissant", hint: "Francés, hojaldre", difficulty: 2},
+      {word: "Pasta", hint: "Italiana, con salsa", difficulty: 1}
+    ],
+    animales: [
+      {word: "León", hint: "Rey de la selva", difficulty: 1},
+      {word: "Pingüino", hint: "Vive en el hielo", difficulty: 1},
+      {word: "Delfín", hint: "Mamífero marino inteligente", difficulty: 2},
+      {word: "Ornitorrinco", hint: "Mamífero que pone huevos", difficulty: 3},
+      {word: "Tigre", hint: "Felino rayado", difficulty: 1},
+      {word: "Koala", hint: "Australiano, come eucalipto", difficulty: 2}
+    ],
+    objetos: [
+      {word: "Reloj", hint: "Marca el tiempo", difficulty: 1},
+      {word: "Paraguas", hint: "Te protege de la lluvia", difficulty: 1},
+      {word: "Brújula", hint: "Indica el norte", difficulty: 2},
+      {word: "Lupa", hint: "Aumenta las cosas", difficulty: 2},
+      {word: "Teléfono", hint: "Para comunicarse", difficulty: 1}
+    ],
+    sitios: [
+      {word: "Biblioteca", hint: "Lugar de libros y silencio", difficulty: 1},
+      {word: "Museo", hint: "Exhibe arte e historia", difficulty: 1},
+      {word: "Gimnasio", hint: "Para hacer ejercicio", difficulty: 1},
+      {word: "Observatorio", hint: "Para ver las estrellas", difficulty: 3},
+      {word: "Mercado", hint: "Compras y puestos", difficulty: 1}
+    ],
+    deportes: [
+      {word: "Fútbol", hint: "Con un balón redondo", difficulty: 1},
+      {word: "Tenis", hint: "Con raqueta y red", difficulty: 1},
+      {word: "Natación", hint: "En la piscina", difficulty: 1},
+      {word: "Esgrima", hint: "Con espadas", difficulty: 3},
+      {word: "Boxeo", hint: "Con guantes, en un ring", difficulty: 2}
+    ],
+    videojuegos: [
+      {word: "Mario", hint: "Fontanero italiano", difficulty: 1},
+      {word: "Minecraft", hint: "Construyes con blocos", difficulty: 1},
+      {word: "Fortnite", hint: "Battle royale popular", difficulty: 1},
+      {word: "Zelda", hint: "Aventura con Link", difficulty: 2},
+      {word: "Pokémon", hint: "Atrapa criaturas", difficulty: 1}
+    ],
+    transportes: [
+      {word: "Avión", hint: "Vuela por el cielo", difficulty: 1},
+      {word: "Bicicleta", hint: "Dos ruedas, pedales", difficulty: 1},
+      {word: "Submarino", hint: "Viaja bajo el agua", difficulty: 2},
+      {word: "Helicóptero", hint: "Vuela con hélices", difficulty: 2},
+      {word: "Tren", hint: "Va sobre rieles", difficulty: 1}
+    ],
+    peliculas: [
+      {word: "Titanic", hint: "Barco que se hunde", difficulty: 1},
+      {word: "Matrix", hint: "Realidad virtual", difficulty: 2},
+      {word: "Avatar", hint: "Planeta Pandora", difficulty: 1},
+      {word: "Inception", hint: "Sueños dentro de sueños", difficulty: 3},
+      {word: "Star Wars", hint: "Saga espacial", difficulty: 1}
+    ],
+    profesiones: [
+      {word: "Médico", hint: "Cura enfermos", difficulty: 1},
+      {word: "Chef", hint: "Cocina profesional", difficulty: 1},
+      {word: "Piloto", hint: "Conduce aviones", difficulty: 1},
+      {word: "Astronauta", hint: "Viaja al espacio", difficulty: 2},
+      {word: "Detective", hint: "Resuelve crímenes", difficulty: 2}
+    ],
+    paises: [
+      {word: "Japón", hint: "País del sol naciente", difficulty: 1},
+      {word: "Brasil", hint: "Carnaval y fútbol", difficulty: 1},
+      {word: "Egipto", hint: "Pirámides y faraones", difficulty: 1},
+      {word: "Islandia", hint: "Isla nórdica", difficulty: 2},
+      {word: "Australia", hint: "Continente-isla", difficulty: 1}
+    ]
+  };
+
+  const EMOJI_AVATARS = ["😀", "😎", "🤓", "😇", "🤠", "🥳", "🤖", "👽", "🦊", "🐯"];
+
+  const isTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+  // Estado del juego
+  const gameState = {
+    mode: 'classic',
+    numPlayers: 3,
+    currentPlayer: 1,
+    selectedCategory: "aleatorio",
+    secretWord: "",
+    secretHint: "",
+    secretDifficulty: 1,
+    impostorIndex: 1,
+    impostorIndex2: -1, // Para modo Mr. White
+    roleShown: false,
+    playerNames: [],
+    playerAvatars: [],
+    ordenRonda: [],
+    starterPlayer: 1,
+    votes: {},
+    eliminated: [],
+    timerEnabled: true,
+    timerSeconds: 180,
+    timerInterval: null,
+    timerPaused: false,
+    soundEnabled: true,
+    darkMode: false
+  };
+
+  // Estadísticas
+  let stats = {
+    totalGames: 0,
+    citizenWins: 0,
+    impostorWins: 0,
+    wordsPlayed: {}
+  };
+
+  // Decks de palabras
+  let decksByCategory = {};
+
+  // ============================
+  // INICIALIZACIÓN
+  // ============================
+  function initGame() {
+    loadStats();
+    loadPreferences();
+    initializeDecks();
+    refreshPlayerNameInputs();
+    showScreen("screen-start");
+    
+    if (gameState.darkMode) {
+      document.body.classList.add('dark-mode');
+    }
+    
+    updateSoundButton();
   }
-}
 
-function parseCsv(text) {
-  const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
-  const [headerLine, ...rows] = lines;
-  const headers = headerLine.split(",");
-
-  const idxCategory = headers.indexOf("category");
-  const idxWord     = headers.indexOf("word");
-  const idxHint     = headers.indexOf("hint");
-
-  const result = {};
-
-  rows.forEach(line => {
-    const parts = line.split(",");
-    const cat   = parts[idxCategory]?.trim();
-    const word  = parts[idxWord]?.trim();
-    const hint  = parts[idxHint]?.trim();
-
-    if (!cat || !word) return;
-
-    if (!result[cat]) result[cat] = [];
-    result[cat].push({
-      word,
-      hint: hint || ""
-    });
-  });
-
-  return result;
-}
-
-async function loadWordsFromCsv() {
-  try {
-    const res = await fetch(CSV_URL);
-    if (!res.ok) throw new Error("No se pudo cargar el CSV");
-    const csvText = await res.text();
-
-    categories = parseCsv(csvText);
-    decksByCategory = {};
-
-    Object.keys(categories).forEach(cat => {
-      decksByCategory[cat] = [...categories[cat]];
+  function initializeDecks() {
+    Object.keys(WORDS_DATABASE).forEach(cat => {
+      decksByCategory[cat] = [...WORDS_DATABASE[cat]];
       shuffle(decksByCategory[cat]);
     });
 
-    decksByCategory.all = Object.values(categories).flat();
+    decksByCategory.all = Object.values(WORDS_DATABASE).flat();
     shuffle(decksByCategory.all);
-
-    sheetLoaded = true;
-    console.log("CSV cargado. Categorías:", Object.keys(categories));
-  } catch (err) {
-    console.error("Error cargando CSV:", err);
-    sheetLoaded = false;
-  }
-}
-
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
-  const el = document.getElementById(id);
-  if (el) el.classList.remove("hidden");
-}
-
-function backToStart() {
-  showScreen("screen-start");
-}
-
-function goToSetup() {
-  showScreen("screen-setup");
-}
-
-// ====== MODAL AVATARES ======
-let avatarModalEl = null;
-let avatarGridEl = null;
-let avatarModalCloseBtn = null;
-let currentAvatarPlayerIdx = null;
-let currentAvatarImgEl = null;
-
-function openAvatarModal(playerIdx, imgEl) {
-  currentAvatarPlayerIdx = playerIdx;
-  currentAvatarImgEl = imgEl;
-  if (!avatarModalEl) return;
-  avatarModalEl.classList.remove("hidden");
-}
-
-function closeAvatarModal() {
-  if (!avatarModalEl) return;
-  avatarModalEl.classList.add("hidden");
-  currentAvatarPlayerIdx = null;
-  currentAvatarImgEl = null;
-}
-
-function selectAvatar(avatarIndex) {
-  if (currentAvatarPlayerIdx == null) return;
-  gameState.playerAvatars[currentAvatarPlayerIdx] = avatarIndex;
-  if (currentAvatarImgEl) {
-    currentAvatarImgEl.src = avatarSrcFromIndex(avatarIndex);
-  }
-  closeAvatarModal();
-}
-
-function initAvatarModal() {
-  avatarModalEl = document.getElementById("avatarModal");
-  avatarGridEl = document.getElementById("avatarGrid");
-  avatarModalCloseBtn = document.getElementById("avatarModalClose");
-
-  if (!avatarModalEl || !avatarGridEl) return;
-
-  avatarGridEl.innerHTML = "";
-
-  for (let i = 1; i <= AVATAR_COUNT; i++) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "avatar-option";
-
-    const img = document.createElement("img");
-    img.src = avatarSrcFromIndex(i);
-    img.alt = `Avatar ${i}`;
-
-    btn.appendChild(img);
-    btn.addEventListener("click", () => selectAvatar(i));
-
-    avatarGridEl.appendChild(btn);
   }
 
-  if (avatarModalCloseBtn) {
-    avatarModalCloseBtn.addEventListener("click", closeAvatarModal);
-  }
-
-  avatarModalEl.addEventListener("click", (e) => {
-    if (e.target === avatarModalEl) {
-      closeAvatarModal();
-    }
-  });
-}
-
-function refreshPlayerNameInputs() {
-  const numSel    = document.getElementById("selectPlayers");
-  const container = document.getElementById("playerNamesContainer");
-  const n         = parseInt(numSel.value, 10);
-
-  container.innerHTML = "";
-  gameState.playerAvatars = gameState.playerAvatars || [];
-
-  for (let i = 1; i <= n; i++) {
-    const row = document.createElement("div");
-    row.className = "player-row";
-
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = `Jugador ${i}`;
-    input.id = `playerName${i}`;
-
-    const idxArr = i - 1;
-
-    if (!gameState.playerAvatars[idxArr]) {
-      gameState.playerAvatars[idxArr] = ((idxArr % AVATAR_COUNT) + 1);
-    }
-    const avatarIndex = gameState.playerAvatars[idxArr];
-
-    const avatarImg = document.createElement("img");
-    avatarImg.className = "avatar-thumb";
-    avatarImg.src = avatarSrcFromIndex(avatarIndex);
-    avatarImg.alt = `Avatar jugador ${i}`;
-
-    avatarImg.addEventListener("click", () => {
-      openAvatarModal(idxArr, avatarImg);
-    });
-
-    row.appendChild(input);
-    row.appendChild(avatarImg);
-    container.appendChild(row);
-  }
-}
-
-function drawWord(categoryKey) {
-  const deckKey = categoryKey === "aleatorio" ? "all" : categoryKey;
-
-  if (!decksByCategory[deckKey] || decksByCategory[deckKey].length === 0) {
-    alert(
-      deckKey === "all"
-        ? "Se han usado todas las palabras. Se reinicia el pack completo."
-        : `Se han usado todas las palabras de la categoría "${deckKey}". Se reinicia esa categoría.`
-    );
-
-    if (deckKey === "all") {
-      decksByCategory.all = Object.values(categories).flat();
-      shuffle(decksByCategory.all);
-    } else {
-      decksByCategory[deckKey] = [...categories[deckKey]];
-      shuffle(decksByCategory[deckKey]);
+  function loadStats() {
+    const saved = localStorage.getItem('impostorcillo-stats');
+    if (saved) {
+      try {
+        stats = JSON.parse(saved);
+      } catch (e) {
+        console.error('Error loading stats:', e);
+      }
     }
   }
 
-  const deck = decksByCategory[deckKey];
-  const idx  = Math.floor(Math.random() * deck.length);
-  return deck.splice(idx, 1)[0];
-}
-
-function startGame() {
-  const numSel = document.getElementById("selectPlayers");
-  const catSel = document.getElementById("selectCategory");
-
-  gameState.numPlayers       = parseInt(numSel.value, 10);
-  gameState.selectedCategory = catSel.value;
-
-  gameState.playerNames = [];
-  for (let i = 1; i <= gameState.numPlayers; i++) {
-    const input = document.getElementById(`playerName${i}`);
-    const name  = (input && input.value.trim()) || `Jugador ${i}`;
-    gameState.playerNames.push(name);
+  function saveStats() {
+    localStorage.setItem('impostorcillo-stats', JSON.stringify(stats));
   }
 
-  const card = drawWord(gameState.selectedCategory);
-  gameState.secretWord = card.word;
-  gameState.secretHint = card.hint || "";
-
-  gameState.impostorIndex =
-    Math.floor(Math.random() * gameState.numPlayers) + 1;
-
-  gameState.starterPlayer =
-    Math.floor(Math.random() * gameState.numPlayers) + 1;
-
-  gameState.ordenRonda = [];
-  for (let i = 1; i <= gameState.numPlayers; i++) {
-    gameState.ordenRonda.push(i);
-  }
-  shuffle(gameState.ordenRonda);
-
-  gameState.currentPlayer = 1;
-
-  prepareCurrentPlayerScreen();
-  showScreen("screen-role");
-}
-
-function startAnotherRound() {
-  const card = drawWord(gameState.selectedCategory);
-  gameState.secretWord = card.word;
-  gameState.secretHint = card.hint || "";
-  gameState.impostorIndex =
-    Math.floor(Math.random() * gameState.numPlayers) + 1;
-
-  gameState.starterPlayer =
-    Math.floor(Math.random() * gameState.numPlayers) + 1;
-
-  gameState.ordenRonda = [];
-  for (let i = 1; i <= gameState.numPlayers; i++) {
-    gameState.ordenRonda.push(i);
-  }
-  shuffle(gameState.ordenRonda);
-
-  gameState.currentPlayer = 1;
-
-  prepareCurrentPlayerScreen();
-  showScreen("screen-role");
-}
-
-const cardFrontEl    = document.getElementById("cardFront");
-const nextBtnEl      = document.getElementById("nextPlayerBtn");
-const toggleRoleBtn  = document.getElementById("toggleRoleBtn");
-
-if (isTouch && toggleRoleBtn) {
-  toggleRoleBtn.style.display = "none";
-}
-
-let cardLiftedByButton = false;
-
-const instructionText = document.getElementById("instructionText");
-if (instructionText) {
-  instructionText.innerHTML = isTouch
-    ? "Desliza hacia arriba para ver tu rol.<br>Suelta para bajarla."
-    : "Haz clic en el botón para ver u ocultar tu rol.";
-}
-
-function prepareCurrentPlayerScreen() {
-  const orderBadge = document.getElementById("playerOrder");
-  const roleTitle  = document.getElementById("roleTitle");
-  const roleWord   = document.getElementById("roleWord");
-  const roleTip    = document.getElementById("roleTip");
-
-  const turnIndex = gameState.currentPlayer;
-
-  const realPlayer =
-    gameState.ordenRonda && gameState.ordenRonda.length === gameState.numPlayers
-      ? gameState.ordenRonda[turnIndex - 1]
-      : turnIndex;
-
-  const idx = realPlayer - 1;
-
-  const isImpostor = realPlayer === gameState.impostorIndex;
-
-  const name =
-    gameState.playerNames[idx] ||
-    `Jugador ${realPlayer}`;
-
-  const bigNameEl = document.getElementById("playerNameBig");
-  if (bigNameEl) {
-    bigNameEl.textContent = name;
+  function loadPreferences() {
+    const darkMode = localStorage.getItem('impostorcillo-darkMode');
+    const soundEnabled = localStorage.getItem('impostorcillo-sound');
+    
+    if (darkMode === 'true') {
+      gameState.darkMode = true;
+    }
+    
+    if (soundEnabled === 'false') {
+      gameState.soundEnabled = false;
+    }
   }
 
-  const avatarIndex =
-    gameState.playerAvatars[idx] ||
-    ((idx % AVATAR_COUNT) + 1);
-
-  const avatarEl = document.getElementById("frontAvatar");
-  if (avatarEl) {
-    avatarEl.src = avatarSrcFromIndex(avatarIndex);
+  function savePreferences() {
+    localStorage.setItem('impostorcillo-darkMode', gameState.darkMode);
+    localStorage.setItem('impostorcillo-sound', gameState.soundEnabled);
   }
 
-  if (orderBadge) {
-    orderBadge.textContent = `${turnIndex} de ${gameState.numPlayers}`;
+  // ============================
+  // UTILIDADES
+  // ============================
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
   }
 
-  if (isImpostor) {
-    roleTitle.textContent = "Impostorcillo";
-    roleWord.textContent  = "???";
-    roleTip.textContent   =
-      "No conoces la palabra secreta. Escucha y finge normalidad.";
-  } else {
-    roleTitle.textContent = "Ciudadano";
-    roleWord.textContent  = `"${gameState.secretWord}"`;
-    roleTip.textContent   =
-      gameState.secretHint || "Da pistas sin decir la palabra directamente.";
+  function playSound(type) {
+    if (!gameState.soundEnabled) return;
+    
+    // Crear un contexto de audio simple para feedback
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    switch(type) {
+      case 'click':
+        oscillator.frequency.value = 800;
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+        break;
+      case 'success':
+        oscillator.frequency.value = 600;
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        break;
+      case 'error':
+        oscillator.frequency.value = 200;
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+        break;
+    }
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
   }
 
-  gameState.roleShown = false;
-  nextBtnEl.classList.add("hidden");
-  nextBtnEl.classList.remove("active");
-
-  cardFrontEl.style.transform = "translateY(0)";
-  cardLiftedByButton = false;
-  if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
-}
-
-if (toggleRoleBtn) {
-  toggleRoleBtn.addEventListener("click", () => {
-    const slider = cardFrontEl.parentElement;
-    const h = slider.offsetHeight || 300;
-
-    if (!cardLiftedByButton) {
-      cardFrontEl.style.transition = "transform 0.25s ease";
-      cardFrontEl.style.transform = `translateY(${-h * 0.7}px)`;
-
+  function createConfetti() {
+    const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#10b981'];
+    
+    for (let i = 0; i < 50; i++) {
       setTimeout(() => {
-        cardFrontEl.style.transition = "";
-      }, 260);
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 3000);
+      }, i * 30);
+    }
+  }
 
-      if (!gameState.roleShown) {
-        gameState.roleShown = true;
-        nextBtnEl.classList.remove("hidden");
-        nextBtnEl.classList.add("active");
+  // ============================
+  // NAVEGACIÓN
+  // ============================
+  function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("hidden");
+    playSound('click');
+  }
+
+  function backToStart() {
+    stopTimer();
+    showScreen("screen-start");
+  }
+
+  function goToSetup() {
+    showScreen("screen-setup");
+  }
+
+  // ============================
+  // CONFIGURACIÓN
+  // ============================
+  function selectMode(mode) {
+    gameState.mode = mode;
+    document.querySelectorAll('.mode-card').forEach(card => {
+      card.classList.remove('selected');
+      if (card.dataset.mode === mode) {
+        card.classList.add('selected');
+      }
+    });
+    playSound('click');
+  }
+
+  function refreshPlayerNameInputs() {
+    const numSel = document.getElementById("selectPlayers");
+    const container = document.getElementById("playerNamesContainer");
+    const n = parseInt(numSel.value, 10);
+
+    container.innerHTML = "";
+    gameState.playerAvatars = gameState.playerAvatars || [];
+
+    for (let i = 1; i <= n; i++) {
+      const row = document.createElement("div");
+      row.className = "player-row";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = `Jugador ${i}`;
+      input.id = `playerName${i}`;
+
+      const idxArr = i - 1;
+      if (!gameState.playerAvatars[idxArr]) {
+        gameState.playerAvatars[idxArr] = EMOJI_AVATARS[idxArr % EMOJI_AVATARS.length];
+      }
+      const avatar = gameState.playerAvatars[idxArr];
+
+      const avatarDiv = document.createElement("div");
+      avatarDiv.className = "avatar-thumb";
+      avatarDiv.textContent = avatar;
+      avatarDiv.dataset.playerIndex = idxArr;
+
+      avatarDiv.addEventListener("click", () => {
+        cycleAvatar(idxArr, avatarDiv);
+      });
+
+      row.appendChild(input);
+      row.appendChild(avatarDiv);
+      container.appendChild(row);
+    }
+  }
+
+  function cycleAvatar(playerIdx, element) {
+    const currentIdx = EMOJI_AVATARS.indexOf(gameState.playerAvatars[playerIdx]);
+    const nextIdx = (currentIdx + 1) % EMOJI_AVATARS.length;
+    gameState.playerAvatars[playerIdx] = EMOJI_AVATARS[nextIdx];
+    element.textContent = EMOJI_AVATARS[nextIdx];
+    playSound('click');
+  }
+
+  function drawWord(categoryKey) {
+    const deckKey = categoryKey === "aleatorio" ? "all" : categoryKey;
+
+    if (!decksByCategory[deckKey] || decksByCategory[deckKey].length === 0) {
+      if (deckKey === "all") {
+        decksByCategory.all = Object.values(WORDS_DATABASE).flat();
+        shuffle(decksByCategory.all);
+      } else {
+        decksByCategory[deckKey] = [...WORDS_DATABASE[deckKey]];
+        shuffle(decksByCategory[deckKey]);
+      }
+    }
+
+    const deck = decksByCategory[deckKey];
+    const idx = Math.floor(Math.random() * deck.length);
+    return deck.splice(idx, 1)[0];
+  }
+
+  // ============================
+  // INICIO DE PARTIDA
+  // ============================
+  function startGame() {
+    const numSel = document.getElementById("selectPlayers");
+    const catSel = document.getElementById("selectCategory");
+    const timerCheck = document.getElementById("timerEnabled");
+
+    gameState.numPlayers = parseInt(numSel.value, 10);
+    gameState.selectedCategory = catSel.value;
+    gameState.timerEnabled = timerCheck.checked;
+
+    gameState.playerNames = [];
+    for (let i = 1; i <= gameState.numPlayers; i++) {
+      const input = document.getElementById(`playerName${i}`);
+      const name = (input && input.value.trim()) || `Jugador ${i}`;
+      gameState.playerNames.push(name);
+    }
+
+    const card = drawWord(gameState.selectedCategory);
+    gameState.secretWord = card.word;
+    gameState.secretHint = card.hint || "";
+    gameState.secretDifficulty = card.difficulty || 1;
+
+    // Asignar impostores según modo
+    if (gameState.mode === 'mrwhite') {
+      // Dos impostores
+      const indices = [];
+      for (let i = 1; i <= gameState.numPlayers; i++) indices.push(i);
+      shuffle(indices);
+      gameState.impostorIndex = indices[0];
+      gameState.impostorIndex2 = indices[1];
+    } else {
+      gameState.impostorIndex = Math.floor(Math.random() * gameState.numPlayers) + 1;
+      gameState.impostorIndex2 = -1;
+    }
+
+    gameState.starterPlayer = Math.floor(Math.random() * gameState.numPlayers) + 1;
+
+    gameState.ordenRonda = [];
+    for (let i = 1; i <= gameState.numPlayers; i++) {
+      gameState.ordenRonda.push(i);
+    }
+    shuffle(gameState.ordenRonda);
+
+    gameState.currentPlayer = 1;
+    gameState.votes = {};
+    gameState.eliminated = [];
+
+    // Timer para modo rápido
+    if (gameState.mode === 'rapid') {
+      gameState.timerSeconds = 120; // 2 minutos
+    } else {
+      gameState.timerSeconds = 180; // 3 minutos
+    }
+
+    prepareCurrentPlayerScreen();
+    showScreen("screen-role");
+    playSound('success');
+  }
+
+  function startAnotherRound() {
+    const card = drawWord(gameState.selectedCategory);
+    gameState.secretWord = card.word;
+    gameState.secretHint = card.hint || "";
+    gameState.secretDifficulty = card.difficulty || 1;
+
+    if (gameState.mode === 'mrwhite') {
+      const indices = [];
+      for (let i = 1; i <= gameState.numPlayers; i++) indices.push(i);
+      shuffle(indices);
+      gameState.impostorIndex = indices[0];
+      gameState.impostorIndex2 = indices[1];
+    } else {
+      gameState.impostorIndex = Math.floor(Math.random() * gameState.numPlayers) + 1;
+      gameState.impostorIndex2 = -1;
+    }
+
+    gameState.starterPlayer = Math.floor(Math.random() * gameState.numPlayers) + 1;
+
+    gameState.ordenRonda = [];
+    for (let i = 1; i <= gameState.numPlayers; i++) {
+      gameState.ordenRonda.push(i);
+    }
+    shuffle(gameState.ordenRonda);
+
+    gameState.currentPlayer = 1;
+    gameState.votes = {};
+    gameState.eliminated = [];
+
+    prepareCurrentPlayerScreen();
+    showScreen("screen-role");
+  }
+
+  // ============================
+  // PANTALLA DE ROL
+  // ============================
+  const cardFrontEl = document.getElementById("cardFront");
+  const nextBtnEl = document.getElementById("nextPlayerBtn");
+  const toggleRoleBtn = document.getElementById("toggleRoleBtn");
+
+  if (isTouch && toggleRoleBtn) {
+    toggleRoleBtn.style.display = "none";
+  }
+
+  let cardLiftedByButton = false;
+
+  const instructionText = document.getElementById("instructionText");
+  if (instructionText) {
+    instructionText.innerHTML = isTouch
+      ? "Desliza hacia arriba para ver tu rol.<br>Suelta para bajarla."
+      : "Haz clic en el botón para ver u ocultar tu rol.";
+  }
+
+  function prepareCurrentPlayerScreen() {
+    const orderBadge = document.getElementById("playerOrder");
+    const roleTitle = document.getElementById("roleTitle");
+    const roleWord = document.getElementById("roleWord");
+    const roleTip = document.getElementById("roleTip");
+
+    const turnIndex = gameState.currentPlayer;
+    const realPlayer = gameState.ordenRonda[turnIndex - 1];
+    const idx = realPlayer - 1;
+
+    const isImpostor = realPlayer === gameState.impostorIndex || realPlayer === gameState.impostorIndex2;
+    const name = gameState.playerNames[idx] || `Jugador ${realPlayer}`;
+
+    const bigNameEl = document.getElementById("playerNameBig");
+    if (bigNameEl) {
+      bigNameEl.textContent = name;
+    }
+
+    const avatar = gameState.playerAvatars[idx] || EMOJI_AVATARS[idx % EMOJI_AVATARS.length];
+    
+    const frontAvatarEl = document.getElementById("frontAvatar");
+    const backAvatarEl = document.getElementById("backAvatar");
+    if (frontAvatarEl) frontAvatarEl.textContent = avatar;
+    if (backAvatarEl) backAvatarEl.textContent = avatar;
+
+    if (orderBadge) {
+      orderBadge.textContent = `${turnIndex} de ${gameState.numPlayers}`;
+    }
+
+    if (isImpostor) {
+      if (gameState.mode === 'expert') {
+        const categories = Object.keys(WORDS_DATABASE);
+        const randomCat = categories[Math.floor(Math.random() * categories.length)];
+        roleTitle.textContent = "Impostorcillo";
+        roleWord.textContent = `Categoría: ${randomCat}`;
+        roleTip.textContent = "No conoces la palabra, solo la categoría. ¡Finge que sabes!";
+      } else {
+        roleTitle.textContent = "Impostorcillo";
+        roleWord.textContent = "???";
+        roleTip.textContent = "No conoces la palabra secreta. Escucha y finge normalidad.";
+      }
+    } else {
+      roleTitle.textContent = "Ciudadano";
+      roleWord.textContent = `"${gameState.secretWord}"`;
+      
+      const difficultyLabels = ["Fácil", "Media", "Difícil"];
+      const difficultyClasses = ["difficulty-easy", "difficulty-medium", "difficulty-hard"];
+      const diffLabel = difficultyLabels[gameState.secretDifficulty - 1];
+      const diffClass = difficultyClasses[gameState.secretDifficulty - 1];
+      
+      roleTip.innerHTML = `${gameState.secretHint || "Da pistas sin decir la palabra directamente."}<br>
+        <span class="difficulty-badge ${diffClass}">${diffLabel}</span>`;
+    }
+
+    gameState.roleShown = false;
+    nextBtnEl.classList.add("hidden");
+    nextBtnEl.classList.remove("active");
+
+    cardFrontEl.style.transform = "translateY(0)";
+    cardLiftedByButton = false;
+    if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
+  }
+
+  if (toggleRoleBtn) {
+    toggleRoleBtn.addEventListener("click", () => {
+      const slider = cardFrontEl.parentElement;
+      const h = slider.offsetHeight || 300;
+
+      if (!cardLiftedByButton) {
+        cardFrontEl.style.transition = "transform 0.25s ease";
+        cardFrontEl.style.transform = `translateY(${-h * 0.7}px)`;
+
+        setTimeout(() => {
+          cardFrontEl.style.transition = "";
+        }, 260);
+
+        if (!gameState.roleShown) {
+          gameState.roleShown = true;
+          nextBtnEl.classList.remove("hidden");
+          nextBtnEl.classList.add("active");
+        }
+
+        toggleRoleBtn.textContent = "Ocultar rol";
+        cardLiftedByButton = true;
+        playSound('success');
+      } else {
+        cardFrontEl.style.transition = "transform 0.25s ease";
+        cardFrontEl.style.transform = "translateY(0)";
+
+        setTimeout(() => {
+          cardFrontEl.style.transition = "";
+        }, 260);
+
+        toggleRoleBtn.textContent = "Mostrar rol";
+        cardLiftedByButton = false;
+      }
+    });
+  }
+
+  function nextPlayer() {
+    nextBtnEl.classList.remove("active");
+    nextBtnEl.classList.add("hidden");
+
+    gameState.currentPlayer++;
+
+    if (gameState.currentPlayer > gameState.numPlayers) {
+      const starterIndex = gameState.starterPlayer || 1;
+      const starterName = gameState.playerNames[starterIndex - 1] || `Jugador ${starterIndex}`;
+      const starterEl = document.getElementById("starterInfo");
+      if (starterEl) {
+        starterEl.textContent = `Empieza diciendo su pista: ${starterName}`;
       }
 
-      toggleRoleBtn.textContent = "Ocultar rol";
-      cardLiftedByButton = true;
+      if (gameState.timerEnabled) {
+        document.getElementById('timerContainer').style.display = 'block';
+        startTimer();
+      }
+
+      showScreen("screen-debate");
+      return;
+    }
+
+    prepareCurrentPlayerScreen();
+    showScreen("screen-role");
+  }
+
+  // Touch events para carta
+  let dragStartY = 0;
+  let dragging = false;
+  let cardHeight = 0;
+
+  function onTouchStart(e) {
+    const slider = cardFrontEl.parentElement;
+    cardHeight = slider.offsetHeight || 300;
+    dragStartY = e.touches[0].clientY;
+    dragging = true;
+    cardFrontEl.style.transition = "none";
+    cardLiftedByButton = false;
+    if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
+  }
+
+  function onTouchMove(e) {
+    if (!dragging) return;
+
+    const currentY = e.touches[0].clientY;
+    let delta = currentY - dragStartY;
+
+    if (delta > 0) delta = 0;
+    if (delta < -cardHeight) delta = -cardHeight;
+
+    cardFrontEl.style.transform = `translateY(${delta}px)`;
+
+    if (delta < -cardHeight / 3 && !gameState.roleShown) {
+      gameState.roleShown = true;
+      nextBtnEl.classList.remove("hidden");
+      nextBtnEl.classList.add("active");
+    }
+  }
+
+  function onTouchEnd() {
+    if (!dragging) return;
+    dragging = false;
+
+    cardFrontEl.style.transition = "transform 0.25s ease";
+    cardFrontEl.style.transform = "translateY(0)";
+
+    setTimeout(() => {
+      cardFrontEl.style.transition = "";
+    }, 250);
+  }
+
+  cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
+  cardFrontEl.addEventListener("touchmove", onTouchMove, { passive: true });
+  cardFrontEl.addEventListener("touchend", onTouchEnd);
+
+  // ============================
+  // TEMPORIZADOR
+  // ============================
+  function startTimer() {
+    stopTimer();
+    gameState.timerPaused = false;
+    updateTimerDisplay();
+    
+    gameState.timerInterval = setInterval(() => {
+      if (!gameState.timerPaused) {
+        gameState.timerSeconds--;
+        updateTimerDisplay();
+        
+        if (gameState.timerSeconds <= 10) {
+          document.getElementById('timerDisplay').classList.add('warning');
+          if (gameState.timerSeconds <= 5 && gameState.timerSeconds > 0) {
+            playSound('error');
+          }
+        }
+        
+        if (gameState.timerSeconds <= 0) {
+          stopTimer();
+          playSound('error');
+          alert('⏰ ¡Tiempo agotado! Pasad a la votación.');
+        }
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (gameState.timerInterval) {
+      clearInterval(gameState.timerInterval);
+      gameState.timerInterval = null;
+    }
+  }
+
+  function pauseTimer() {
+    gameState.timerPaused = !gameState.timerPaused;
+    const btn = event.target;
+    btn.textContent = gameState.timerPaused ? '▶️ Reanudar' : '⏸️ Pausar';
+    playSound('click');
+  }
+
+  function resetTimer() {
+    gameState.timerSeconds = gameState.mode === 'rapid' ? 120 : 180;
+    updateTimerDisplay();
+    document.getElementById('timerDisplay').classList.remove('warning');
+    playSound('click');
+  }
+
+  function addTime() {
+    gameState.timerSeconds += 60;
+    updateTimerDisplay();
+    document.getElementById('timerDisplay').classList.remove('warning');
+    playSound('success');
+  }
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(gameState.timerSeconds / 60);
+    const seconds = gameState.timerSeconds % 60;
+    const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    document.getElementById('timerDisplay').textContent = display;
+  }
+
+  // ============================
+  // VOTACIÓN
+  // ============================
+  function startVoting() {
+    stopTimer();
+    gameState.votes = {};
+    
+    const grid = document.getElementById('votingGrid');
+    grid.innerHTML = '';
+    
+    for (let i = 1; i <= gameState.numPlayers; i++) {
+      if (gameState.eliminated.includes(i)) continue;
+      
+      const card = document.createElement('div');
+      card.className = 'vote-card';
+      card.dataset.playerId = i;
+      
+      const emoji = document.createElement('div');
+      emoji.className = 'emoji';
+      emoji.textContent = gameState.playerAvatars[i - 1] || EMOJI_AVATARS[(i - 1) % EMOJI_AVATARS.length];
+      
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = gameState.playerNames[i - 1] || `Jugador ${i}`;
+      
+      const voteCount = document.createElement('div');
+      voteCount.className = 'vote-count';
+      voteCount.textContent = '0 votos';
+      voteCount.id = `vote-count-${i}`;
+      
+      card.appendChild(emoji);
+      card.appendChild(name);
+      card.appendChild(voteCount);
+      
+      card.addEventListener('click', () => voteForPlayer(i));
+      
+      grid.appendChild(card);
+    }
+    
+    updateVoteStatus();
+    showScreen('screen-voting');
+    playSound('success');
+  }
+
+  function voteForPlayer(playerId) {
+    // Ciclar votos: no votado -> voto -> no votado
+    const votedPlayers = Object.values(gameState.votes);
+    const currentVote = Object.keys(gameState.votes).find(k => gameState.votes[k] === playerId);
+    
+    if (currentVote) {
+      delete gameState.votes[currentVote];
     } else {
-      cardFrontEl.style.transition = "transform 0.25s ease";
-      cardFrontEl.style.transform = "translateY(0)";
-
-      setTimeout(() => {
-        cardFrontEl.style.transition = "";
-      }, 260);
-
-      toggleRoleBtn.textContent = "Mostrar rol";
-      cardLiftedByButton = false;
+      // Buscar si este votante ya votó a alguien
+      const voterKey = Object.keys(gameState.votes).find(k => !gameState.votes[k]);
+      const nextVoter = Object.keys(gameState.votes).length + 1;
+      
+      if (nextVoter <= gameState.numPlayers) {
+        gameState.votes[`voter${nextVoter}`] = playerId;
+      }
     }
-  });
-}
-
-function nextPlayer() {
-  nextBtnEl.classList.remove("active");
-  nextBtnEl.classList.add("hidden");
-
-  gameState.currentPlayer++;
-
-  if (gameState.currentPlayer > gameState.numPlayers) {
-    const starterIndex = gameState.starterPlayer || 1;
-    const starterName =
-      gameState.playerNames[starterIndex - 1] ||
-      `Jugador ${starterIndex}`;
-    const starterEl = document.getElementById("starterInfo");
-    if (starterEl) {
-      starterEl.textContent = `Empieza diciendo su pista: ${starterName}`;
+    
+    updateVoteDisplay();
+    updateVoteStatus();
+    playSound('click');
+    
+    // Activar botón de revelar cuando todos votaron
+    const totalVotes = Object.keys(gameState.votes).length;
+    const activePlayers = gameState.numPlayers - gameState.eliminated.length;
+    
+    if (totalVotes >= activePlayers) {
+      document.getElementById('revealVotesBtn').style.display = 'block';
     }
-
-    showScreen("screen-debate");
-    return;
   }
 
-  prepareCurrentPlayerScreen();
-  showScreen("screen-role");
-}
-
-function prepareRevealScreen() {
-  document.getElementById("finalWord").textContent = gameState.secretWord;
-
-  const impostorName =
-    gameState.playerNames[gameState.impostorIndex - 1] ||
-    `Jugador ${gameState.impostorIndex}`;
-
-  document.getElementById("impostorPlayer").textContent = impostorName;
-}
-
-document.getElementById("btnGoReveal").addEventListener("click", () => {
-  prepareRevealScreen();
-  showScreen("screen-reveal");
-});
-
-let dragStartY = 0;
-let dragging   = false;
-let cardHeight = 0;
-
-function onTouchStart(e) {
-  const slider = cardFrontEl.parentElement;
-  cardHeight   = slider.offsetHeight || 300;
-
-  dragStartY = e.touches[0].clientY;
-  dragging   = true;
-  cardFrontEl.style.transition = "none";
-
-  cardLiftedByButton = false;
-  if (toggleRoleBtn) toggleRoleBtn.textContent = "Mostrar rol";
-}
-
-function onTouchMove(e) {
-  if (!dragging) return;
-
-  const currentY = e.touches[0].clientY;
-  let delta = currentY - dragStartY;
-
-  if (delta > 0) delta = 0;
-  if (delta < -cardHeight) delta = -cardHeight;
-
-  cardFrontEl.style.transform = `translateY(${delta}px)`;
-
-  if (delta < -cardHeight / 3 && !gameState.roleShown) {
-    gameState.roleShown = true;
-    nextBtnEl.classList.remove("hidden");
-    nextBtnEl.classList.add("active");
+  function updateVoteDisplay() {
+    const voteCounts = {};
+    
+    // Contar votos
+    Object.values(gameState.votes).forEach(playerId => {
+      voteCounts[playerId] = (voteCounts[playerId] || 0) + 1;
+    });
+    
+    // Actualizar UI
+    document.querySelectorAll('.vote-card').forEach(card => {
+      const playerId = parseInt(card.dataset.playerId);
+      const count = voteCounts[playerId] || 0;
+      
+      const countEl = document.getElementById(`vote-count-${playerId}`);
+      if (countEl) {
+        countEl.textContent = `${count} ${count === 1 ? 'voto' : 'votos'}`;
+      }
+      
+      if (count > 0) {
+        card.classList.add('voted');
+      } else {
+        card.classList.remove('voted');
+      }
+    });
   }
-}
 
-function onTouchEnd() {
-  if (!dragging) return;
-  dragging = false;
+  function updateVoteStatus() {
+    const totalVotes = Object.keys(gameState.votes).length;
+    const activePlayers = gameState.numPlayers - gameState.eliminated.length;
+    
+    document.getElementById('voteStatus').textContent = 
+      `${totalVotes} de ${activePlayers} votos emitidos`;
+  }
 
-  cardFrontEl.style.transition = "transform 0.25s ease";
-  cardFrontEl.style.transform = "translateY(0)";
+  function revealVotes() {
+    const voteCounts = {};
+    
+    Object.values(gameState.votes).forEach(playerId => {
+      voteCounts[playerId] = (voteCounts[playerId] || 0) + 1;
+    });
+    
+    // Encontrar al más votado
+    let maxVotes = 0;
+    let eliminatedPlayer = null;
+    const tied = [];
+    
+    Object.keys(voteCounts).forEach(playerId => {
+      const count = voteCounts[playerId];
+      if (count > maxVotes) {
+        maxVotes = count;
+        eliminatedPlayer = parseInt(playerId);
+        tied.length = 0;
+        tied.push(eliminatedPlayer);
+      } else if (count === maxVotes) {
+        tied.push(parseInt(playerId));
+      }
+    });
+    
+    // Manejar empates
+    if (tied.length > 1) {
+      eliminatedPlayer = tied[Math.floor(Math.random() * tied.length)];
+    }
+    
+    gameState.eliminated.push(eliminatedPlayer);
+    
+    // Mostrar resultados
+    const resultEmoji = document.getElementById('voteResultEmoji');
+    const resultText = document.getElementById('voteResultText');
+    const resultDetail = document.getElementById('voteResultDetail');
+    const breakdown = document.getElementById('voteBreakdown');
+    
+    const eliminatedName = gameState.playerNames[eliminatedPlayer - 1] || `Jugador ${eliminatedPlayer}`;
+    
+    if (tied.length > 1) {
+      resultEmoji.textContent = '🎲';
+      resultText.textContent = '¡Empate!';
+      resultDetail.textContent = `Hubo empate. Por sorteo, ${eliminatedName} fue eliminado.`;
+    } else {
+      resultEmoji.textContent = '🎯';
+      resultText.textContent = 'Votación completada';
+      resultDetail.textContent = `${eliminatedName} ha sido eliminado con ${maxVotes} ${maxVotes === 1 ? 'voto' : 'votos'}.`;
+    }
+    
+    // Mostrar desglose
+    breakdown.innerHTML = '<h3 style="margin-top: 20px;">Desglose de votos:</h3>';
+    Object.keys(voteCounts).forEach(playerId => {
+      const name = gameState.playerNames[playerId - 1] || `Jugador ${playerId}`;
+      const count = voteCounts[playerId];
+      const p = document.createElement('p');
+      p.textContent = `${name}: ${count} ${count === 1 ? 'voto' : 'votos'}`;
+      breakdown.appendChild(p);
+    });
+    
+    showScreen('screen-vote-results');
+    playSound('success');
+  }
 
-  setTimeout(() => {
-    cardFrontEl.style.transition = "";
-  }, 250);
-}
+  function showReveal() {
+    prepareRevealScreen();
+    showScreen('screen-reveal');
+  }
 
-cardFrontEl.addEventListener("touchstart", onTouchStart, { passive: true });
-cardFrontEl.addEventListener("touchmove",  onTouchMove,  { passive: true });
-cardFrontEl.addEventListener("touchend",   onTouchEnd);
+  // ============================
+  // REVELACIÓN
+  // ============================
+  function prepareRevealScreen() {
+    document.getElementById("finalWord").textContent = gameState.secretWord;
 
-document.getElementById("selectPlayers")
-  .addEventListener("change", refreshPlayerNameInputs);
+    const impostorName = gameState.playerNames[gameState.impostorIndex - 1] || `Jugador ${gameState.impostorIndex}`;
+    
+    let impostorText = impostorName;
+    if (gameState.impostorIndex2 > 0) {
+      const impostor2Name = gameState.playerNames[gameState.impostorIndex2 - 1] || `Jugador ${gameState.impostorIndex2}`;
+      impostorText = `${impostorName} y ${impostor2Name}`;
+    }
+    
+    document.getElementById("impostorPlayer").textContent = impostorText;
+    
+    // Determinar resultado
+    const resultEmoji = document.getElementById('finalResultEmoji');
+    const resultText = document.getElementById('finalResultText');
+    
+    const citizensWon = gameState.eliminated.includes(gameState.impostorIndex) || 
+                        (gameState.impostorIndex2 > 0 && gameState.eliminated.includes(gameState.impostorIndex2));
+    
+    if (citizensWon) {
+      resultEmoji.textContent = '🎉';
+      resultText.textContent = '¡Ciudadanos ganan!';
+      createConfetti();
+      stats.citizenWins++;
+      playSound('success');
+    } else {
+      resultEmoji.textContent = '😈';
+      resultText.textContent = '¡El impostor gana!';
+      stats.impostorWins++;
+      playSound('error');
+    }
+    
+    stats.totalGames++;
+    
+    // Registrar palabra jugada
+    if (!stats.wordsPlayed[gameState.secretWord]) {
+      stats.wordsPlayed[gameState.secretWord] = 0;
+    }
+    stats.wordsPlayed[gameState.secretWord]++;
+    
+    saveStats();
+  }
 
-loadWordsFromCsv();
-refreshPlayerNameInputs();
-showScreen("screen-start");
+  // ============================
+  // ESTADÍSTICAS
+  // ============================
+  function showStats() {
+    document.getElementById('totalGames').textContent = stats.totalGames;
+    document.getElementById('citizenWins').textContent = stats.citizenWins;
+    document.getElementById('impostorWins').textContent = stats.impostorWins;
+    
+    const winRate = stats.totalGames > 0 
+      ? Math.round((stats.citizenWins / stats.totalGames) * 100) 
+      : 0;
+    document.getElementById('winRate').textContent = winRate + '%';
+    
+    // Top palabras
+    const topWordsEl = document.getElementById('topWords');
+    topWordsEl.innerHTML = '';
+    
+    const sortedWords = Object.entries(stats.wordsPlayed)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+    
+    if (sortedWords.length === 0) {
+      topWordsEl.innerHTML = '<p class="small">No hay datos todavía</p>';
+    } else {
+      sortedWords.forEach(([word, count], index) => {
+        const p = document.createElement('p');
+        p.style.fontSize = '1rem';
+        p.style.marginBottom = '8px';
+        p.innerHTML = `${index + 1}. <strong>${word}</strong> - ${count} ${count === 1 ? 'vez' : 'veces'}`;
+        topWordsEl.appendChild(p);
+      });
+    }
+    
+    showScreen('screen-stats');
+  }
 
-const versionEl = document.getElementById("appVersion");
-if (versionEl) {
-  versionEl.textContent = "Versión " + APP_VERSION;
-}
+  function resetStats() {
+    if (confirm('¿Seguro que quieres resetear todas las estadísticas?')) {
+      stats = {
+        totalGames: 0,
+        citizenWins: 0,
+        impostorWins: 0,
+        wordsPlayed: {}
+      };
+      saveStats();
+      showStats();
+      playSound('success');
+    }
+  }
 
-initAvatarModal();
-</script>
+  // ============================
+  // PREFERENCIAS
+  // ============================
+  function toggleDarkMode() {
+    gameState.darkMode = !gameState.darkMode;
+    document.body.classList.toggle('dark-mode');
+    savePreferences();
+    playSound('click');
+  }
+
+  function toggleSound() {
+    gameState.soundEnabled = !gameState.soundEnabled;
+    savePreferences();
+    updateSoundButton();
+    playSound('click');
+  }
+
+  function updateSoundButton() {
+    const btn = document.getElementById('soundBtn');
+    if (btn) {
+      btn.textContent = gameState.soundEnabled ? '🔊' : '🔇';
+    }
+  }
+
+  // ============================
+  // TUTORIAL
+  // ============================
+  let currentTutorialStep = 1;
+
+  function showTutorial() {
+    currentTutorialStep = 1;
+    document.getElementById('tutorialOverlay').style.display = 'flex';
+    updateTutorialStep();
+    playSound('click');
+  }
+
+  function nextTutorialStep() {
+    currentTutorialStep++;
+    if (currentTutorialStep > 4) {
+      closeTutorial();
+      return;
+    }
+    updateTutorialStep();
+    playSound('click');
+  }
+
+  function updateTutorialStep() {
+    document.querySelectorAll('.tutorial-step').forEach(step => {
+      step.classList.remove('active');
+      if (parseInt(step.dataset.step) === currentTutorialStep) {
+        step.classList.add('active');
+      }
+    });
+  }
+
+  function closeTutorial() {
+    document.getElementById('tutorialOverlay').style.display = 'none';
+    playSound('click');
+  }
+
+  // ============================
+  // EVENT LISTENERS
+  // ============================
+  document.getElementById("selectPlayers").addEventListener("change", refreshPlayerNameInputs);
+
+  // Exponer funciones globales
+  window.startGame = startGame;
+  window.nextPlayer = nextPlayer;
+  window.startAnotherRound = startAnotherRound;
+  window.backToStart = backToStart;
+  window.goToSetup = goToSetup;
+  window.selectMode = selectMode;
+  window.startVoting = startVoting;
+  window.revealVotes = revealVotes;
+  window.showReveal = showReveal;
+  window.pauseTimer = pauseTimer;
+  window.resetTimer = resetTimer;
+  window.addTime = addTime;
+  window.showStats = showStats;
+  window.resetStats = resetStats;
+  window.toggleDarkMode = toggleDarkMode;
+  window.toggleSound = toggleSound;
+  window.showTutorial = showTutorial;
+  window.nextTutorialStep = nextTutorialStep;
+  window.closeTutorial = closeTutorial;
+
+  // ============================
+  // INICIAR APP
+  // ============================
+  initGame();
+  </script>
+
 </body>
 </html>
