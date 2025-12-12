@@ -6,175 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    :root {
-      --primary-start: #667eea;
-      --primary-end: #764ba2;
-      --secondary-start: #f093fb;
-      --secondary-end: #f5576c;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --dark: #1f2937;
-      --gray: #6b7280;
-      --light-gray: #e5e7eb;
-    }
-
-    body {
-      margin: 0;
-      background: linear-gradient(
-        135deg,
-        var(--primary-start) 0%,
-        var(--primary-end) 50%,
-        var(--secondary-start) 100%
-      );
-      background-attachment: fixed;
-      color: var(--dark);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px 0;
-    }
-
-    body.dark-mode {
-      background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 50%, #831843 100%);
-    }
-
-    .app {
-      width: 100%;
-      max-width: 480px;
-      padding: 16px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.98);
-      border-radius: 24px;
-      padding: 32px 24px 28px;
-      box-shadow: 0 25px 50px rgba(0,0,0,.25);
-      position: relative;
-      border: 2px solid rgba(255,255,255,.5);
-    }
-
-    body.dark-mode .card {
-      background: rgba(31,41,55,.95);
-      color: #f3f4f6;
-      border-color: rgba(255,255,255,.1);
-    }
-
-    .screen.hidden { display: none; }
-
-    h1 {
-      font-size: 2.2rem;
-      text-align: center;
-      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 800;
-      margin: 0 0 .5rem;
-    }
-
-    h2 { text-align: center; margin-top: 0; }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 16px;
-      border: none;
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-top: 16px;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-
-    button::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      left: -100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,.3),
-        transparent
-      );
-      transition: left .5s ease;
-    }
-
-    button:hover::before { left: 100%; }
-
-    button.secondary {
-      background: linear-gradient(135deg, #6b7280, #4b5563);
-    }
-
-    button.danger {
-      background: linear-gradient(135deg, var(--danger), #dc2626);
-    }
-
-    .top-controls {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      display: flex;
-      gap: 8px;
-      z-index: 10;
-    }
-
-    .icon-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-      color: white;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card-slider {
-      height: 400px;
-      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-      border-radius: 28px;
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .card-front,
-    .card-back {
-      position: absolute;
-      inset: 12px;
-      background: white;
-      border-radius: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    body.dark-mode .card-front,
-    body.dark-mode .card-back {
-      background: #374151;
-    }
-
-    @media (max-width: 480px) {
-      .voting-grid { grid-template-columns: 1fr; }
-      .stats-grid  { grid-template-columns: 1fr; }
-    }
-  </style>
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
@@ -183,36 +16,291 @@
 
       <!-- Controles superiores -->
       <div class="top-controls">
-        <button class="icon-btn" onclick="toggleDarkMode()">🌙</button>
-        <button class="icon-btn" onclick="toggleSound()" id="soundBtn">🔊</button>
-        <button class="icon-btn" onclick="goToSetup()">≡</button>
+        <button class="icon-btn" type="button" onclick="toggleDarkMode()" title="Modo oscuro">🌙</button>
+        <button class="icon-btn" type="button" onclick="toggleSound()" title="Sonido" id="soundBtn">🔊</button>
+        <button class="icon-btn" type="button" onclick="goToSetup()" title="Menú">≡</button>
       </div>
 
-      <!-- INICIO -->
+      <!-- PANTALLA: INICIO -->
       <div id="screen-start" class="screen">
+        <div class="hero-illustration">
+          <div class="emoji">🕵️</div>
+        </div>
+
         <h1>El Impostorcillo</h1>
-        <p style="text-align:center">
+        <p class="center">
           El juego social de deducción y engaño.<br>
-          ¡Intenta no parecer sospechoso!
+          Intenta no parecer sospechoso.
         </p>
-        <button onclick="goToSetup()">Nueva partida</button>
-        <button class="secondary" onclick="showTutorial()">Tutorial</button>
-        <button class="secondary" onclick="showStats()">Estadísticas</button>
-        <p style="text-align:center;font-size:.85rem">Versión 2.0.0</p>
+
+        <button type="button" onclick="goToSetup()">Nueva partida</button>
+        <button type="button" class="secondary" onclick="showTutorial()">Tutorial</button>
+        <button type="button" class="secondary" onclick="showStats()">Estadísticas</button>
+        <p class="small">Versión 2.0.1 - Suma Cum Laude Edition</p>
       </div>
 
-      <!-- RESTO DE PANTALLAS: SIN CAMBIOS FUNCIONALES -->
-      <!-- (el JS sigue siendo el mismo, salvo pauseTimer) -->
+      <!-- PANTALLA: CONFIGURACIÓN -->
+      <div id="screen-setup" class="screen hidden">
+        <div class="title-row">
+          <div class="title-icon">⚙️</div>
+          <h2>Configuración</h2>
+        </div>
+
+        <label>Modo de juego</label>
+        <div class="game-mode-selector">
+          <div class="mode-card selected" onclick="selectMode('classic')" data-mode="classic">
+            <div class="emoji">🎭</div>
+            <div class="title">Clásico</div>
+          </div>
+          <div class="mode-card" onclick="selectMode('mrwhite')" data-mode="mrwhite">
+            <div class="emoji">👥</div>
+            <div class="title">Mr. White</div>
+          </div>
+          <div class="mode-card" onclick="selectMode('expert')" data-mode="expert">
+            <div class="emoji">🎓</div>
+            <div class="title">Experto</div>
+          </div>
+          <div class="mode-card" onclick="selectMode('rapid')" data-mode="rapid">
+            <div class="emoji">⚡</div>
+            <div class="title">Rápido</div>
+          </div>
+        </div>
+
+        <label for="selectPlayers">Número de jugadores</label>
+        <select id="selectPlayers">
+          <option value="3" selected>3 jugadores</option>
+          <option value="4">4 jugadores</option>
+          <option value="5">5 jugadores</option>
+          <option value="6">6 jugadores</option>
+          <option value="7">7 jugadores</option>
+          <option value="8">8 jugadores</option>
+          <option value="9">9 jugadores</option>
+          <option value="10">10 jugadores</option>
+        </select>
+
+        <label>Nombre de los jugadores</label>
+        <div id="playerNamesContainer"></div>
+
+        <label for="selectCategory">Categoría</label>
+        <select id="selectCategory">
+          <option value="aleatorio">🎲 Aleatorio</option>
+          <option value="comida">🍕 Comida</option>
+          <option value="animales">🦁 Animales</option>
+          <option value="objetos">📦 Objetos</option>
+          <option value="sitios">🏛️ Sitios</option>
+          <option value="deportes">⚽ Deportes</option>
+          <option value="videojuegos">🎮 Videojuegos</option>
+          <option value="transportes">🚗 Transportes</option>
+          <option value="peliculas">🎬 Películas</option>
+          <option value="profesiones">👨‍⚕️ Profesiones</option>
+          <option value="paises">🌍 Países</option>
+        </select>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="timerEnabled" checked>
+          <span>Temporizador activado</span>
+        </label>
+
+        <button type="button" onclick="startGame()">Empezar</button>
+        <button type="button" class="secondary" onclick="backToStart()">Volver</button>
+      </div>
+
+      <!-- PANTALLA: ROL DEL JUGADOR -->
+      <div id="screen-role" class="screen hidden">
+        <div class="role-badge-row">
+          <span class="badge" id="playerOrder"></span>
+        </div>
+
+        <h2 id="playerNameBig" class="player-name-big"></h2>
+
+        <div class="card-slider">
+          <div class="card-back">
+            <div class="card-back-content">
+              <div class="avatar-overlay">
+                <span id="backAvatar">😎</span>
+              </div>
+              <h3 id="roleTitle"></h3>
+              <div id="roleWord"></div>
+              <p class="role-tip" id="roleTip"></p>
+            </div>
+          </div>
+
+          <div class="card-front" id="cardFront">
+            <div class="avatar-overlay">
+              <span id="frontAvatar">😎</span>
+            </div>
+            <p class="slide-text">Desliza hacia arriba para ver tu rol</p>
+          </div>
+        </div>
+
+        <p id="instructionText" class="small"></p>
+
+        <button id="toggleRoleBtn" type="button" class="secondary role-btn">
+          Mostrar rol
+        </button>
+
+        <button id="nextPlayerBtn" type="button" class="secondary hidden" onclick="nextPlayer()">
+          Jugador siguiente
+        </button>
+      </div>
+
+      <!-- PANTALLA: DEBATE -->
+      <div id="screen-debate" class="screen hidden">
+        <h2>💬 Debate</h2>
+        <p id="starterInfo" class="center"></p>
+
+        <div class="timer-container" id="timerContainer" style="display:none;">
+          <p class="small">⏱️ Tiempo restante</p>
+          <div class="timer-display" id="timerDisplay">3:00</div>
+          <div class="timer-controls">
+            <button type="button" onclick="pauseTimer()">⏸️ Pausar</button>
+            <button type="button" onclick="resetTimer()">🔄 Reiniciar</button>
+            <button type="button" onclick="addTime()">➕ +1min</button>
+          </div>
+        </div>
+
+        <p class="center">
+          Cada jugador da una pista sobre la palabra.<br>
+          Comentad, defendedos y acusad al sospechoso.
+        </p>
+
+        <button type="button" onclick="startVoting()">Iniciar votación</button>
+      </div>
+
+      <!-- PANTALLA: VOTACIÓN -->
+      <div id="screen-voting" class="screen hidden">
+        <h2>🗳️ Votación</h2>
+
+        <p class="center" id="votingTurnLabel">Turno de votar: —</p>
+        <p class="center small" id="votingInstruction">Toca a quién crees que es el impostorcillo</p>
+
+        <div class="voting-grid" id="votingGrid"></div>
+
+        <p class="small" id="voteStatus">0 de 0 votos emitidos</p>
+
+        <button type="button" onclick="revealVotes()" id="revealVotesBtn" style="display:none;">
+          Ver resultados
+        </button>
+
+        <button type="button" class="secondary" onclick="restartVoting()" id="restartVotingBtn" style="display:none;">
+          Reiniciar votación
+        </button>
+      </div>
+
+      <!-- PANTALLA: RESULTADOS DE VOTACIÓN -->
+      <div id="screen-vote-results" class="screen hidden">
+        <h2>📊 Resultados</h2>
+
+        <div class="result-card">
+          <div class="result-emoji" id="voteResultEmoji">🎯</div>
+          <h3 id="voteResultText"></h3>
+          <p id="voteResultDetail"></p>
+        </div>
+
+        <div id="voteBreakdown"></div>
+
+        <button type="button" onclick="showReveal()">Revelar palabra secreta</button>
+      </div>
+
+      <!-- PANTALLA: REVELACIÓN -->
+      <div id="screen-reveal" class="screen hidden">
+        <h2>🎭 Revelación</h2>
+
+        <p class="center">La palabra secreta era:</p>
+        <div id="finalWord"></div>
+
+        <p class="center">
+          El Impostorcillo era<br>
+          <span class="highlight" id="impostorPlayer"></span>
+        </p>
+
+        <div class="result-card" id="gameResult">
+          <div class="result-emoji" id="finalResultEmoji"></div>
+          <h3 id="finalResultText"></h3>
+        </div>
+
+        <button type="button" onclick="startAnotherRound()">Jugar otra ronda</button>
+        <button type="button" class="secondary" onclick="backToStart()">Volver al inicio</button>
+      </div>
+
+      <!-- PANTALLA: ESTADÍSTICAS -->
+      <div id="screen-stats" class="screen hidden">
+        <h2>📊 Estadísticas</h2>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="totalGames">0</div>
+            <div class="stat-label">Partidas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="citizenWins">0</div>
+            <div class="stat-label">Victoria Ciudadanos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="impostorWins">0</div>
+            <div class="stat-label">Victoria Impostores</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="winRate">0%</div>
+            <div class="stat-label">% Victoria Ciudadanos</div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:24px;">🏆 Top 5 Palabras Jugadas</h3>
+        <div id="topWords" style="margin:16px 0;"></div>
+
+        <button type="button" class="danger" onclick="resetStats()">Resetear estadísticas</button>
+        <button type="button" class="secondary" onclick="backToStart()">Volver</button>
+      </div>
 
     </div>
   </div>
 
-  <script>
-    function pauseTimer(e) {
-      gameState.timerPaused = !gameState.timerPaused;
-      const btn = e.target;
-      btn.textContent = gameState.timerPaused ? '▶️ Reanudar' : '⏸️ Pausar';
-    }
-  </script>
+  <!-- Tutorial Overlay -->
+  <div id="tutorialOverlay" class="tutorial-overlay" style="display:none;">
+    <div class="tutorial-content">
+      <div class="tutorial-step active" data-step="1">
+        <div class="tutorial-emoji">🎭</div>
+        <h3>Bienvenido a El Impostorcillo</h3>
+        <p>Un juego social de deducción donde debes encontrar al impostor entre los jugadores.</p>
+        <button type="button" onclick="nextTutorialStep()">Siguiente</button>
+      </div>
+
+      <div class="tutorial-step" data-step="2">
+        <div class="tutorial-emoji">👥</div>
+        <h3>Los Roles</h3>
+        <p>
+          <strong>Ciudadanos:</strong> conocen la palabra secreta y deben dar pistas.<br><br>
+          <strong>Impostorcillo:</strong> no conoce la palabra y debe fingir que sí.
+        </p>
+        <button type="button" onclick="nextTutorialStep()">Siguiente</button>
+      </div>
+
+      <div class="tutorial-step" data-step="3">
+        <div class="tutorial-emoji">💬</div>
+        <h3>Cómo se juega</h3>
+        <p>
+          1️⃣ Cada jugador ve su rol en secreto<br>
+          2️⃣ Por turnos, dan pistas sobre la palabra<br>
+          3️⃣ Debaten quién es el impostor<br>
+          4️⃣ Votan al sospechoso
+        </p>
+        <button type="button" onclick="nextTutorialStep()">Siguiente</button>
+      </div>
+
+      <div class="tutorial-step" data-step="4">
+        <div class="tutorial-emoji">🏆</div>
+        <h3>Victoria</h3>
+        <p>
+          <strong>Ciudadanos ganan:</strong> si eliminan al impostorcillo.<br><br>
+          <strong>Impostor gana:</strong> si sobrevive la votación (o en Mr. White, si no cae ninguno).
+        </p>
+        <button type="button" onclick="closeTutorial()">Empezar a jugar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS externo -->
+  <script src="js/app.js"></script>
 </body>
 </html>
